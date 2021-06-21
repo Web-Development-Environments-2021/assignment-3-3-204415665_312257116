@@ -2,6 +2,8 @@
   <div class="container">
     <h1 class="title">Register</h1>
     <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
+      
+      <!----------  username  ---------->
       <b-form-group
         id="input-group-username"
         label-cols-sm="3"
@@ -25,6 +27,55 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!----------  firstName  ---------->
+      <b-form-group
+        id="input-group-firstName"
+        label-cols-sm="3"
+        label="First name:"
+        label-for="firstName"
+      >
+        <b-form-input
+          id="firstname"
+          v-model="$v.form.firstName.$model"
+          type="text"
+          :state="validateState('firstName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+          first name is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-else-if="!$v.form.firstName.length">
+          First name length should be at least 1 characters long
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.firstName.alpha">
+          First name must contain only letters
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <!----------  lastName  ---------->
+      <b-form-group
+        id="input-group-lastName"
+        label-cols-sm="3"
+        label="Last name:"
+        label-for="lastname"
+      >
+        <b-form-input
+          id="lastName"
+          v-model="$v.form.lastName.$model"
+          type="text"
+          :state="validateState('lastName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+          Last name is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-else-if="!$v.form.lastName.length">
+          Last name length should be at least 1 characters long
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.lastName.alpha">
+          Last name must contain only letters
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <!----------  Country  ---------->
       <b-form-group
         id="input-group-country"
         label-cols-sm="3"
@@ -42,6 +93,28 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!----------  email  ---------->
+      <b-form-group
+        id="input-group-email"
+        label-cols-sm="3"
+        label="Email:"
+        label-for="email"
+      >
+        <b-form-input
+          id="email"
+          type="email"
+          v-model="$v.form.email.$model"
+          :state="validateState('email')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.email.required">
+          Email is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.email.email">
+          Email is not valid
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <!----------  Password  ---------->
       <b-form-group
         id="input-group-Password"
         label-cols-sm="3"
@@ -61,13 +134,18 @@
           Your password should be <strong>strong</strong>. <br />
           For that, your password should be also:
         </b-form-text>
-        <b-form-invalid-feedback
-          v-if="$v.form.password.required && !$v.form.password.length"
-        >
+        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.length">
           Have length between 5-10 characters long
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasNumer">
+          Must contain at least one number character
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasSpecialCharecter">
+          Must contain at least one special character
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!----------  confirmedPassword  ---------->
       <b-form-group
         id="input-group-confirmedPassword"
         label-cols-sm="3"
@@ -89,6 +167,29 @@
           The confirmed password is not equal to the original password
         </b-form-invalid-feedback>
       </b-form-group>
+
+      <!----------  email  ---------->
+      <b-form-group
+        id="input-group-image_url"
+        label-cols-sm="3"
+        label="Profile image URL"
+        label-for="image_url"
+      >
+        <b-form-input
+          id="image_url"
+          type="text"
+          v-model="$v.form.image_url.$model"
+          :state="validateState('image_url')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.image_url.required">
+          Image url is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.image_url.url">
+          Image url is not valid
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+     <!----------  reset  ---------->
 
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
@@ -127,6 +228,7 @@ import {
   maxLength,
   alpha,
   sameAs,
+  url,
   email
 } from "vuelidate/lib/validators";
 
@@ -156,16 +258,36 @@ export default {
         length: (u) => minLength(3)(u) && maxLength(8)(u),
         alpha
       },
+      firstName: {
+        required,
+        length: (f) => minLength(1)(f),
+        alpha
+      },
+      lastName:{
+        required,
+        length: (l) => minLength(1)(l),
+        alpha
+      },
       country: {
         required
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        hasNumer: (l) => /[0-9]/.test(l),
+        hasSpecialCharecter: (l) => /[#?!@$%^&*()_-]/.test(l)
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
+      },
+      email:{       
+        required,
+        email
+      },
+      image_url:{       
+        required,
+        url
       }
     }
   },
@@ -182,12 +304,19 @@ export default {
     async Register() {
       try {
         const response = await this.axios.post(
-          "https://test-for-3-2.herokuapp.com/user/Register",
+          this.$root.store.serverUrl + "Login",
           {
             username: this.form.username,
-            password: this.form.password
+            password: this.form.password,
+            firstname: this.form.firstname,
+            lastname: this.form.lastname,
+            country: this.form.country,
+            password: this.form.password,
+            email: this.form.email,
+            image_url: this.form.image_url
           }
         );
+        console.log(response);
         this.$router.push("/login");
         // console.log(response);
       } catch (err) {

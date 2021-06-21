@@ -24,7 +24,10 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  PaginationPlugin,
+  TablePlugin,
+  SpinnerPlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -37,7 +40,10 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  PaginationPlugin,
+  TablePlugin,
+  SpinnerPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -82,9 +88,48 @@ const shared_data = {
     console.log("logout");
     localStorage.removeItem("username");
     this.username = undefined;
+  },
+
+
+  //* ------------------------------ UnionAgent ------------------------------ *//
+
+  leagueFutureMatches: undefined,
+  leaguePastMatches: undefined,
+
+  async initDataForUnionAgent(){
+    try{
+      const responseFromLeagueMatches = await this.getLeagueMatches();
+
+      localStorage.setItem("leagueFutureMatches", responseFromLeagueMatches.featureMatches);
+      localStorage.setItem("leaguePastMatches", responseFromLeagueMatches.pastMatches);
+
+      this.leagueFutureMatches = responseFromLeagueMatches.featureMatches;
+      this.leaguePastMatches = responseFromLeagueMatches.pastMatches;
+
+    }catch ( error ){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+  async getLeagueMatches(){
+    try{
+        axios.withCredentials = true;
+        const response = await axios.get(
+            this.serverUrl + "unionAgent/leagueManagementPage"
+        );
+        
+        axios.withCredentials = false;
+        
+        return response.data;
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+      console.log("Error In  getLeagueMatches");
+    }
   }
-  
 };
+
+
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 

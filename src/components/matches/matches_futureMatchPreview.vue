@@ -9,12 +9,12 @@
       <li> Visitor team: {{ visitorTeamName }}</li>
       <li> Venue: {{ venueName }}</li>
       <li> Referee Information:
-          <RefereeInformation v-if="hasRefereeInfo"
+        <RefereeInformation v-if="hasRefereeInfo"
           :refereeID="refereeInformation.refereeID"
           :firstname="refereeInformation.firstname"
           :lastname="refereeInformation.lastname"
           :course="refereeInformation.course">
-          </RefereeInformation>
+        </RefereeInformation>
       </li>
     </ul>
   </div>

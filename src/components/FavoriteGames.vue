@@ -10,8 +10,18 @@
       :refereeInformation="g.refereeInformation"
       :key="g.id">
     </FutureMatchPreview>
-    <PastMatchPreview>
-
+    <PastMatchPreview
+      v-for="g in pastMatches"
+      :matchID="g.matchID" 
+      :matchDateAndTime="g.matchDateAndTime" 
+      :localTeamName="g.localTeamName" 
+      :visitorTeamName="g.visitorTeamName" 
+      :venueName="g.venueName" 
+      :localTeamScore="g.localTeamScore"
+      :visitorTeamScore="g.visitorTeamScore"
+      :refereeInformation="g.refereeInformation"
+      :eventsLog="g.eventsLog"
+      :key="g.id">
     </PastMatchPreview>
   </div>
 </template>
@@ -73,8 +83,15 @@ export default {
               eventTimeAndDate: "2020-08-02 15:30:00",
               minuteInMatch: 10,
               eventType: "Goal",
+              eventDescription: "By Messi"
+            },
+            {
+              eventID: 12,
+              eventTimeAndDate: "2020-08-02 15:30:00",
+              minuteInMatch: 20,
+              eventType: "Yellow card",
               eventDescription: "Yellow card to Messi"
-            }
+            },
           ]
         },
         {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="future-match-content">
+        <ul class="referee-information-content">
             <li> Referee ID: {{ refereeID }}</li>
             <li> First name: {{ firstname }}</li>
             <li> Last name: {{ lastname }}</li>

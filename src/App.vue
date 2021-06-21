@@ -10,7 +10,7 @@
         <b-navbar-nav class="ml-auto" v-if="!$root.store.username">
           <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
           <b-nav-item :to="{ name: 'register' }">Register</b-nav-item>
-          <b-nav-item :to="{ name: 'leagueManagement' }">League management</b-nav-item>
+          <b-nav-item v-if="$root.store.username == 4" :to="{ name: 'leagueManagement' }">League management</b-nav-item>
 
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
@@ -41,7 +41,7 @@ export default {
     // ------------------------ Logout ------------------------ //
     async Logout() {
       try{
-        this.axios.defaults.withCredentials = true;
+        this.axios.defaults.withCredentials = true; //{ withCredentials: true }
         const res = await this.axios.post(this.$root.store.serverUrl + "Logout");
         console.log(res);
         this.$root.store.logout();

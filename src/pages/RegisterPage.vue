@@ -137,10 +137,10 @@
         <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.length">
           Have length between 5-10 characters long
         </b-form-invalid-feedback>
-        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasNumer">
+        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasNumber">
           Must contain at least one number character
         </b-form-invalid-feedback>
-        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasSpecialCharecter">
+        <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.hasSpecialCharacter">
           Must contain at least one special character
         </b-form-invalid-feedback>
       </b-form-group>
@@ -274,8 +274,8 @@ export default {
       password: {
         required,
         length: (p) => minLength(5)(p) && maxLength(10)(p),
-        hasNumer: (l) => /[0-9]/.test(l),
-        hasSpecialCharecter: (l) => /[#?!@$%^&*()_-]/.test(l)
+        hasNumber: (l) => /[0-9]/.test(l),
+        hasSpecialCharacter: (l) => /[#?!@$%^&*()_-]/.test(l)
       },
       confirmedPassword: {
         required,
@@ -303,8 +303,9 @@ export default {
     },
     async Register() {
       try {
+        this.axios.defaults.withCredentials = true;
         const response = await this.axios.post(
-          this.$root.store.serverUrl + "Login",
+          this.$root.store.serverUrl + "Register",
           {
             username: this.form.username,
             password: this.form.password,
@@ -316,6 +317,7 @@ export default {
             image_url: this.form.image_url
           }
         );
+        this.axios.defaults.withCredentials = false;
         console.log(response);
         this.$router.push("/login");
         // console.log(response);

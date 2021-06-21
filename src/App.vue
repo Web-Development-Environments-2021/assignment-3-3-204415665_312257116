@@ -36,13 +36,21 @@ export default {
     UrlNavigator,
   },
   methods: {
-    Logout() {
-      this.$root.store.logout();
-      this.$root.toast("Logout", "User logged out successfully", "success");
-
-      this.$router.push("/").catch(() => {
-        this.$forceUpdate();
-      });
+    // ------------------------ Logout ------------------------ //
+    async Logout() {
+      try{
+        this.axios.defaults.withCredentials = true;
+        const res = await this.axios.post(this.$root.store.serverUrl);
+        console.log(res);
+        this.$root.store.logout();
+        this.axios.defaults.withCredentials = false;
+        this.$root.toast("Logout", "User logged out successfully", "success");
+        this.$router.push("/").catch(() => {
+          this.$forceUpdate();
+        });
+      }
+      catch(error){
+      }
     }
   }
 };

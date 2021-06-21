@@ -1,20 +1,31 @@
 <template>
-  <div class="match-preview">
-    <div :title="matchID" class="match-title">
+  <div class="future-match-preview">
+    <div :title="matchID" class="future-match-title">
       <b>Match Id:</b> {{ matchID }}
     </div>
-    <ul class="match-content">
+    <ul class="future-match-content">
       <li> Match date: {{ matchDate }}</li>
       <li> Local team: {{ localTeamName }}</li>
       <li> Visitor team: {{ visitorTeamName }}</li>
       <li> Venue: {{ venueName }}</li>
+      <li> Referee Information: 
+        <!-- <RefereeInformation v-if="refereeInformation.length">  
+
+        </RefereeInformation> -->
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
+
+// import RefereeInformation from "../RefereeInformation";
+
 export default {
   name: "futureMatchPreview",
+  components: {
+    // RefereeInformation
+  },
   props: {
       matchID: {
         type: Number,
@@ -36,17 +47,21 @@ export default {
         type: String,
         required: true
       },
+      refereeInformation: {
+        type: Object,
+        required: true
+      }
       // TODO: What About Referee???
 
   }, 
   mounted(){
-    console.log("match preview mounted")
+    console.log("future match preview mounted")
   } 
 };
 </script>
 
 <style>
-.match-preview {
+.future-match-preview {
   display: inline-block;
   width: 250px;
   height: 200px;
@@ -58,17 +73,14 @@ export default {
   border-color:cadetblue;
 }
 
-.match-preview .match-title {
+.future-match-preview .future-match-title {
   text-align: center;
   text-transform: uppercase;
   color:  rgb(111, 197, 157);
 }
 
-.match-preview .match-content {
+.future-match-preview .future-match-content {
   width: 100%;
   overflow: hidden;
 }
-
-
-
 </style>

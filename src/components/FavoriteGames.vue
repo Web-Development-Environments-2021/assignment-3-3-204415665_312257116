@@ -1,39 +1,97 @@
 <template>
   <div>
     <FutureMatchPreview
-      v-for="g in games"
+      v-for="g in featureMatches"
       :matchID="g.matchID" 
       :matchDate="g.matchDate" 
       :localTeamName="g.localTeamName" 
       :visitorTeamName="g.visitorTeamName" 
       :venueName="g.venueName" 
-      :key="g.id"></FutureMatchPreview>
+      :refereeInformation="g.refereeInformation"
+      :key="g.id">
+    </FutureMatchPreview>
+    <PastMatchPreview>
+
+    </PastMatchPreview>
   </div>
 </template>
 
 <script>
+
 import FutureMatchPreview from "./matches/matches_futureMatchPreview";
+import PastMatchPreview from "./matches/matches_pastMatchPreview";
+
 export default {
   name: "FavoriteGames",
   components: {
-    FutureMatchPreview
+    FutureMatchPreview,
+    PastMatchPreview
   }, 
   data() {
     return {
-      games: [
+      featureMatches: [
         {
           matchID:25,
           matchDate: "08-08-2021 20:00:00",
           localTeamName: "Maccabi Tel-Aviv",
           visitorTeamName: "Hapoel Beer-Sheva",
-          venueName: "Teddy"
+          venueName: "Teddy",
+          refereeInformation: {
+            refereeID: 2,
+            firstname: "dini",
+            lastname: "pinchas",
+            course: "Regular"
+          }
         },
         {
           matchID:39,
           matchDate: "10-10-2021 19:00:00",
           localTeamName: "Hapoel Tel-Aviv",
           visitorTeamName: "Maccabi Haifa",
-          venueName: "Bloom"
+          venueName: "Bloom",
+          refereeInformation: {}
+        }
+      ],
+      pastMatches: [
+        {
+          matchID: 10,
+          matchDateAndTime: "2020-10-02 15:30:00",
+          localTeamName: "Silkeborg",
+          visitorTeamName: "København",
+          venueName: "Park",
+          localTeamScore: 0,
+          visitorTeamScore: 0,
+          refereeInformation: {
+            refereeID: 2,
+            firstname: "dini",
+            lastname: "pinchas",
+            course: "Regular"
+          },
+          eventsLog: [
+            {
+              eventID: 10,
+              eventTimeAndDate: "2020-08-02 15:30:00",
+              minuteInMatch: 10,
+              eventType: "Goal",
+              eventDescription: "Yellow card to Messi"
+            }
+          ]
+        },
+        {
+          matchID: 3,
+          matchDateAndTime: "2020-08-02 15:30:00",
+          localTeamName: "København",
+          visitorTeamName: "Silkeborg",
+          venueName: "Parken",
+          localTeamScore: 5,
+          visitorTeamScore: 1,
+          refereeInformation: {
+            refereeID: 2,
+            firstname: "dini",
+            lastname: "pinchas",
+            course: "Regular"
+          },
+          eventsLog: []
         }
       ]
     };

@@ -345,7 +345,8 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: ""
+        email: "",
+        image_url: ""
       };
       this.$nextTick(() => {
         this.$v.$reset();

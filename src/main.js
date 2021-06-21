@@ -70,8 +70,6 @@ Vue.config.productionTip = false;
 
 const shared_data = {
   username: localStorage?.username,
- // username: "hilla",
- // username: undefined,
   serverUrl: "http://localhost:3000/",
 
   login(username) {
@@ -79,11 +77,13 @@ const shared_data = {
     this.username = username;
     console.log("login", this.username);
   },
+
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
     this.username = undefined;
   }
+  
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;

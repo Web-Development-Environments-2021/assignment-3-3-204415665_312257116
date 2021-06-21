@@ -94,7 +94,7 @@ export default {
     async Login() {
       try {
         this.axios.defaults.withCredentials = true;
-        const response = await this.axios.post(
+         const response = await this.axios.post(
           this.$root.store.serverUrl + "Login",
           {
             username: this.form.username,
@@ -122,8 +122,10 @@ export default {
 
         
       } catch (err) {
-        console.log(err.response);
-        this.form.submitError = err.response.data.message;
+        // console.log(response);
+        this.form.submitError = err?.response.data.message;
+        this.$root.toast("Login", "Username or Password incorrect", "danger");
+
       }
     },
     async onLogin() {

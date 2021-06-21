@@ -8,10 +8,13 @@
       <li> Local team: {{ localTeamName }}</li>
       <li> Visitor team: {{ visitorTeamName }}</li>
       <li> Venue: {{ venueName }}</li>
-      <li> Referee Information: 
-        <!-- <RefereeInformation v-if="refereeInformation.length">  
-
-        </RefereeInformation> -->
+      <li> Referee Information:
+        <RefereeInformation v-if="hasRefereeInfo"
+          :refereeID="refereeInformation.refereeID"
+          :firstname="refereeInformation.firstname"
+          :lastname="refereeInformation.lastname"
+          :course="refereeInformation.course">
+        </RefereeInformation>
       </li>
     </ul>
   </div>
@@ -19,12 +22,12 @@
 
 <script>
 
-// import RefereeInformation from "../RefereeInformation";
+import RefereeInformation from "../RefereeInformation";
 
 export default {
   name: "futureMatchPreview",
   components: {
-    // RefereeInformation
+    RefereeInformation
   },
   props: {
       matchID: {
@@ -51,9 +54,12 @@ export default {
         type: Object,
         required: true
       }
-      // TODO: What About Referee???
-
   }, 
+  computed: {
+      hasRefereeInfo(){
+        return Object.keys(this.refereeInformation).length
+      }
+  },
   mounted(){
     console.log("future match preview mounted")
   } 

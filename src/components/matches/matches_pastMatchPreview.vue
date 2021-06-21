@@ -4,18 +4,49 @@
       <b>Match Id:</b> {{ matchID }}
     </div>
     <ul class="past-match-content">
-      <li> Match date: {{ matchDate }}</li>
+      <li> Match date: {{ matchDateAndTime }}</li>
       <li> Local team: {{ localTeamName }}</li>
       <li> Visitor team: {{ visitorTeamName }}</li>
       <li> Venue: {{ venueName }}</li>
+      <li> Local team score: {{ localTeamScore }}</li>
+      <li> Visitor team score: {{ visitorTeamScore }}</li>
+      <li> Referee Information:
+        <RefereeInformation v-if="hasRefereeInfo"
+          :refereeID="refereeInformation.refereeID"
+          :firstname="refereeInformation.firstname"
+          :lastname="refereeInformation.lastname"
+          :course="refereeInformation.course">
+        </RefereeInformation>
+      </li>
+      <li> Events log: 
+        <EventLogPreview
+          v-for="event in eventsLog"
+          :eventID="event.eventID" 
+          :eventTimeAndDate="event.eventTimeAndDate" 
+          :minuteInMatch="event.minuteInMatch" 
+          :eventType="event.eventType"
+          :eventDescription="event.eventDescription" 
+          :key="event.id">
+        </EventLogPreview>
+      </li>
     </ul>
   </div>
 </template>
 
 
 <script>
+
+import RefereeInformation from "../RefereeInformation"
+import EventLogPreview from "../EventLogPreview"
+
 export default {
     name: "pastMatchPreview",
+
+    components: {
+      RefereeInformation,
+      EventLogPreview
+    },
+
     props: {
       matchID: {
         type: Number,
@@ -42,10 +73,24 @@ export default {
       },
       visitorTeamScore: {
         type: Number
+      },
+      refereeInformation: {
+        type: Object,
+        required: true
+      },
+      eventsLog: {
+        type: Array,
+        required: true
       }
-      // TODO: What About Referee???
-
-  }, 
+  },
+  computed: {
+    hasRefereeInfo(){
+      return Object.keys(this.refereeInformation).length
+    },
+    hasEventsLog(){
+      return this.eventsLog.length
+    }
+  },
   mounted(){
     console.log("past match preview mounted")
   } 

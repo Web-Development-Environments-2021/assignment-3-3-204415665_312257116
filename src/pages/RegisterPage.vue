@@ -70,7 +70,7 @@
         <b-form-invalid-feedback v-else-if="!$v.form.lastName.length">
           Last name length should be at least 1 characters long
         </b-form-invalid-feedback>
-        <b-form-invalid-feedback v-if="!$v.form.lastName.alpha">
+        <b-form-invalid-feedback v-else-if="!$v.form.lastName.alpha">
           Last name must contain only letters
         </b-form-invalid-feedback>
       </b-form-group>
@@ -109,7 +109,7 @@
         <b-form-invalid-feedback v-if="!$v.form.email.required">
           Email is required
         </b-form-invalid-feedback>
-        <b-form-invalid-feedback v-if="!$v.form.email.email">
+        <b-form-invalid-feedback v-else-if="!$v.form.email.email">
           Email is not valid
         </b-form-invalid-feedback>
       </b-form-group>
@@ -130,7 +130,7 @@
         <b-form-invalid-feedback v-if="!$v.form.password.required">
           Password is required
         </b-form-invalid-feedback>
-        <b-form-text v-else-if="$v.form.password.$error" text-variant="info">
+        <b-form-text v-if="$v.form.password.$error" text-variant="info">
           Your password should be <strong>strong</strong>. <br />
           For that, your password should be also:
         </b-form-text>
@@ -168,11 +168,11 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <!----------  email  ---------->
+      <!----------  image_url  ---------->
       <b-form-group
         id="input-group-image_url"
         label-cols-sm="3"
-        label="Profile image URL"
+        label="Profile image link"
         label-for="image_url"
       >
         <b-form-input
@@ -244,6 +244,7 @@ export default {
         password: "",
         confirmedPassword: "",
         email: "",
+        image_url:"",
         submitError: undefined
       },
       countries: [{ value: null, text: "", disabled: true }],
@@ -281,14 +282,15 @@ export default {
         required,
         sameAsPassword: sameAs("password")
       },
+      image_url:{       
+        required,
+        url
+      },
       email:{       
         required,
         email
       },
-      image_url:{       
-        required,
-        url
-      }
+
     }
   },
   mounted() {

@@ -100,11 +100,12 @@ export default {
             password: this.form.password
           }
         );
-        // console.log(response);
+        console.log(response);
         // this.$root.loggedIn = true;
-        console.log(this.$root.store.login);
+        // console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
-        this.$router.push("/");
+        this.$router.push("/").then();
+        location.reload();
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="info">
+    <!-- <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand :to="{ name: 'main' }">Superliga Vue</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -22,13 +22,19 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view />
+    <router-view /> -->
+  <UrlNavigator @nav-collapse="nav-collapse" />
+  <br />
   </div>
 </template>
 
 <script>
+import UrlNavigator from "./components/UrlNavigator.vue";
 export default {
   name: "App",
+    components: {
+    UrlNavigator,
+  },
   methods: {
     Logout() {
       this.$root.store.logout();

@@ -1,39 +1,39 @@
 <template>
   <div>
-    <GamePreview
+    <FutureMatchPreview
       v-for="g in games"
-      :id="g.id" 
-      :hostTeam="g.hostTeam" 
-      :guestTeam="g.guestTeam" 
-      :date="g.date" 
-      :hour="g.hour" 
-      :key="g.id"></GamePreview>
+      :matchID="g.matchID" 
+      :matchDate="g.matchDate" 
+      :localTeamName="g.localTeamName" 
+      :visitorTeamName="g.visitorTeamName" 
+      :venueName="g.venueName" 
+      :key="g.id"></FutureMatchPreview>
   </div>
 </template>
 
 <script>
-import GamePreview from "./GamePreview.vue";
+import FutureMatchPreview from "./matches/matches_futureMatchPreview";
 export default {
   name: "FavoriteGames",
   components: {
-    GamePreview
+    FutureMatchPreview
   }, 
   data() {
     return {
       games: [
         {
-          id:25,
-          hostTeam: "Maccabi Tel-Aviv",
-          guestTeam: "Hapoel Beer-Sheva",
-          date: "27/5/21",
-          hour: "20:00"
+          matchID:25,
+          matchDate: "08-08-2021 20:00:00",
+          localTeamName: "Maccabi Tel-Aviv",
+          visitorTeamName: "Hapoel Beer-Sheva",
+          venueName: "Teddy"
         },
         {
-          id:39,
-          hostTeam: "Hapoel Tel-Aviv",
-          guestTeam: "Maccabi Haifa",
-          date: "29/5/21",
-          hour: "20:00"
+          matchID:39,
+          matchDate: "10-10-2021 19:00:00",
+          localTeamName: "Hapoel Tel-Aviv",
+          visitorTeamName: "Maccabi Haifa",
+          venueName: "Bloom"
         }
       ]
     };

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="NavigatorBar">
     <h1 class="title">Register</h1>
     <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
       
@@ -357,6 +357,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 500px;
+  max-width: 550px;
 }
 </style>

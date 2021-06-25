@@ -1,51 +1,24 @@
 <template>
   <div id="app">
+    <!-- <head>
+      <meta charset="utf-8">
+    </head> -->
+
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand :to="{ name: 'main' }">Kroos Control</b-navbar-brand>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <!------- AllUserPages ------->
-          <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
-          <b-nav-item :to="{ name: 'About' }">About</b-nav-item>
-          
-          <!------- unionAgentPages ------->
-          <b-navbar-nav class="ml-auto" v-if="$root.store.username == 'daniMoshe'">
-            <b-nav-item :to="{name: 'leagueManagement' }">League management</b-nav-item>
-          </b-navbar-nav>
-            
-        </b-navbar-nav>
-
-        <!------- NonUserPages ------->
-        <b-navbar-nav class="ml-auto" v-if="!$root.store.username">
-          <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
-          <b-nav-item :to="{ name: 'register' }">Register</b-nav-item>
-        </b-navbar-nav>
-
-        <b-navbar-nav class="ml-auto" v-else>
-        <b-nav-item-dropdown right>
-          <template #button-content>
-            <em>Welcome {{ $root.store.username }}</em>
-          </template>
-          <b-dropdown-item href="#">Favorites</b-dropdown-item>
-          <b-dropdown-item href="#"  @click="Logout()">Log Out</b-dropdown-item>
-        </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
+      <NavigatorBar @Logout="Logout" />
     </b-navbar>
-    <router-view />
-  <!-- <UrlNavigator @Logout="Logout" /> -->
-  <!-- <br /> -->
+      <router-view />
   </div>
 </template>
 
 <script>
-// import UrlNavigator from "./components/UrlNavigator.vue";
+import NavigatorBar from "./components/NavigatorBar.vue";
 
 export default {
   name: "App",
-  //   components: {
-  //   UrlNavigator,
-  // },
+    components: {
+    NavigatorBar
+  },
   methods: {
     // ------------------------ Logout ------------------------ //
     async Logout() {
@@ -68,7 +41,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/form-style.scss";
+@import "/scss/form-style.scss";
 
 #app {
   // font-family: Avenir, Helvetica, Arial, sans-serif;

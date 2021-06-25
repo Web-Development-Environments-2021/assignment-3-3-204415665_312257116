@@ -14,7 +14,7 @@
 <script>
 
 export default {
-    name: "eventLogPreview",
+    name: "EventLogPreview",
 
     props: {
         eventID: {

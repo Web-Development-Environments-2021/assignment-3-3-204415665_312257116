@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: "currentStageMatches"
+    name: "CurrentStageMatches"
 }
 </script>
 

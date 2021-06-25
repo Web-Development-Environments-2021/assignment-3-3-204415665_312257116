@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: "teamFullDetailsByID"
+    name: "TeamFullDetailsByID"
 }
 </script>
 

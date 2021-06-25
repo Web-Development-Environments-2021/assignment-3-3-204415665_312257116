@@ -105,7 +105,7 @@
 <script>
 
 export default {
-    name: "leagueManagement",
+    name: "LeagueManagement",
 
     data(){
         return {

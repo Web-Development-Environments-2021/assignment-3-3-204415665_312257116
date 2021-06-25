@@ -11,15 +11,15 @@
       <li> Local team score: {{ localTeamScore }}</li>
       <li> Visitor team score: {{ visitorTeamScore }}</li>
       <li> Referee Information:
-        <RefereeInformation v-if="hasRefereeInfo"
+        <referee-information v-if="hasRefereeInfo"
           :refereeID="refereeInformation.refereeID"
           :firstname="refereeInformation.firstname"
           :lastname="refereeInformation.lastname"
           :course="refereeInformation.course">
-        </RefereeInformation>
+        </referee-information>
       </li>
       <li> Events log: 
-        <EventLogPreview
+        <event-log-preview
           v-for="event in eventsLog"
           :eventID="event.eventID" 
           :eventTimeAndDate="event.eventTimeAndDate" 
@@ -27,7 +27,7 @@
           :eventType="event.eventType"
           :eventDescription="event.eventDescription" 
           :key="event.id">
-        </EventLogPreview>
+        </event-log-preview>
       </li>
     </ul>
   </div>
@@ -40,7 +40,7 @@ import RefereeInformation from "../RefereeInformation"
 import EventLogPreview from "../EventLogPreview"
 
 export default {
-    name: "pastMatchPreview",
+    name: "PastMatchPreview",
 
     components: {
       RefereeInformation,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FutureMatchPreview
+    <future-match-preview
       v-for="g in futureMatches"
       :matchID="g.matchID" 
       :matchDate="g.matchDate" 
@@ -9,7 +9,7 @@
       :venueName="g.venueName" 
       :refereeInformation="g.refereeInformation"
       :key="g.id">
-    </FutureMatchPreview>
+    </future-match-preview>
   </div>
 </template>
 

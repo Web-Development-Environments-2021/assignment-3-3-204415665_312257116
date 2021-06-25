@@ -14,7 +14,6 @@
                 {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
             </template>
-
             <template #row-details="row">
                 <b-card >
                     <b-table 
@@ -22,16 +21,6 @@
                         >
                     </b-table>
                 </b-card>
-<!--             <b-card>
-                    <b-row class="mb-2">
-                        <b-col sm="3" class="text-sm-right"><b>Referee ID:</b></b-col>
-                        <b-col>{{ row.item.refereeInformation.refereeID }}</b-col>
-                    </b-row>
-                    <b-row class="mb-2">
-                        <b-col sm="3" class="text-sm-right"><b>Is Active:</b></b-col>
-                        <b-col>{{ row.item.refereeInformation.refereeID }}</b-col>
-                    </b-row>
-                </b-card> -->
             </template>
             <template #table-busy>
                 <div class="text-center text-danger my-2">
@@ -126,17 +115,37 @@ export default {
             past_currentPage: 1,
             past_isBusy: true,
 
+            updateInterval: undefined,
+
         }
     },
 
     methods: {
         updateMatches(){
-            this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
-            this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
 
-            this.future_isBusy = false;
-            this.past_isBusy = false;
+            if ( JSON.parse(localStorage.getItem("leaguePastMatches")) != null ) {
 
+                if (  !( JSON.stringify( this.pastMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leaguePastMatches"))))){
+
+                    console.log("Updated Past");
+
+                    this.past_isBusy = true;
+                    this.pastMatches = [];
+                    this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
+                    // this.extractRefereesInformation(this.pastMatches, "past");
+                    this.past_isBusy = false;
+                }
+                if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
+                     
+                    console.log("Updated Future");
+                    this.future_isBusy = true;
+                    this.futureMatches = [];
+                    this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
+                    // this.extractRefereesInformation(this.futureMatches, "future");
+                    this.future_isBusy = false;
+                }
+            }
+          
         },
         async getMatchesOnLogin(){
             await this.$root.store.initDataForUnionAgent();
@@ -165,39 +174,9 @@ export default {
                     this.pastMatchesDisplay.push(match);
                 }
             })
-        },
-        extractEventsLogs(matches){
-
-            var matches_Copy = JSON.parse(JSON.stringify(matches));
-
-            matches_Copy.map( ( match ) => {
-                if ( match.eventsLog.length != 0 ){
-
-                    match = match.eventsLog.map( (eventLog) => {
-                        match.eventsLog.eventID = eventLog.eventID;
-                    })
-
-                    var eventsLog = match.eventsLog;
-
-                    match.refereeID = eventsLog.refereeID;
-                    match.firstname = eventsLog.firstname;
-                    match.lastname = eventsLog.lastname;
-                    match.course = eventsLog.course;
-
-                }
-                delete match.eventsLog;
-
-                if (futureOrPast == "future") {
-                    this.futureMatchesDisplay.push(match);
-                } else {
-                    this.pastMatchesDisplay.push(match);
-                }
-            })
         }
-
+        // TODO: Extract eventLog
     },
-
-    // TODO: Extract eventLog
 
     computed: {
         future_rows(){
@@ -208,21 +187,16 @@ export default {
         }
     },
     mounted(){
-        this.future_isBusy = true;
-        this.past_isBusy = true;
-
-        if ( JSON.parse(localStorage.getItem("leaguePastMatches")) != null ) {
-            
-            this.updateMatches();
-
-        } else {
-            this.getMatchesOnLogin();
-        }
-
-        this.extractRefereesInformation(this.futureMatches, "future");
-        this.extractRefereesInformation(this.pastMatches, "past");
-
+        
+        this.updateInterval = setInterval( this.updateMatches, 100 );
         console.log("UA - League management page Mounted");
+
+    },
+    beforeDestroy(){
+
+        clearInterval(this.updateMatches);
+        console.log("UA - League management page Destroyed");
+
     }
 }
 

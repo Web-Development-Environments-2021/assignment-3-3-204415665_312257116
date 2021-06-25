@@ -111,9 +111,10 @@ export default {
         
         if ( this.form.username == "daniMoshe" ){
 
-          this.$router.push("/unionAgent/leagueManagement");
+          this.$root.store.initDataForUnionAgent();
 
-        } else {
+        } 
+        if ( this.$route.path != "/" ) {
           this.$router.push("/").then();
           location.reload();
         }

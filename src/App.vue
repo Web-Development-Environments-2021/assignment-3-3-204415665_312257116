@@ -4,9 +4,10 @@
       <b-navbar-brand :to="{ name: 'main' }">Kroos Control</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <!------- LoginUserPages ------->
+          <!------- AllUserPages ------->
           <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
-
+          <b-nav-item :to="{ name: 'About' }">About</b-nav-item>
+          
           <!------- unionAgentPages ------->
           <b-navbar-nav class="ml-auto" v-if="$root.store.username == 'daniMoshe'">
             <b-nav-item :to="{name: 'leagueManagement' }">League management</b-nav-item>

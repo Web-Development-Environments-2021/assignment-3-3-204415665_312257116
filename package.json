@@ -5,7 +5,6 @@
   "scripts": {
     "serve_project": "vue-cli-service serve src/main.js",
     "build_project": "vue-cli-service build src/main.js"
-    
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -14,7 +13,7 @@
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
-    "vue-router": "^3.5.1",
+    "vue-router": "^3.5.2",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {

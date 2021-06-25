@@ -1,5 +1,6 @@
 <template>
   <div id="navigatorbar">
+    <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand :to="{ name: 'main' }">Kroos Control</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
@@ -31,6 +32,9 @@
         </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
+    </b-navbar>
+  <!-- <UrlNavigator @Logout="Logout" /> -->
+  <!-- <br /> -->
   </div>
 </template>
 

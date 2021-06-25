@@ -1,13 +1,12 @@
 <template>
   <div id="app">
-    <!-- <head>
-      <meta charset="utf-8">
-    </head> -->
-
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <NavigatorBar @Logout="Logout" />
+
     </b-navbar>
-      <router-view />
+    <NavigatorBar @Logout="Logout" />
+    <router-view />
+
+  <!-- <br /> -->
   </div>
 </template>
 
@@ -41,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/scss/form-style.scss";
+@import "@/scss/form-style.scss";
 
 #app {
   // font-family: Avenir, Helvetica, Arial, sans-serif;

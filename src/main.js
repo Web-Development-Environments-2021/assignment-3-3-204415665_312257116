@@ -95,6 +95,9 @@ const shared_data = {
 
     if ( this.username == "daniMoshe" ){
       localStorage.removeItem("unionAgentLogged");
+      localStorage.removeItem("leagueFutureMatches");
+      localStorage.removeItem("leaguePastMatches");
+
     }
     this.username = undefined;
   },
@@ -107,6 +110,7 @@ const shared_data = {
       const responseFromLeagueMatches = await this.getLeagueMatches();
       localStorage.setItem("leagueFutureMatches", JSON.stringify(responseFromLeagueMatches.featureMatches));
       localStorage.setItem("leaguePastMatches", JSON.stringify(responseFromLeagueMatches.pastMatches));
+      console.log("done - Init Data From Union Agent");
 
     }catch ( error ){
       // TODO: What to do We The Error ???

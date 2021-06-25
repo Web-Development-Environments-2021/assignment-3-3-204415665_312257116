@@ -111,15 +111,12 @@ export default {
         
         if ( this.form.username == "daniMoshe" ){
 
-          await this.$root.store.initDataForUnionAgent();
-
           this.$router.push("/unionAgent/leagueManagement");
 
         } else {
           this.$router.push("/").then();
           location.reload();
         }
-
         
       } catch (err) {
         // console.log(response);

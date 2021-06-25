@@ -24,7 +24,10 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  PaginationPlugin,
+  TablePlugin,
+  SpinnerPlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -37,7 +40,10 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  PaginationPlugin,
+  TablePlugin,
+  SpinnerPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -69,6 +75,7 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
+
   username: localStorage?.username,
   serverUrl: "http://localhost:3000/",
 
@@ -76,15 +83,55 @@ const shared_data = {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
+
+    if ( username == "daniMoshe" ){
+      localStorage.setItem("unionAgentLogged", JSON.stringify(true));
+    }
   },
 
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+
+    if ( this.username == "daniMoshe" ){
+      localStorage.removeItem("unionAgentLogged");
+    }
     this.username = undefined;
+  },
+
+
+  //* ------------------------------ UnionAgent ------------------------------ *//
+
+  async initDataForUnionAgent(){
+    try{
+      const responseFromLeagueMatches = await this.getLeagueMatches();
+      localStorage.setItem("leagueFutureMatches", JSON.stringify(responseFromLeagueMatches.featureMatches));
+      localStorage.setItem("leaguePastMatches", JSON.stringify(responseFromLeagueMatches.pastMatches));
+
+    }catch ( error ){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+  async getLeagueMatches(){
+    try{
+        axios.withCredentials = true;
+        const response = await axios.get(
+            this.serverUrl + "unionAgent/leagueManagementPage"
+        );
+        
+        axios.withCredentials = false;
+        
+        return response.data;
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
   }
-  
 };
+
+
+
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 

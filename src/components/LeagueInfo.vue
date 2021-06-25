@@ -19,13 +19,15 @@
 
 <script>
 export default {
- data() {
-    return {
-      leagueName: "superliga", 
-      season: "season", 
-      stage: "stage"
-    };
-  },
+  name: "LeagueInfo",
+  
+  data() {
+      return {
+        leagueName: "superliga", 
+        season: "season", 
+        stage: "stage"
+      };
+    },
 }
 </script>
 

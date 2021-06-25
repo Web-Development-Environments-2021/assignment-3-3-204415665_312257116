@@ -102,14 +102,22 @@ export default {
           }
 
         );
-        this.axios.defaults.withCredentials = false;
+        // this.axios.defaults.withCredentials = false;
         console.log(response);
         // this.$root.loggedIn = true;
         // console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
-        this.$router.push("/").then();
-        location.reload();
-        this.$root.toast("Login", "User logged in successfully", "success");
+
+        
+        if ( this.form.username == "daniMoshe" ){
+
+          this.$router.push("/unionAgent/leagueManagement");
+
+        } else {
+          this.$router.push("/").then();
+          location.reload();
+        }
+        
       } catch (err) {
         // console.log(response);
         this.form.submitError = err?.response.data.message;
@@ -117,7 +125,7 @@ export default {
 
       }
     },
-    onLogin() {
+    async onLogin() {
       // console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
@@ -126,7 +134,7 @@ export default {
       }
       // console.log("login method go");
 
-      this.Login();
+      await this.Login();
     }
   }
 };

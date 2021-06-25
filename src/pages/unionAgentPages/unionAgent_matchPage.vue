@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: "match"
+    name: "Match"
 }
 </script>
 

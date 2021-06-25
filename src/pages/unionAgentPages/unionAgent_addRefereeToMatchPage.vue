@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: "addRefereeToMatch"
+    name: "AddRefereeToMatch"
 }
 </script>
 

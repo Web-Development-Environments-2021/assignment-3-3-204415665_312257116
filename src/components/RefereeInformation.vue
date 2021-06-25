@@ -12,7 +12,7 @@
 
 <script>
 export default {
-    name: "refereeInformation",
+    name: "RefereeInformation",
 
     props: {
         refereeID: {

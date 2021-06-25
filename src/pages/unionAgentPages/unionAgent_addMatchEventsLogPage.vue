@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: "addMatchEventsLog"
+    name: "AddMatchEventsLog"
 }
 </script>
 

@@ -14,11 +14,12 @@
 
 <script>
 export default {
- data() {
-    return {
-      searchQuery:""
-    };
-  },
+  name: "SearchPage",
+  data() {
+      return {
+        searchQuery:""
+      };
+    },
 }
 </script>
 

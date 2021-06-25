@@ -9,12 +9,12 @@
       <li> Visitor team: {{ visitorTeamName }}</li>
       <li> Venue: {{ venueName }}</li>
       <li> Referee Information:
-        <RefereeInformation v-if="hasRefereeInfo"
+        <referee-information v-if="hasRefereeInfo"
           :refereeID="refereeInformation.refereeID"
           :firstname="refereeInformation.firstname"
           :lastname="refereeInformation.lastname"
           :course="refereeInformation.course">
-        </RefereeInformation>
+        </referee-information>
       </li>
     </ul>
   </div>
@@ -25,7 +25,7 @@
 import RefereeInformation from "../RefereeInformation";
 
 export default {
-  name: "futureMatchPreview",
+  name: "FutureMatchPreview",
   components: {
     RefereeInformation
   },
@@ -69,8 +69,8 @@ export default {
 <style>
 .future-match-preview {
   display: inline-block;
-  width: 250px;
-  height: 200px;
+  /* width: 250px; */
+  /* height: 200px; */
   position: relative;
   margin: 10px 10px;
   border-style: solid;

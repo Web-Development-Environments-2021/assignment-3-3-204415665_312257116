@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="info">
 
-    </b-navbar>
     <NavigatorBar @Logout="Logout" />
     <router-view />
 
@@ -42,12 +40,14 @@ export default {
 <style lang="scss">
 @import "@/scss/form-style.scss";
 
+
 #app {
-  // font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #000000;
   min-height: 100vh;
+  background-color: rgb(249, 253, 255);
 }
 
 #nav {
@@ -59,7 +59,12 @@ export default {
   color: #2c3e50;
 }
 
+#nav em {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #3cb981;
 }
 </style>

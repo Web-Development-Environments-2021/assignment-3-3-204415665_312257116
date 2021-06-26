@@ -3,7 +3,7 @@
     <div>
         <h2 class="match-headline"> Future Matches </h2>
         <b-table class="future-matches-table"
-            :items="futureMatches"
+            :items="displayFutureMatches"
             :per-page="future_perPage"
             :current-page="future_currentPage"
             :busy="future_isBusy"
@@ -11,16 +11,11 @@
             :fields="fieldsFuture">
             <template #cell(refereeInformation)="row">
                 <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-                {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+                    {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
             </template>
             <template #row-details="row">
-                <b-card >
-                    <b-table 
-                        :items="[row.item.refereeInformation]"
-                        >
-                    </b-table>
-                </b-card>
+                    <referee-preview :refereeInfo="row.item.refereeInformation"></referee-preview>
             </template>
             <template #table-busy>
                 <div class="text-center text-danger my-2">
@@ -39,40 +34,73 @@
     <div>
         <h2 class="match-headline"> Past Matches </h2>
         <b-table class="past-matches-table"
-            :items="pastMatches"
+            :items="displayPastMatches"
             :per-page="past_perPage"
             :current-page="past_currentPage"
             :busy="past_isBusy"
             small
             :fields="fieldsPast">
-            <!-- <template #cell(refereeInformation)="rowReferee">
-                <b-button size="sm" @click="rowReferee.toggleDetails" class="mr-2">
-                {{ rowReferee.detailsShowing ? 'Hide' : 'Show'}} Details
+
+            <!-- <template #cell(refereeInformation)="refereeRow">
+                <b-button size="sm" @click="toggleRowDetails(refereeRow,'refereeInformation')" class="mr-2">
+                {{ refereeRow.item.refereeInformation._showDetails ? 'Hide' : 'Show'}} Details
+                </b-button>
+            </template>
+            <template #cell(eventsLog)="rowEventsLog">
+                <b-button size="sm" @click="toggleRowDetails(rowEventsLog,'eventsLog')" class="mr-2">
+                {{ rowEventsLog.item.eventsLog._showDetails ? 'Hide' : 'Show'}} Details
                 </b-button>
             </template>
 
-            <template #row-details="rowReferee">
+            <template v-if="refereeRow.item.refereeInformation._showDetails" #row-details="refereeRow" >
                 <b-card >
                     <b-table 
-                        :items="[rowReferee.item.refereeInformation]"
+                        :items="[refereeRow.item.refereeInformation]"
                         >
                     </b-table>
                 </b-card>
+            </template>
+            <template v-else-if="refereeRow.item.eventsLog._showDetails" #row-details="rowEventsLog">
+                <b-card >
+                    <b-table 
+                        :items="rowEventsLog.item.eventsLog">
+                    </b-table>
+                </b-card>
             </template> -->
-            <template #cell(eventsLog)="rowEventsLog">
-                <b-button size="sm" @click="rowEventsLog.toggleDetails" class="mr-2">
-                {{ rowEventsLog.detailsShowing ? 'Hide' : 'Show'}} Details
+
+            <template #cell(refereeInformation)="{ item, value }">
+                <b-button size="sm" @click="toggleRowDetails(item, value, 'referee')" class="mr-2">
+                {{ value.showDetails ? 'Hide' : 'Show'}} Details
+                </b-button>
+            </template>
+            <template #cell(eventsLog)="{ item, value }">
+                <b-button size="sm" @click="toggleRowDetails(item, value,'event')" class="mr-2">
+                {{ value.showDetails ? 'Hide' : 'Show'}} Details
                 </b-button>
             </template>
 
-            <template #row-details="rowEventsLog">
+            <template #row-details="item">
+                <b-card v-if="item.item.refereeInformation.showDetails">
+                    <b-table 
+                        :items="[item.item.refereeInformation]">
+                    </b-table>
+                </b-card>
+                <b-card v-else-if="item.item.eventsLog.showDetails">
+                    <b-table 
+                        :items="item.item.eventsLog">
+                    </b-table>
+                </b-card>
+            </template>
+
+
+            <!-- <template #row-details="rowEventsLog">
                 <b-card >
                     <b-table 
                         :items="rowEventsLog.item.eventsLog"
                         >
                     </b-table>
                 </b-card>
-            </template>
+            </template> -->
             <template #table-busy>
                 <div class="text-center text-danger my-2">
                     <b-spinner class="align-middle"></b-spinner>
@@ -93,30 +121,39 @@
 
 <script>
 
+import RefereePreview from "../../components/unionAgent/unionAgent_RefereePreview.vue";
+
 export default {
     name: "LeagueManagement",
 
+    components: {
+        RefereePreview
+    },
+
     data(){
+        
         return {
-            pastMatches: [],
+
             futureMatches: [],
+            pastMatches: [],
+            updateInterval: undefined,
 
-            pastMatchesDisplay: [],
-            futureMatchesDisplay: [],
+            displayFutureMatches: [],
+            displayPastMatches: [],
 
-            fieldsPast: ["matchID", "matchDate", "localTeamName", "visitorTeamName", "refereeInformation", "eventsLog"],
             fieldsFuture: ["matchID", "matchDate", "localTeamName", "visitorTeamName", "refereeInformation"], // TODO: Get Keys
+            fieldsPast: ["matchID", "matchDate", "localTeamName", "visitorTeamName", "refereeInformation", "eventsLog"],
 
             future_perPage: 5,
             future_currentPage: 1,
             future_isBusy: true,
+            future_rows: undefined,
 
             past_perPage: 5,
             past_currentPage: 1,
             past_isBusy: true,
-
-            updateInterval: undefined,
-
+            past_rows: undefined,
+            
         }
     },
 
@@ -134,6 +171,10 @@ export default {
                     this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
                     // this.extractRefereesInformation(this.pastMatches, "past");
                     this.past_isBusy = false;
+
+                    this.displayPastMatches = JSON.parse(JSON.stringify(this.pastMatches));
+                    this.past_rows = this.pastMatches.length;
+
                 }
                 if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
                      
@@ -143,13 +184,13 @@ export default {
                     this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
                     // this.extractRefereesInformation(this.futureMatches, "future");
                     this.future_isBusy = false;
+
+                    this.displayFutureMatches = JSON.parse(JSON.stringify(this.futureMatches));
+                    this.future_rows = this.futureMatches.length;
+
                 }
             }
           
-        },
-        async getMatchesOnLogin(){
-            await this.$root.store.initDataForUnionAgent();
-            this.updateMatches();
         },
         extractRefereesInformation(matches, futureOrPast){
 
@@ -174,18 +215,13 @@ export default {
                     this.pastMatchesDisplay.push(match);
                 }
             })
+        },
+        toggleRowDetails(item, value, refereeOrEvent) {
+        this.$set(value, 'showDetails', !value.showDetails);
+        this.$set(item, '_showDetails', !item._showDetails);
         }
-        // TODO: Extract eventLog
     },
 
-    computed: {
-        future_rows(){
-            return this.futureMatches.length;
-        },
-        past_rows(){
-            return this.pastMatches.length;
-        }
-    },
     mounted(){
         
         this.updateInterval = setInterval( this.updateMatches, 100 );
@@ -197,7 +233,8 @@ export default {
         clearInterval(this.updateMatches);
         console.log("UA - League management page Destroyed");
 
-    }
+    },
+
 }
 
 </script>

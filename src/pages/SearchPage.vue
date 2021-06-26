@@ -90,12 +90,12 @@
 
         </b-form-group>
     </div>
-      <div class="mt-3">search Query: <strong>{{ form.searchQuery }}</strong></div>
+      <!-- <div class="mt-3">search Query: <strong>{{ form.searchQuery }}</strong></div>
       <div class="mt-3">searchType: <strong>{{ form.searchType }}</strong></div>
       <div class="mt-3">sortTeamsAlphabetical: <strong>{{ form.sortTeamsAlphabetical }}</strong></div>
       <div class="mt-3">sortPlayers: <strong>{{ form.sortPlayers }}</strong></div>
       <div class="mt-3">sortPlayersBy: <strong>{{ form.sortPlayersBy }}</strong></div>
-      <div class="mt-3">filter_Players: <strong>{{ form.filter_Players }}</strong></div>
+      <div class="mt-3">filter_Players: <strong>{{ form.filter_Players }}</strong></div> -->
       
 
 

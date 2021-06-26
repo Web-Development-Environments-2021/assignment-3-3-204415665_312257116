@@ -14,9 +14,11 @@ import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {
+  AvatarPlugin,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
+  FormRadioPlugin,
   ButtonPlugin,
   CardPlugin,
   NavbarPlugin,
@@ -30,9 +32,11 @@ import {
   SpinnerPlugin
 } from "bootstrap-vue";
 [
+  AvatarPlugin,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
+  FormRadioPlugin,
   ButtonPlugin,
   CardPlugin,
   NavbarPlugin,

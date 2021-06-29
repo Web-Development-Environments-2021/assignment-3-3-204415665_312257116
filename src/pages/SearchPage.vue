@@ -50,60 +50,64 @@
     </div>
 
     <div>
-        <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
-        Sort players :
-        <br>
-        <b-form-radio-group
-            id="input-group-sortPlayers"
-            v-model="form.sortPlayers"
-            :options="form.sortPlayersOptions"
-            :aria-describedby="ariaDescribedby"
-            name="radios-btn-default"
-            buttons
-        ></b-form-radio-group>
-        <br>
-        Sort players by:
-        <br>
-        <b-form-radio-group
-            id="input-group-sortPlayersBy"
-            v-model="form.sortPlayersBy"
-            :options="form.sortPlayersByOptions"
-            :aria-describedby="ariaDescribedby"
-            name="radios-btn-default"
-            buttons
-        ></b-form-radio-group>
-        <br>
-        Filter players by:
-        <b-form-group
-        id="input-group-filter_Players"
-        label-cols-sm="3"
-        label-for="filter_Players"
-
+      <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
+      Sort players :
+      <br>
+      <b-form-radio-group
+          id="input-group-sortPlayers"
+          v-model="form.sortPlayers"
+          :options="form.sortPlayersOptions"
+          :aria-describedby="ariaDescribedby"
+          name="radios-btn-default"
+          buttons
+      ></b-form-radio-group>
+      <br>
+      Sort players by:
+      <br>
+      <b-form-radio-group
+          id="input-group-sortPlayersBy"
+          v-model="form.sortPlayersBy"
+          :options="form.sortPlayersByOptions"
+          :aria-describedby="ariaDescribedby"
+          name="radios-btn-default"
+          buttons
+      ></b-form-radio-group>
+      <br>
+      Filter players by:
+      <b-form-group
+      id="input-group-filter_Players"
+      label-cols-sm="3"
+      label-for="filter_Players"
       >
-        <b-form-input
+      <b-form-input
           id="filter_Players"
-          v-model="form.filter_Players"
-          
+          v-model="form.filter_Players" 
           type="text"
-        ></b-form-input>
-        </b-form-group>
-
-        </b-form-group>
-    </div>
+      ></b-form-input>
+      </b-form-group>
+      </b-form-group>
+      </div>
       <!-- <div class="mt-3">search Query: <strong>{{ form.searchQuery }}</strong></div>
       <div class="mt-3">searchType: <strong>{{ form.searchType }}</strong></div>
       <div class="mt-3">sortTeamsAlphabetical: <strong>{{ form.sortTeamsAlphabetical }}</strong></div>
       <div class="mt-3">sortPlayers: <strong>{{ form.sortPlayers }}</strong></div>
       <div class="mt-3">sortPlayersBy: <strong>{{ form.sortPlayersBy }}</strong></div>
       <div class="mt-3">filter_Players: <strong>{{ form.filter_Players }}</strong></div> -->
-      
-
-
-          <br><br>
+        <div v-if="form.searchType == 'Players'">
+          <div v-for="res in this.results" v-bind:key="res.playerID">
+                <a>search Query:{{res.playerID}}</a>
+          </div>
+      </div>
+      <div v-else-if="form.searchType == 'Teams'">
+          <div v-for="res in this.results" v-bind:key="res.teamName">
+                <a>search Query:</a>
+          </div>
+      </div>
+      <br><br>
       </b-form>
-    </div>
-      
 
+
+    </div>
   </div>
 </template>
 
@@ -140,9 +144,9 @@ export default {
           { text: 'team name', value: 'team name' },
         ],
         filter_Players:"",
-        res: [],
+        },
+        results: [],
         submitError: undefined
-        }
       };
     },
     validations: {
@@ -168,7 +172,7 @@ export default {
       }
     
     }
-  },
+  // },
   // mounted() {
   //   console.log("sessionStorage is : ", sessionStorage.getItem("lastQuery"));
   //   console.log("sessionStorage is : ", sessionStorage.getItem("lastResults"));
@@ -177,7 +181,7 @@ export default {
   //     this.form.searchQuery = sessionStorage.getItem("lastQuery");
   //     this.res = JSON.parse(sessionStorage.getItem("lastResults"));
   //   }
-  // },
+  },
   methods: {
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
@@ -185,62 +189,80 @@ export default {
     },
     async Search() {
       try {
-        let response;
-        // let queryParams ={};
-        let query = "";
-        query = this.form.searchQuery+ `?Search_Type=${this.form.searchType}`;
-        
+        let params ={};
+
+        // let query = "";
+        // query = this.form.searchQuery+ `?Search_Type=${this.form.searchType}`;
+        // params.searchQuery = this.form.searchQuery;
+        params.Search_Type= this.form.searchType;
+
         if(this.form.sortTeamsAlphabetical!=""){
-          query+=`&Sort_Teams_Alphabetical=${this.form.sortTeamsAlphabetical}`;
+          // query+=`&sortTeamsAlphabetical=${this.form.sortTeamsAlphabetical}`;
+          params.Sort_Teams_Alphabetical= this.form.sortTeamsAlphabetical;
         }
         if(this.form.sortPlayers!=""){
-          query+=`&Sort_Players=${this.form.sortPlayers}`;
+          // query+=`&Sort_Players=${this.form.sortPlayers}`;
+          params.Sort_Players= this.form.sortPlayers;
         }
         if(this.form.sortPlayersBy!=""){
-          query+=`&Sort_Players_By=${this.form.sortPlayersBy}`;
+          // query+=`&Sort_Players_By=${this.form.sortPlayersBy}`;
+          params.Sort_Players_By= this.form.sortPlayersBy;
+
         }
         if(this.form.filter_Players!=""){
-          query+=`&Filter_Players=${this.form.filter_Players}`;
+          // query+=`&Filter_Players=${this.form.filter_Players}`;
+          params.Filter_Players= this.form.filter_Players;
         }
+
         this.axios.defaults.withCredentials = true;
-        response = await this.axios.get(
-          this.$root.store.serverUrl + "league/search/" +query,
-          {
-           
-            searchQuery:this.form.searchQuery,
-            searchType: this.form.searchType,
-            sortTeamsAlphabetical: this.form.sortTeamsAlphabetical,
-            sortPlayers: this.form.sortPlayers,
-            sortPlayersBy: this.form.sortPlayersBy,
-            filter_Players: this.form.filter_Players,
-          }
+        const response = await this.axios.get(
+          this.$root.store.serverUrl + "league/search/" + this.form.searchQuery, {params:params}
+          // ,{
+          //   params:
+          //   {
+          //    searchQuery:this.form.searchQuery,
+          //    searchType: this.form.searchType,
+          //    sortTeamsAlphabetical: this.form.sortTeamsAlphabetical,
+          //    sortPlayers: this.form.sortPlayers,
+          //    sortPlayersBy: this.form.sortPlayersBy,
+          //    filter_Players: this.form.filter_Players
+          //   }
+          // }
         );
         this.axios.defaults.withCredentials = false;
         console.log(response);
-        if(response.status!=200) this.$router.push("*");
-        else this.res.push(...response.data);
-        // console.log("save to lastQuery this value: ", this.form.query);
-        // sessionStorage.setItem("lastQuery", this.form.query);
-        // console.log("save to lastResults this value: ", this.results);
-        // sessionStorage.setItem("lastResults", JSON.stringify(this.results));
+        console.log(response.data);
 
-        // console.log(response.data);
+
+        if(response.status==404){
+          this.$router.push("*");
+        } 
+        else {
+          this.results.push(...response.data.players);
+        }
+
+        console.log("save to lastSearchQuery");
+        sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
+        console.log("save to lastSearchResults");
+        sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
+
+        // console.log(results);
         // this.$router.push("/login");
         // console.log(response);
       } catch (err) {
         console.log(err.response);
-        this.form.submitError = err.response.data.message;
+        this.form.submitError = err.response?.data.message;
       }
     },
     async onSearch() {
       // console.log("login method called");
+      this.results=[],
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
       // console.log("login method go");
-
       await this.Search();
     },
     onReset() {
@@ -252,6 +274,7 @@ export default {
         sortPlayersBy: "",
         filter_Players: "",
       };
+      this.results=[],
       this.$nextTick(() => {
         this.$v.$reset();
       });

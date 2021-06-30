@@ -13,6 +13,7 @@
             bordered
             outlined
             head-variant="light"
+            table-variant="light"
             sort-icon-left
             >
             <template #head(matchScore) > 

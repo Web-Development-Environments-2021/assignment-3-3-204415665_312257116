@@ -1,43 +1,38 @@
 
-<template>
+<template class = "search">
   <div>
     <div>
-      <h1 class="title">Search Page</h1>
-      <b-form @submit.prevent="onSearch" @reset.prevent="onReset">   
+      <b-form @submit.prevent="onSearch" @reset.prevent="onReset"> 
+          <h1 class="title">Search Page</h1>
           <b-input-group 
-            prepend="Search Query:" 
             id="search-input"
             label-cols-sm="3"
             label="searchQuery:"
             label-for="searchQuery"
+            class="mt-3"
             >
             <b-form-input
             type="text"
             v-model="form.searchQuery"
-            ></b-form-input>
-          </b-input-group>
-          <b-button type="submit"
-          variant="success"
-          class="ml-5 w-7"
-          >Search</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button> 
-    <div>
-        <b-form-group label="Search by" v-slot="{ ariaDescribedby }">
-        <b-form-radio-group
-            id="input-group-searchType"
-            v-model="form.searchType"
-            :options="form.searchTypeOptions"
-            :aria-describedby="ariaDescribedby"
-            name="radios-btn-default"
-            buttons
-        ></b-form-radio-group>
-        </b-form-group>
-    </div>
+            >  
+            </b-form-input>
+            <b-input-group-append>
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio-group
+                    id="input-group-searchType"
+                    v-model="form.searchType"
+                    :options="form.searchTypeOptions"
+                    :aria-describedby="ariaDescribedby"
+                    name="radios-btn-default"
+                    buttons
+                ></b-form-radio-group>
+                
+              </b-form-group>
 
-    <div>
-        <b-form-group v-if="form.searchType == 'Teams'" v-slot="{ ariaDescribedby }">
-        Sort teams:
-        <br>
+            </b-input-group-append>
+          </b-input-group>
+
+      <b-form-group v-if="form.searchType == 'Teams'" v-slot="{ ariaDescribedby }">
         <b-form-radio-group
             id="input-group-sortTeamsAlphabetical"
             v-model="form.sortTeamsAlphabetical"
@@ -46,67 +41,70 @@
             name="radios-btn-default"
             buttons
         ></b-form-radio-group>
-        </b-form-group>
-    </div>
+      </b-form-group>
 
-    <div>
+      <!-- if searchType is Players -->
       <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
-      Sort players :
-      <br>
-      <b-form-radio-group
-          id="input-group-sortPlayers"
-          v-model="form.sortPlayers"
-          :options="form.sortPlayersOptions"
-          :aria-describedby="ariaDescribedby"
-          name="radios-btn-default"
-          buttons
-      ></b-form-radio-group>
-      <br>
-      Sort players by:
-      <br>
-      <b-form-radio-group
-          id="input-group-sortPlayersBy"
-          v-model="form.sortPlayersBy"
-          :options="form.sortPlayersByOptions"
-          :aria-describedby="ariaDescribedby"
-          name="radios-btn-default"
-          buttons
-      ></b-form-radio-group>
-      <br>
-      Filter players by:
-      <b-form-group
-      id="input-group-filter_Players"
-      label-cols-sm="3"
-      label-for="filter_Players"
-      >
-      <b-form-input
-          id="filter_Players"
-          v-model="form.filter_Players" 
-          type="text"
-      ></b-form-input>
+        <b-input-group>
+          <b-input-group-append>
+            <b-form-radio-group
+                id="input-group-sortPlayers"
+                v-model="form.sortPlayers"
+                :options="form.sortPlayersOptions"
+                :aria-describedby="ariaDescribedby"
+                name="radios-btn-default"
+                buttons>
+            </b-form-radio-group>
+          </b-input-group-append>
+        </b-input-group>
+
+        <b-form-radio-group
+            id="input-group-sortPlayersBy"
+            v-model="form.sortPlayersBy"
+            :options="form.sortPlayersByOptions"
+            :aria-describedby="ariaDescribedby"
+            name="radios-btn-default"
+            buttons
+        ></b-form-radio-group>
+        <b-input-group
+        id="input-group-filter_Players"
+        label-for="filter_Players"
+        prepend=" Filter players by:" 
+        >
+        <b-form-input
+            id="filter_Players"
+            v-model="form.filter_Players" 
+            type="text"
+        ></b-form-input>
+          <b-input-group-append>
+            <b-button id="popover-target-i" style="width: 10px;">i</b-button>
+          </b-input-group-append>
+        </b-input-group>
+
+        <b-popover target="popover-target-i" triggers="hover" placement="top">
+          <template #title>information</template>
+          Enter a number to filter by player position
+          or enter a player team name
+        </b-popover>
       </b-form-group>
-      </b-form-group>
-      </div>
-      <!-- <div class="mt-3">search Query: <strong>{{ form.searchQuery }}</strong></div>
-      <div class="mt-3">searchType: <strong>{{ form.searchType }}</strong></div>
-      <div class="mt-3">sortTeamsAlphabetical: <strong>{{ form.sortTeamsAlphabetical }}</strong></div>
-      <div class="mt-3">sortPlayers: <strong>{{ form.sortPlayers }}</strong></div>
-      <div class="mt-3">sortPlayersBy: <strong>{{ form.sortPlayersBy }}</strong></div>
-      <div class="mt-3">filter_Players: <strong>{{ form.filter_Players }}</strong></div> -->
-        <div v-if="form.searchType == 'Players'">
-          <div v-for="res in this.results" v-bind:key="res.playerID">
-                <a>search Query:{{res.playerID}}</a>
-          </div>
-      </div>
-      <div v-else-if="form.searchType == 'Teams'">
-          <div v-for="res in this.results" v-bind:key="res.teamName">
+
+      <!-- buttons - submit and reset-->
+      <b-button id="submit-b" type="submit" variant="success">Search</b-button>
+      <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
+
+      <div v-if="form.searchType == 'Players'">
+        
+          <b-container class="bv-example-row" v-for="res in this.results" v-bind:key="res.playerID">
+              <PlayersInformation :player="res"/>
+          </b-container >
+        </div>
+
+        <div v-else-if="form.searchType == 'Teams'">
+            <div v-for="res in this.results" v-bind:key="res.teamName">
                 <a>search Query:</a>
-          </div>
-      </div>
-      <br><br>
-      </b-form>
-
-
+            </div>
+        </div>
+    </b-form>
     </div>
   </div>
 </template>
@@ -116,8 +114,14 @@ import {
   required,
   minLength
 } from "vuelidate/lib/validators";
+import PlayersInformation from "../components/PlayersSearchPreview.vue"
 
 export default {
+  
+  components:{
+    PlayersInformation
+    
+  },
   name: "SearchPage",
   data() {
       return {
@@ -172,15 +176,15 @@ export default {
       }
     
     }
-  // },
-  // mounted() {
-  //   console.log("sessionStorage is : ", sessionStorage.getItem("lastQuery"));
-  //   console.log("sessionStorage is : ", sessionStorage.getItem("lastResults"));
-  //   if (sessionStorage.getItem("lastQuery") != null) {
-  //     console.log("got inside the load previous search");
-  //     this.form.searchQuery = sessionStorage.getItem("lastQuery");
-  //     this.res = JSON.parse(sessionStorage.getItem("lastResults"));
-  //   }
+  },
+  mounted() {
+    console.log("sessionStorage is : ", sessionStorage.getItem("lastSearchQuery"));
+    console.log("sessionStorage is : ", sessionStorage.getItem("lastSearchResults"));
+    if (sessionStorage.getItem("lastSearchQuery") != null) {
+      console.log("got inside the load previous search");
+      this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
+      this.res = JSON.parse(sessionStorage.getItem("lastSearchResults"));
+    }
   },
   methods: {
     validateState(param) {
@@ -190,44 +194,25 @@ export default {
     async Search() {
       try {
         let params ={};
-
-        // let query = "";
-        // query = this.form.searchQuery+ `?Search_Type=${this.form.searchType}`;
-        // params.searchQuery = this.form.searchQuery;
         params.Search_Type= this.form.searchType;
 
         if(this.form.sortTeamsAlphabetical!=""){
-          // query+=`&sortTeamsAlphabetical=${this.form.sortTeamsAlphabetical}`;
           params.Sort_Teams_Alphabetical= this.form.sortTeamsAlphabetical;
         }
         if(this.form.sortPlayers!=""){
-          // query+=`&Sort_Players=${this.form.sortPlayers}`;
           params.Sort_Players= this.form.sortPlayers;
         }
         if(this.form.sortPlayersBy!=""){
-          // query+=`&Sort_Players_By=${this.form.sortPlayersBy}`;
           params.Sort_Players_By= this.form.sortPlayersBy;
 
         }
         if(this.form.filter_Players!=""){
-          // query+=`&Filter_Players=${this.form.filter_Players}`;
           params.Filter_Players= this.form.filter_Players;
         }
 
         this.axios.defaults.withCredentials = true;
         const response = await this.axios.get(
           this.$root.store.serverUrl + "league/search/" + this.form.searchQuery, {params:params}
-          // ,{
-          //   params:
-          //   {
-          //    searchQuery:this.form.searchQuery,
-          //    searchType: this.form.searchType,
-          //    sortTeamsAlphabetical: this.form.sortTeamsAlphabetical,
-          //    sortPlayers: this.form.sortPlayers,
-          //    sortPlayersBy: this.form.sortPlayersBy,
-          //    filter_Players: this.form.filter_Players
-          //   }
-          // }
         );
         this.axios.defaults.withCredentials = false;
         console.log(response);
@@ -246,9 +231,6 @@ export default {
         console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
 
-        // console.log(results);
-        // this.$router.push("/login");
-        // console.log(response);
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response?.data.message;
@@ -284,20 +266,79 @@ export default {
 </script>
 
 <style scoped>
-form,.title, .input-group {
+.title{
   margin: auto;
-  width: 60%;
+  width: 50%;
   padding: 10px;
   text-align: center;
-  /* border: 3px solid #73AD21; */
+  /* background: rgba(120, 122, 120, 0.3); */
+
 }
+form{
+  margin-top: 30px; 
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  background: rgba(120, 122, 120, 0.3); /* Green background with 30% opacity */
+    border-radius: 30px;
+
+  /* margin-top: 20px;  */
+}
+
 div {
 margin: auto;
 }
 
-button {
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+#submit-b {
   margin: 20px;
-  width:200px; 
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #464646;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 9px rgb(29, 29, 29);
+}
+#submit-b:hover {background-color: #008604}
+#submit-b:active {
+  background-color: #008604;
+  box-shadow: 0 5px rgb(0, 99, 16);
+  transform: translateY(4px);
+}
+
+#reset-b {
+  margin: 20px;
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #464646;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 9px rgb(29, 29, 29);
+}
+#reset-b:hover {background-color: #c40000}
+#reset-b:active {
+  background-color: #c40000;
+  box-shadow: 0 5px rgb(190, 25, 25);
+  transform: translateY(4px);
 }
 
 #search-input {
@@ -305,7 +346,19 @@ button {
   width: 700px; 
 }
 #input-group-filter_Players {
-  /* margin-left: 20px;  */
-  width: 300px; 
+  /* margin-left:px;  */
+  width: 320px; 
+  padding: 20px;
+}
+
+
+
+
+option{
+      /* background: rgb(25, 114, 25); Green background with 30% opacity */
+}
+
+#input-group-sortPlayers,#input-group-sortPlayersBy{
+  /* padding-inline: 20px; */
 }
 </style>

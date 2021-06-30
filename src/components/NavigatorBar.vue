@@ -35,7 +35,9 @@
         </b-nav-form> -->
         <b-nav-item-dropdown right>
           <template #button-content>
-            <em>Welcome {{ $root.store.username }}</em>
+            <em>Welcome {{ $root.store.username }}
+            <b-avatar variant="success" :text="$root.store.username.slice(0, 2)"></b-avatar>
+            </em>
 
           </template>
           <b-dropdown-item href="#" :to="{ name:'favoriteMatches' }">Favorites Matches</b-dropdown-item>
@@ -50,6 +52,8 @@
 <script>
 export default {
   name: "NavigatorBar",
+  data(){
+  },
   components:{
   
   },
@@ -70,7 +74,6 @@ nav a {
   font-weight: bold;
   color: #696969;
 }
-
 
 em {
   font-weight: bold;

@@ -1,8 +1,14 @@
 <template>
   <div id="navigatorbar">
+        <div class="upper"></div>
+
     <b-navbar toggleable="lg" type="dark" variant="dark">
+      
       <b-navbar-brand :to="{ name: 'main' }">Kroos Control</b-navbar-brand>
+      
       <b-collapse id="nav-collapse" is-nav>
+
+
         <b-navbar-nav>
           <!------- All User Pages ------->
           <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
@@ -40,8 +46,8 @@
             </em>
 
           </template>
-          <b-dropdown-item href="#" :to="{ name:'favoriteMatches' }">Favorites Matches</b-dropdown-item>
-          <b-dropdown-item href="#" @click="Logout()">Log Out</b-dropdown-item>
+          <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</b-dropdown-item>
+          <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -65,26 +71,40 @@ export default {
 };
 </script>
 
-<style>
-b nav {
-  padding: 30px;
-}
+<style lang="scss">
+  b nav {
+    padding: 30px;
+  }
 
-nav a {
-  font-weight: bold;
-  color: #696969;
-}
+  nav a {
+    font-weight: bold;
+    color: #696969;
+  }
 
-em {
-  font-weight: bold;
-  padding: 7.5px;
-  color: #ffffff;
-}
- .navbar.navbar-dark.bg-dark{
-    background-color: #0a2431!important;
- }
-nav a.router-link-exact-active {
-  color: #ffffff!important;
-}
-
+  em {
+    font-weight: bold;
+    padding: 7.5px;
+    color: #E0FBFC;
+  }
+  .navbar.navbar-dark.bg-dark{
+      background-color: #293241!important;
+  }
+  nav a.router-link-exact-active {
+    color: #e7b4a5!important;
+  }
+  .upper{
+    margin: auto;
+    padding: 3px;
+    text-align: center;
+    background: #ee6c4d;
+  }
+  .nav-dropdown-item{
+    text-align: center!important;
+    width: 200px;
+  }
+  .nav-icon{
+    position: absolute!important;
+    left: 10px!important;
+    
+  }
 </style>

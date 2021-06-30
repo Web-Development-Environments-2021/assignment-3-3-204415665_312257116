@@ -30,7 +30,8 @@ import {
   PaginationPlugin,
   TablePlugin,
   SpinnerPlugin,
-  PopoverPlugin 
+  PopoverPlugin ,
+  IconsPlugin
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -49,7 +50,8 @@ import {
   PaginationPlugin,
   TablePlugin,
   SpinnerPlugin,
-  PopoverPlugin 
+  PopoverPlugin ,
+  IconsPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

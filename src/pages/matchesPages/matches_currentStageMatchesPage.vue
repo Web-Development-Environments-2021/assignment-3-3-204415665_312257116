@@ -45,10 +45,9 @@ export default {
 </script>
 
 
-<style>
-  .container{
+<style scoped>
+  /* .container{
       background-color: lightsteelblue;
-      /* margin: 10px; */
       text-align: center;
       max-height: 100%;
       max-width: 80%;
@@ -62,5 +61,5 @@ export default {
       } 
   .col-8 {
       border-style: dotted; 
-      } 
+      }  */
 </style>

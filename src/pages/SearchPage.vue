@@ -1,6 +1,5 @@
 
 <template class = "search">
-  <div>
     <div>
       <b-form @submit.prevent="onSearch" @reset.prevent="onReset"> 
           <h1 class="title">Search Page</h1>
@@ -92,20 +91,22 @@
       <b-button id="submit-b" type="submit" variant="success">Search</b-button>
       <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
 
-      <div v-if="form.searchType == 'Players'">
-        
-          <b-container class="bv-example-row" v-for="res in this.results" v-bind:key="res.playerID">
-              <PlayersInformation :player="res"/>
-          </b-container >
+
+      </b-form>
+
+      <div>
+        <div v-if="form.searchType == 'Players'" class="container">
+            <div class="row">
+              <PlayersInformation v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
+            </div>
         </div>
 
         <div v-else-if="form.searchType == 'Teams'">
-            <div v-for="res in this.results" v-bind:key="res.teamName">
-                <a>search Query:</a>
-            </div>
+                <div v-for="res in this.results" v-bind:key="res.teamName">
+                    <a>search Query:</a>
+                </div>
         </div>
-    </b-form>
-    </div>
+      </div>
   </div>
 </template>
 
@@ -225,7 +226,6 @@ export default {
         else {
           this.results.push(...response.data.players);
         }
-
         console.log("save to lastSearchQuery");
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
@@ -280,8 +280,8 @@ form{
   width: 50%;
   padding: 10px;
   text-align: center;
-  background: rgba(120, 122, 120, 0.3); /* Green background with 30% opacity */
-    border-radius: 30px;
+  background: rgba(120, 122, 120, 0.3);
+  border-radius: 30px;
 
   /* margin-top: 20px;  */
 }

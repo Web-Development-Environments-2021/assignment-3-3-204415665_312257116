@@ -81,10 +81,10 @@ em {
   color: #ffffff;
 }
  .navbar.navbar-dark.bg-dark{
-    background-color: #0070a3!important;
+    background-color: #0a2431!important;
  }
 nav a.router-link-exact-active {
-  color: #000000!important;
+  color: #ffffff!important;
 }
 
 </style>

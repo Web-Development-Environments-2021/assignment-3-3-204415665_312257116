@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div>
+    <!-- <router-link :to="{name:player}">
+    </router-link> -->
       <b-card
         :title="this.player.name"
         :img-src="this.player.image"
@@ -14,7 +15,6 @@
         </b-card-text>
         <b-button href="#" variant="primary">Go somewhere</b-button>
       </b-card>
-  </div>
   </div>
 </template>
 

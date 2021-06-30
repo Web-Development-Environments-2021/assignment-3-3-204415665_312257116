@@ -115,8 +115,7 @@ export default {
 
         } 
         if ( this.$route.path != "/" ) {
-          this.$router.push("/").then();
-          location.reload();
+          this.$router.push("/");
         }
         
       } catch (err) {

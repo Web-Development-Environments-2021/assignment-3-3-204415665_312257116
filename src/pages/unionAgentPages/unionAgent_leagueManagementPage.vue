@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div>
-        <h2 class="match-headline"> Future Matches </h2>
-        <matches-table 
-            :futureMatches="displayFutureMatches" 
-            :pastMatches="displayPastMatches">
-        </matches-table>
-    </div>
+    <h2 class="match-headline"> Future Matches </h2>
+    <matches-table 
+        :futureMatches="displayFutureMatches" 
+        :pastMatches="displayPastMatches"
+        :isBusy="isBusy">
+    </matches-table>
   </div>
 </template>
 
@@ -32,6 +31,7 @@ export default {
 
             displayFutureMatches: [],
             displayPastMatches: [],
+            isBusy: true
         }
     },
 
@@ -44,11 +44,11 @@ export default {
 
                     console.log("Updated Past");
 
-                    this.past_isBusy = true;
+                    this.isBusy = true;
                     this.pastMatches = [];
                     this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
                     // this.extractRefereesInformation(this.pastMatches, "past");
-                    this.past_isBusy = false;
+                    this.isBusy = false;
 
                     this.displayPastMatches = JSON.parse(JSON.stringify(this.pastMatches));
                     this.past_rows = this.pastMatches.length;
@@ -57,11 +57,11 @@ export default {
                 if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
                      
                     console.log("Updated Future");
-                    this.future_isBusy = true;
+                    this.isBusy = true;
                     this.futureMatches = [];
                     this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
                     // this.extractRefereesInformation(this.futureMatches, "future");
-                    this.future_isBusy = false;
+                    this.isBusy = false;
 
                     this.displayFutureMatches = JSON.parse(JSON.stringify(this.futureMatches));
                     this.future_rows = this.futureMatches.length;
@@ -89,14 +89,7 @@ export default {
 </script>
 
 <style>
-.future-matches-table {
-  margin: 50px;
-  width: 90%;
-}
-.future-matches-pagination {
-    margin-left: 50%; 
-    margin-right: 50%;
-}
+
 .match-headline {
     margin-top: revert;
     display: flex;
@@ -104,12 +97,5 @@ export default {
     justify-content: center;
     text-align: center;
 }
-.past-matches-table {
-  margin: 50px;
-  width: 90%;
-}
-.past-matches-pagination {
-    margin-left: 50%; 
-    margin-right: 50%;
-}
+
 </style>

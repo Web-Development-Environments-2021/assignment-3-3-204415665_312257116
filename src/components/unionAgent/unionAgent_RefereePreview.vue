@@ -1,6 +1,9 @@
 <template>
     <div>
-        <b-table 
+        <b-table
+            hover
+            bordered
+            striped
             :items="informationList" >
         </b-table>
     </div>

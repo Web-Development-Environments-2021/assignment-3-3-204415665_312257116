@@ -1,28 +1,58 @@
 <template>
     <div>
         <b-table class="matches-table"
+            :fields="fields"
             :items="matches"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             :per-page="perPage"
             :current-page="currentPage"
             :busy="isBusy"
-            small
             hover
-            fixed
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
+            outlined
+            head-variant="light"
             sort-icon-left
-            :fields="fields">
+            >
+            <template #head(scores) >
+                <b-row colspan="2">
+                    <b-col>Local Team Score</b-col>
+                    <b-col>Visitor Team Score</b-col>
+                </b-row>
+            </template>
 
-            <!-- TODO: localTeam score -->
+            <!-- <template #cell(localTeamScore)="row"  colspan="2"> -->
+            <template #cell(scores)="row">
+                <b-row colspan="2">
+                    <b-col>{{row.item.localTeamScore}}</b-col>
+                    <b-col>{{row.item.visitorTeamScore}}</b-col>
+                </b-row>
+            </template>
+            <!-- <template #cell()="{  value : localTeamScore, visitorTeamScore} "  colspan="2">
+                {{localTeamScore}}  {{visitorTeamScore}} -->
+                <!-- <b-td v-if="!row.item.localTeamScore && !row.item.visitorTeamScore" colspan="2" >
+                    <b-button variant="primary" size="sm" >
+                        Add Match Result
+                    </b-button>
+                </b-td>
+                <b-td v-else >
+                    {{row.item.localTeamScore}}
+                </b-td> -->
+            <!-- </template> -->
 
-            <template #cell(refereeInformation)="{ item }">
-                <b-button size="sm" @click="toggleRowDetails(item, 'referee')" class="mr-2">
+            <template #cell(refereeInformation)="{ item, value: refereeInformation }">
+                <b-button v-if="Object.keys(refereeInformation).length" @click="toggleRowDetails(item, 'referee')" variant="info" size="sm">
                 {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
+                <b-button v-else variant="primary" size="sm" > 
+                    Add Referee
+                </b-button>
             </template>
-            <template #cell(eventsLog)="{ item }">
-                <b-button size="sm" @click="toggleRowDetails(item,'events')" class="mr-2">
+            <template #cell(eventsLog)="{ item, value: eventsLog }">
+                <b-button v-if="eventsLog.length" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
                 {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
+                </b-button>
+                <b-button v-else variant="primary" size="sm"> 
+                    Add Event Log
                 </b-button>
             </template>
 
@@ -76,14 +106,14 @@ export default {
                 { key : "localTeamName", sortable: true },
                 { key : "visitorTeamName", sortable: true },
                 { key : "venueName" },
-                { key : "localTeamScore" },
-                { key : "visitorTeamScore" },
+                { key : "scores",  label: "Score: Local Vs visitor", headerTitle: "What??"},
+                // { key : "localTeamScore" },
+                // { key : "visitorTeamScore" },
                 { key : "refereeInformation" },
                 { key : "eventsLog" }
             ],
             perPage: 5,
             currentPage: 1,
-            isBusy: false,
             sortBy: "matchDate",
             sortDesc: false,
         }
@@ -97,6 +127,10 @@ export default {
         pastMatches: {
             type: Array,
             require: false
+        },
+        isBusy: {
+            type: Boolean,
+            require: true
         }
     },
     computed: {
@@ -200,11 +234,17 @@ export default {
 
 .matches-table {
   margin: 50px;
-  width: 90%;
+  width: 95%;
+  text-align: center;
 }
+
 .matches-pagination {
     margin-left: 50%; 
     margin-right: 50%;
+}
+
+.btn-info,  .btn-primary {
+    width: 80%;
 }
 
 </style>

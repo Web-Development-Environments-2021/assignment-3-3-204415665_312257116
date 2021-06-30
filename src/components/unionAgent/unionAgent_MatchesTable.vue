@@ -9,47 +9,46 @@
             :current-page="currentPage"
             :busy="isBusy"
             hover
+            fixed
+            bordered
             outlined
             head-variant="light"
             sort-icon-left
             >
-            <template #head(scores) >
+            <template #head(matchScore) > 
                 <b-row colspan="2">
-                    <b-col>Local Team Score</b-col>
-                    <b-col>Visitor Team Score</b-col>
+                    <b-col>  Score    </b-col>
                 </b-row>
+                <b-row colspan="2">
+                    <b-col>  Local : Visitor    </b-col>
+                </b-row>                   
             </template>
 
-            <!-- <template #cell(localTeamScore)="row"  colspan="2"> -->
-            <template #cell(scores)="row">
-                <b-row colspan="2">
-                    <b-col>{{row.item.localTeamScore}}</b-col>
-                    <b-col>{{row.item.visitorTeamScore}}</b-col>
+            <template #cell(matchScore)="row" >
+                <b-row>
+                    <b-col v-if="!checkAddMatchResult(row)" >
+                        <b>{{ row.item.localTeamScore }}</b> : <b>{{row.item.visitorTeamScore}}</b>
+                    </b-col>
+                    <b-col v-else >
+                        <b-button variant="primary" size="sm" >
+                            Add Match Result
+                        </b-button>
+                    </b-col>
                 </b-row>
             </template>
-            <!-- <template #cell()="{  value : localTeamScore, visitorTeamScore} "  colspan="2">
-                {{localTeamScore}}  {{visitorTeamScore}} -->
-                <!-- <b-td v-if="!row.item.localTeamScore && !row.item.visitorTeamScore" colspan="2" >
-                    <b-button variant="primary" size="sm" >
-                        Add Match Result
-                    </b-button>
-                </b-td>
-                <b-td v-else >
-                    {{row.item.localTeamScore}}
-                </b-td> -->
-            <!-- </template> -->
 
             <template #cell(refereeInformation)="{ item, value: refereeInformation }">
                 <b-button v-if="Object.keys(refereeInformation).length" @click="toggleRowDetails(item, 'referee')" variant="info" size="sm">
-                {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
+                    {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
                 <b-button v-else variant="primary" size="sm" > 
                     Add Referee
                 </b-button>
             </template>
+
             <template #cell(eventsLog)="{ item, value: eventsLog }">
                 <b-button v-if="eventsLog.length" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
-                {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
+                    {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
                 <b-button v-else variant="primary" size="sm"> 
                     Add Event Log
@@ -66,6 +65,7 @@
                     </events-log-preview>
                 </b-card>
             </template>
+
             <template #table-busy>
                 <div class="text-center text-danger my-2">
                     <b-spinner class="align-middle"></b-spinner>
@@ -73,6 +73,7 @@
                 </div>
             </template>
         </b-table>
+
         <b-pagination class="matches-pagination"
             v-model="currentPage"
             :total-rows="rows"
@@ -106,9 +107,7 @@ export default {
                 { key : "localTeamName", sortable: true },
                 { key : "visitorTeamName", sortable: true },
                 { key : "venueName" },
-                { key : "scores",  label: "Score: Local Vs visitor", headerTitle: "What??"},
-                // { key : "localTeamScore" },
-                // { key : "visitorTeamScore" },
+                { key : "matchScore" },
                 { key : "refereeInformation" },
                 { key : "eventsLog" }
             ],
@@ -222,6 +221,16 @@ export default {
                     this.$set(row, '_eventsShowing', !row._eventsShowing);
                 }
             }
+        },
+        checkAddMatchResult(row){
+
+            if ( !row.item.localTeamScore && ! row.item.visitorTeamScore ){
+
+                if( Date.parse(row.item.matchDate) < Date.parse(new Date()) ){
+                    return true;   
+                }
+            }
+            return false;
         }
     }
 
@@ -230,12 +239,13 @@ export default {
 </script>
 
 
-<style>
+<style scoped >
 
 .matches-table {
   margin: 50px;
   width: 95%;
   text-align: center;
+  align-items: center;
 }
 
 .matches-pagination {
@@ -244,7 +254,7 @@ export default {
 }
 
 .btn-info,  .btn-primary {
-    width: 80%;
+    width: 70%;
 }
 
 </style>

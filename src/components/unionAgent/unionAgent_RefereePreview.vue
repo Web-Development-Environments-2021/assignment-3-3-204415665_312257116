@@ -1,10 +1,8 @@
 <template>
     <div>
-        <b-card >
-            <b-table 
-                :items="informationList" >
-            </b-table>
-        </b-card>
+        <b-table 
+            :items="informationList" >
+        </b-table>
     </div>
 </template>
 
@@ -14,31 +12,31 @@
 export default {
     name: "RefereePreview",
 
-    data(){
-        return {
-            informationList: [],
-            refereeId: undefined,
-            firstName: undefined,
-            lastName: undefined,
-            course: undefined,
-        }
-    },
     props: {
         refereeInfo: {
             type: Object,
             require: true,
         }
     },
-    mounted(){
+    computed:{
 
-        if ( this.refereeInfo.length != 0 ){
-            this.refereeId = this.refereeInfo.refereeID;
-            this.firstName = this.refereeInfo.firstname;
-            this.lastName = this.refereeInfo.lastname;
-            this.course = this.refereeInfo.course;
+        informationList(){
 
-            this.informationList.push( { ID: this.refereeId, FistName: this.firstName, LastName: this.lastName, Course: this.course } );
+            var infoList = [];
+
+            if ( this.refereeInfo != {} ){
+                infoList.push( {
+                    refereeId : this.refereeInfo.refereeID,
+                    firstName : this.refereeInfo.firstname,
+                    lastName : this.refereeInfo.lastname,
+                    course : this.refereeInfo.course
+                });
+            }
+            return infoList;
         }
+    },
+    mounted(){
+        console.log("Referee Preview Mounted");
     }
 }
 

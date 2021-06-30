@@ -1,10 +1,8 @@
 <template>
     <div>
-        <b-card >
-            <b-table 
-                :items="eventsLog" >
-            </b-table>
-        </b-card>
+        <b-table 
+            :items="eventsLog" >
+        </b-table>
     </div>
 </template>
 
@@ -24,6 +22,9 @@ export default {
             type: Array,
             require: true
         }
+    },
+    mounted(){
+        console.log("Events Log Mounted");
     }
 }
 

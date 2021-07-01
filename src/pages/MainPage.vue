@@ -1,9 +1,11 @@
 <template>
   <div class="container">
+    <b-form>
     <h1 class="title">Main Page</h1>
     <login-page v-if="!$root.store.username"></login-page>
     <favorite-matches v-else></favorite-matches>
     <league-info></league-info>
+    </b-form>
   </div>
 </template>
 
@@ -21,6 +23,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title{
+  margin: auto;
+  color: #fff !important;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  /* background: rgba(120, 122, 120, 0.3); */
+
+}
+form{
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  background: rgba(71, 68, 68, 0.76);
+  border-radius: 30px;
+
+  /* margin-top: 20px;  */
+}
 .RandomRecipes {
   margin: 10px 0 10px;
 }

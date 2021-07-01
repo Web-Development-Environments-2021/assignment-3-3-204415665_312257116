@@ -52,7 +52,6 @@ export default {
       },
       refereeInformation: {
         type: Object,
-        required: true
       }
   }, 
   computed: {
@@ -77,6 +76,7 @@ export default {
   border-radius: 10px;
   border-width: 5px;
   border-color:cadetblue;
+  background-color: beige;
 }
 
 .future-match-preview .future-match-title {

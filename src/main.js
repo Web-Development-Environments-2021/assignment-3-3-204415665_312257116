@@ -100,12 +100,12 @@ const shared_data = {
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    localStorage.removeItem("UserFavoriteMatches");
 
     if ( this.username == "daniMoshe" ){
       localStorage.removeItem("unionAgentLogged");
       localStorage.removeItem("leagueFutureMatches");
       localStorage.removeItem("leaguePastMatches");
-
     }
     this.username = undefined;
   },
@@ -131,7 +131,6 @@ const shared_data = {
         const response = await axios.get(
             this.serverUrl + "unionAgent/leagueManagementPage"
         );
-        
         axios.withCredentials = false;
         
         return response.data;
@@ -139,9 +138,34 @@ const shared_data = {
     } catch (error){
       // TODO: What to do We The Error ???
     }
+  },
+
+  async initDataForUser(){
+    try{
+      // console.log(localStorage.getItem("username"));
+      const response = await this.getUserFavoriteMatches();
+      localStorage.setItem("UserFavoriteMatches", JSON.stringify(response));
+      console.log("done - Init Data From User");
+
+    }catch ( error ){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+  async getUserFavoriteMatches(){
+    try{
+        // axios.withCredentials = true;
+        const response = await axios.get(
+            this.serverUrl + "users/favoriteMatches"
+        );
+        // axios.withCredentials = false;
+        return response.data;
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
   }
 };
-
 
 
 console.log(shared_data);

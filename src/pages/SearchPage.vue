@@ -26,10 +26,8 @@
                       :aria-describedby="ariaDescribedby"
                       name="radios-btn-default"
                       buttons
-                  ></b-form-radio-group>
-                  
+                  ></b-form-radio-group>  
                 </b-form-group>
-
               </b-input-group-append>
             </b-input-group>
 
@@ -46,8 +44,7 @@
           </b-form-group>
 
           <!-- if searchType is Players -->
-          <div class="my-buttons">
-              <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
+          <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
 
 
             <div style="padding: 10px;">
@@ -65,7 +62,6 @@
                 </b-input-group-append >
               </b-input-group>
             </div>
-            <p>hi {{form.sortPlayers}}</p>
 <!-- 
             <div style="padding: 10px;">
               <b-input-group prepend=" Sort Players:" style="width: 216px;">
@@ -107,14 +103,11 @@
               or enter a player team name
             </b-popover>
           </b-form-group>
-          </div>
           <!-- buttons - submit and reset-->
           <b-button id="submit-b" type="submit" variant="success">Search</b-button>
           <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
-          </b-form>
-
-        </div>
-
+        </b-form>
+      </div>
         <div>
           <div v-if="form.searchType == 'Players'" class="container">
               <div class="row">
@@ -128,7 +121,7 @@
                   </div>
           </div>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -136,7 +129,7 @@ import {
   required,
   minLength
 } from "vuelidate/lib/validators";
-import PlayersInformation from "../components/PlayersSearchPreview.vue"
+import PlayersInformation from "../components/PlayersSearchPreview"
 
 export default {
   
@@ -294,6 +287,7 @@ export default {
 <style scoped>
 .title{
   margin: auto;
+  color: #fff !important;
   width: 50%;
   padding: 10px;
   text-align: center;
@@ -304,7 +298,7 @@ form{
   margin: auto;
   width: 50%;
   text-align: center;
-  background: rgba(255, 255, 255, 0.39);
+  background: rgba(71, 68, 68, 0.76);
   border-radius: 30px;
 
   /* margin-top: 20px;  */
@@ -346,8 +340,7 @@ margin: auto;
 #submit-b:hover {background-color: #008604}
 #submit-b:active {
   background-color: #008604;
-  box-shadow: 0 5px rgb(0, 99, 16);
-  transform: translateY(4px);
+  transform: translateY(1px);
 }
 
 #reset-b {
@@ -366,8 +359,7 @@ margin: auto;
 #reset-b:hover {background-color: #c40000}
 #reset-b:active {
   background-color: #c40000;
-  box-shadow: 0 5px rgb(190, 25, 25);
-  transform: translateY(4px);
+  transform: translateY(1px);
 }
 
 #search-input {
@@ -376,7 +368,7 @@ margin: auto;
 }
 #input-group-filter_Players {
   /* margin-left:px;  */
-  width: 400px; 
+  width: 388px; 
   padding: 20px;
 }
 .b.form-radio-group{

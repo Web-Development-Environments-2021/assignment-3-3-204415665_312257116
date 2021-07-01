@@ -1,7 +1,7 @@
 
 <template class = "search">
     <div>
-      <div style="padding-top: 10px;">
+      <div  class = "search">
         <b-form @submit.prevent="onSearch" @reset.prevent="onReset" > 
             <h1 class="title">Search Page</h1>
             <b-input-group 
@@ -31,24 +31,28 @@
               </b-input-group-append>
             </b-input-group>
 
-          <b-form-group v-if="form.searchType == 'Teams'" v-slot="{ ariaDescribedby }">
-            <b-form-radio-group
-                :button-variant="buttonColor"
-                id="input-group-sortTeamsAlphabetical"
-                v-model="form.sortTeamsAlphabetical"
-                :options="form.sortTeamsAlphabeticalOptions"
-                :aria-describedby="ariaDescribedby"
-                name="radios-btn-default"
-                buttons
-            ></b-form-radio-group>
-          </b-form-group>
+          <!-- if searchType is Teams -->
+          <div class="row">
+            <b-input-group prepend=" Sort Teams:" v-if="form.searchType == 'Teams'" style="width: 209px;" v-slot="{ ariaDescribedby }">
+              <b-input-group-append>
+              <b-form-radio-group
+                  :button-variant="buttonColor"
+                  id="input-group-sortTeamsAlphabetical"
+                  v-model="form.sortTeamsAlphabetical"
+                  :options="form.sortTeamsAlphabeticalOptions"
+                  :aria-describedby="ariaDescribedby"
+                  name="radios-btn-default"
+                  buttons
+              ></b-form-radio-group>
+              </b-input-group-append>
+            </b-input-group>
+          </div>
 
           <!-- if searchType is Players -->
-          <b-form-group v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
-
-
-            <div style="padding: 10px;">
-              <b-input-group  prepend=" Sort Players By:" style="width: 346px;" @click="sortOn()">
+          <b-form-group class="my-div" v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
+          <div class="row ">
+            <div>
+              <b-input-group  prepend=" Sort Players By:" style="width: 346px; " @click="sortOn()">
               <b-input-group-append>
                   <b-form-radio-group
                       :button-variant="buttonColor"
@@ -79,7 +83,7 @@
               </b-input-group>
             </div> -->
 
-           <div style="padding: 10px;">
+           <div>
             <b-input-group
             id="input-group-filter_Players"
             label-for="filter_Players"
@@ -102,23 +106,28 @@
               Enter a number to filter by player position
               or enter a player team name
             </b-popover>
+          </div>
           </b-form-group>
+
           <!-- buttons - submit and reset-->
           <b-button id="submit-b" type="submit" variant="success">Search</b-button>
           <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
         </b-form>
       </div>
-        <div>
-          <div v-if="form.searchType == 'Players'" class="container">
-              <div class="row">
-                <PlayersInformation v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
-              </div>
-          </div>
 
-          <div v-else-if="form.searchType == 'Teams'">
+        <div >
+          <div v-if="form.searchType == 'Players' && flag==true" class="container my-container-css">
+              <div class="row align-items-start my-row-css">
+                  <PlayersInformation v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
+             </div>
+          </div>
+          <div  v-else-if="form.searchType == 'Teams'">
                   <div v-for="res in this.results" v-bind:key="res.teamName">
                       <a>search Query:</a>
                   </div>
+          </div>
+          <div v-else-if="flag==false" class="container my-container-css">
+                  <LoadingIcon/>
           </div>
         </div>
     </div>
@@ -130,11 +139,13 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import PlayersInformation from "../components/PlayersSearchPreview"
+import LoadingIcon from "../components/loading"
 
 export default {
   
   components:{
-    PlayersInformation
+    PlayersInformation,
+    LoadingIcon
     
   },
   name: "SearchPage",
@@ -166,8 +177,8 @@ export default {
         },
         results: [],
         submitError: undefined,
-        buttonColor:"info"
-
+        buttonColor:"success",
+        flag:Boolean
       };
     },
     validations: {
@@ -245,6 +256,7 @@ export default {
         else {
           this.results.push(...response.data.players);
         }
+        this.flag=true;
         console.log("save to lastSearchQuery");
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
@@ -264,6 +276,7 @@ export default {
         return;
       }
       // console.log("login method go");
+      this.flag=false;
       await this.Search();
     },
     async onReset() {
@@ -276,12 +289,14 @@ export default {
         sortPlayersBy: "",
         filter_Players: "",
       };
+      this.flag=Boolean;
       this.results=[],
       location.reload(),
       this.$nextTick(() => {
         this.$v.$reset();
         
       });
+
       
 ;
     }
@@ -299,40 +314,54 @@ export default {
   /* background: rgba(120, 122, 120, 0.3); */
 
 }
-form{
-  margin: auto;
-  width: 50%;
+.form{
+    height: auto;
+    
+}
+.search{
+  width: 1000px;
   text-align: center;
-  background: rgba(71, 68, 68, 0.76);
+  background: rgba(109, 109, 109, 0.507);
   border-radius: 30px;
+  padding-top: 10px;
+  margin-top: 15px;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
-  /* margin-top: 20px;  */
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(190, 186, 186, 0.671);
+  border-radius: 10px;
 }
 .container {
-  padding: 100px;
-  margin: auto;
+    margin: auto;
 }
+.my-container-css {
+  overflow: scroll;
+  width: 1000px;
+  background-color: rgba(109, 109, 109, 0.507); 
+  max-height:54vmin;
+
+}
+
 
 div {
-margin: auto;
-}
-
-
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.myB span:before{
-  color: #fff !important;
-  background-color: #EE6C4D !important;
-  border-color: #eb451c !important;
+  margin: auto;
 }
 
 #submit-b {
   margin: 20px;
   display: inline-block;
-  padding: 10px 25px;
+  padding: 10px 35px;
   font-size: 18px;
   cursor: pointer;
   text-align: center;
@@ -341,6 +370,10 @@ margin: auto;
   color: #fff;
   border: none;
   border-radius: 10px;
+  position: relative;
+  top: 0px;
+  left: -50px;
+
 }
 #submit-b:hover {background-color: #008604}
 #submit-b:active {
@@ -351,7 +384,7 @@ margin: auto;
 #reset-b {
   margin: 20px;
   display: inline-block;
-  padding: 10px 25px;
+  padding: 10px 35px;
   font-size: 18px;
   cursor: pointer;
   text-align: center;
@@ -360,6 +393,10 @@ margin: auto;
   color: #fff;
   border: none;
   border-radius: 10px;
+  position: relative;
+  top: 0px;
+  left: 50px;
+
 }
 #reset-b:hover {background-color: #c40000}
 #reset-b:active {
@@ -369,15 +406,22 @@ margin: auto;
 
 #search-input {
   /* margin-left: 20px;  */
-  width: 700px; 
+  width: 710px; 
 }
 #input-group-filter_Players {
   /* margin-left:px;  */
-  width: 388px; 
-  padding: 20px;
+  width: 350px; 
 }
 .b.form-radio-group{
     background-color: #ee6c4d!important;
 }
+.my-div{
+    margin: 0 auto;
+    padding-inline: 140px;
+    position: relative;
+}
+
+
+
 
 </style>

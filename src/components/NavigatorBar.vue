@@ -1,6 +1,6 @@
 <template>
   <div id="navigatorbar">
-        <div class="upper"></div>
+    <div class="upper"></div>
 
     <b-navbar toggleable="lg" type="dark" variant="dark">
       
@@ -70,13 +70,15 @@ export default {
 </script>
 
 <style lang="scss">
-  b nav {
-    padding: 30px;
+
+  .navbar {
+    padding: 0px!important;
   }
 
   nav a {
     font-weight: bold;
     color: #696969;
+    padding: 10px;
   }
 
   em {
@@ -86,6 +88,7 @@ export default {
   }
   .navbar.navbar-dark.bg-dark{
       background-color: #293241!important;
+
   }
   nav a.router-link-exact-active {
     color: #e7b4a5!important;
@@ -100,9 +103,11 @@ export default {
     text-align: center!important;
     width: 200px;
   }
+
   .nav-icon{
     position: absolute!important;
     left: 10px!important;
+    width: 5px!important;
     
   }
 </style>

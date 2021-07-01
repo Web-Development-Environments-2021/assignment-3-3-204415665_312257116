@@ -58,7 +58,6 @@
 <script>
 export default {
   name: "NavigatorBar",
-
   components:{
   
   },

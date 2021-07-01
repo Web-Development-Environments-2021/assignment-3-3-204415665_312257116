@@ -47,7 +47,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #000000;
   min-height: 100vh;
-  background-color: #98C1D9;
+  background-image: url("./assets/AdobeStock_68164130.jpeg");
+  background-size: cover;
+  background-color: #ffffff;
 }
 
 #nav {

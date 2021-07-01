@@ -53,7 +53,7 @@ export default {
     height: 26rem!important;
     font-size: 13px!important;
     background-color: rgb(255, 255, 255)!important;
-    padding-inline: 10px;
+    padding: 3px;
     box-shadow: 0 9px rgb(110, 110, 110);
     border-radius: 30px;
 
@@ -65,7 +65,7 @@ export default {
     object-fit: cover;
 }
   .card-title{
-    font-size: 18px!important;
+    font-size: 16px!important;
   }
 </style>
 

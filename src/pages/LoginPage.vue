@@ -103,17 +103,19 @@ export default {
 
         );
         // this.axios.defaults.withCredentials = false;
-        console.log(response);
-        // this.$root.loggedIn = true;
-        // console.log(this.$root.store.login);
+        // console.log(response);
+
         this.$root.store.login(this.form.username);
 
         
         if ( this.form.username == "daniMoshe" ){
 
           this.$root.store.initDataForUnionAgent();
+        }
 
-        } 
+        await this.$root.store.initDataForUser();
+
+        // console.log(localStorage.getItem("UserFavoriteMatches"));
         if ( this.$route.path != "/" ) {
           this.$router.push("/");
         }

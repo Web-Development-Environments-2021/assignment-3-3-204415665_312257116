@@ -199,8 +199,8 @@ export default {
     console.log("sessionStorage is : ", sessionStorage.getItem("lastSearchResults"));
     if (sessionStorage.getItem("lastSearchQuery") != null) {
       console.log("got inside the load previous search");
-      this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
-      this.res = JSON.parse(sessionStorage.getItem("lastSearchResults"));
+      // this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
+      // this.res = JSON.parse(sessionStorage.getItem("lastSearchResults"));
     }
   },
   methods: {
@@ -266,7 +266,8 @@ export default {
       // console.log("login method go");
       await this.Search();
     },
-    onReset() {
+    async onReset() {
+      
       this.form = {
         searchQuery:"",
         searchType: "Players",
@@ -276,9 +277,13 @@ export default {
         filter_Players: "",
       };
       this.results=[],
+      location.reload(),
       this.$nextTick(() => {
         this.$v.$reset();
+        
       });
+      
+;
     }
   }
 }

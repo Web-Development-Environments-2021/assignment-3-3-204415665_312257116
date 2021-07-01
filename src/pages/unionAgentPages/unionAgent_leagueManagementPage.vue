@@ -6,6 +6,11 @@
         :pastMatches="displayPastMatches"
         :isBusy="isBusy">
     </matches-table>
+
+    <b-button :disabled="addMatchDisabled" @click="moveToAddMatch()"  variant="primary" size="lg" id="btn-add-new-match">
+        Add New Match
+    </b-button>
+
   </div>
 </template>
 
@@ -22,19 +27,19 @@ export default {
     },
 
     data(){
-        
         return {
 
             futureMatches: [],
             pastMatches: [],
             updateInterval: undefined,
 
+            addMatchDisabled: true,            
+
             displayFutureMatches: [],
             displayPastMatches: [],
             isBusy: true
         }
     },
-
     methods: {
         updateMatches(){
 
@@ -68,8 +73,20 @@ export default {
 
                 }
             }
+            this.updateAddMatchButton();
           
         },
+        moveToAddMatch() {
+            this.$router.push("/unionAgent/match");
+        },
+        updateAddMatchButton() {
+
+            if ( JSON.parse(localStorage.getItem("unionAgentDataActions")) != null ){
+                this.addMatchDisabled = false;
+            } else {
+                this.addMatchDisabled = true;
+            }
+        }
     },
     mounted(){
         
@@ -96,6 +113,12 @@ export default {
     flex-direction: column;
     justify-content: center;
     text-align: center;
+}
+
+#btn-add-new-match {
+    margin: 10px;
+    position: relative;
+    left: 50%;
 }
 
 </style>

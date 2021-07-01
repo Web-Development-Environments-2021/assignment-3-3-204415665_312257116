@@ -94,6 +94,10 @@ const shared_data = {
 
     if ( username == "daniMoshe" ){
       localStorage.setItem("unionAgentLogged", JSON.stringify(true));
+
+      this.getDataForUnionActions().then( () => {
+        localStorage.setItem("unionAgentDataActions", JSON.stringify(true));
+      });
     }
   },
 
@@ -102,9 +106,7 @@ const shared_data = {
     localStorage.removeItem("username");
 
     if ( this.username == "daniMoshe" ){
-      localStorage.removeItem("unionAgentLogged");
-      localStorage.removeItem("leagueFutureMatches");
-      localStorage.removeItem("leaguePastMatches");
+      this.cleanUnionAgentData();
 
     }
     this.username = undefined;
@@ -112,6 +114,20 @@ const shared_data = {
 
 
   //* ------------------------------ UnionAgent ------------------------------ *//
+
+
+  cleanUnionAgentData(){
+
+    localStorage.removeItem("unionAgentLogged");
+    localStorage.removeItem("leagueFutureMatches");
+    localStorage.removeItem("leaguePastMatches");
+    localStorage.removeItem("teamsNames");
+    localStorage.removeItem("venuesNames");
+    localStorage.removeItem("referees");
+
+    localStorage.removeItem("unionAgentDataActions");
+
+  },
 
   async initDataForUnionAgent(){
     try{
@@ -125,6 +141,8 @@ const shared_data = {
     }
   },
 
+
+
   async getLeagueMatches(){
     try{
         axios.withCredentials = true;
@@ -135,6 +153,35 @@ const shared_data = {
         axios.withCredentials = false;
         
         return response.data;
+
+      } catch (error){
+        // TODO: What to do We The Error ???
+      }
+  },
+
+  async getDataForUnionActions(){
+    try{
+
+      const responseForNewMatch = await this.getDetailsForNewMatch();
+      localStorage.setItem("teamsNames", JSON.stringify(responseForNewMatch.teamsNames));
+      localStorage.setItem("venuesNames", JSON.stringify(responseForNewMatch.venuesName));
+      localStorage.setItem("referees", JSON.stringify(responseForNewMatch.referees));
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+  async getDetailsForNewMatch(){
+    try{
+      axios.withCredentials = true;
+      const response = await axios.get(
+          this.serverUrl + "unionAgent/match"
+      );
+      
+      axios.withCredentials = false;
+      
+      return response.data;
 
     } catch (error){
       // TODO: What to do We The Error ???

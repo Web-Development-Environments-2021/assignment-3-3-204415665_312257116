@@ -1,11 +1,16 @@
 <template>
     <div>
-        <b-table
+        <b-table id="referee-table"
             hover
             bordered
             striped
+            outlined
+            no-border-collapse
             :items="informationList" >
         </b-table>
+        <b-button variant="primary" size="md" >
+            Update Referee
+        </b-button>
     </div>
 </template>
 
@@ -46,6 +51,7 @@ export default {
 </script>
 
 
-<style>
-    
+<style scoped>
+
+
 </style>

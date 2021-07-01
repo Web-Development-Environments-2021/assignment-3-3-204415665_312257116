@@ -58,8 +58,7 @@
 <script>
 export default {
   name: "NavigatorBar",
-  data(){
-  },
+
   components:{
   
   },

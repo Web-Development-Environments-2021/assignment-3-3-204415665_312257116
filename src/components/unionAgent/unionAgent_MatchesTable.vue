@@ -12,6 +12,7 @@
             fixed
             bordered
             outlined
+            no-border-collapse
             head-variant="light"
             table-variant="light"
             sort-icon-left
@@ -27,7 +28,7 @@
 
             <template #cell(matchScore)="row" >
                 <b-row>
-                    <b-col v-if="!checkAddMatchResult(row)" >
+                    <b-col v-if="checkAddMatchResult(row)" >
                         <b>{{ row.item.localTeamScore }}</b> : <b>{{row.item.visitorTeamScore}}</b>
                     </b-col>
                     <b-col v-else >
@@ -228,13 +229,12 @@ export default {
             if ( !row.item.localTeamScore && ! row.item.visitorTeamScore ){
 
                 if( Date.parse(row.item.matchDate) < Date.parse(new Date()) ){
-                    return true;   
+                    return false;   
                 }
             }
-            return false;
+            return true;
         }
     }
-
 }
 
 </script>
@@ -251,7 +251,6 @@ export default {
 
 .matches-pagination {
     margin-left: 50%; 
-    margin-right: 50%;
 }
 
 .btn-info,  .btn-primary {

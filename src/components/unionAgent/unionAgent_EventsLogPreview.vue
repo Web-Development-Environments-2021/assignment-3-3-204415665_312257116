@@ -1,8 +1,15 @@
 <template>
     <div>
-        <b-table 
+        <b-table
+            hover
+            bordered
+            striped
+            outlined
             :items="eventsLog" >
         </b-table>
+        <b-button variant="primary" size="md" >
+            Add New Event
+        </b-button>
     </div>
 </template>
 

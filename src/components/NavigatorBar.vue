@@ -46,8 +46,10 @@
             </em>
 
           </template>
-          <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</b-dropdown-item>
-          <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</b-dropdown-item>
+          <div class="div-dropdown">
+            <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><em><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</em></b-dropdown-item>
+            <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><em><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</em></b-dropdown-item>
+          </div>
         </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -102,12 +104,22 @@ export default {
   .nav-dropdown-item{
     text-align: center!important;
     width: 200px;
+    background-color: #293241!important;
+    font-weight: bold!important;
+    padding: 10px;
+  }
+  .nav-dropdown-item:hover{
+    text-align: center!important;
+    width: 200px;
+    background-color: #293241!important;
+    font-weight: bold!important;
+    padding: 10px;
   }
 
   .nav-icon{
     position: absolute!important;
     left: 10px!important;
-    width: 5px!important;
+    width: 20px!important;
     
   }
 </style>

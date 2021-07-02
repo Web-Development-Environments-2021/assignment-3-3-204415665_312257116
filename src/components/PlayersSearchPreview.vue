@@ -15,7 +15,7 @@
         img-alt="Image"
         img-top
         tag="article"
-        class="mb-2"
+        class="mb-2 my-card"
       >
       <b-card-text>
 
@@ -49,13 +49,12 @@ export default {
     width: 11rem!important;
     height: 13rem!important;
     font-size: 10.5px!important;
-    background-color: rgb(255, 120, 30)!important;
-    box-shadow: 2px 4px rgba(99, 36, 0, 0.856);
+    background-color: rgb(252, 151, 85)!important;
+    box-shadow: 4px 5px rgba(99, 36, 0, 0.856);
     border-radius: 30px;
     padding: 5px;
-
-    
   }
+
   .card-img-top {
     width: 55%;
     height: 45%;

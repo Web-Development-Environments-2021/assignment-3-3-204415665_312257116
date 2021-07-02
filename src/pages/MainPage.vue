@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <b-form>
-    <h1 class="title">Main Page</h1>
-    <login-page v-if="!$root.store.username"></login-page>
+    <!-- <h1 class="title">Main Page</h1> -->
+    
+    <login-page class="login-css" v-if="!$root.store.username"></login-page>
     <favorite-matches v-else></favorite-matches>
     <league-info></league-info>
     </b-form>
@@ -35,9 +36,9 @@ export default {
 form{
   margin: auto;
   width: 100%;
-  text-align: center;
-  background: rgba(71, 68, 68, 0.76);
-  border-radius: 30px;
+  // text-align: center;
+  // background: rgba(71, 68, 68, 0.76);
+  // border-radius: 30px;
 
   /* margin-top: 20px;  */
 }
@@ -51,5 +52,12 @@ form{
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+.login-css{
+  top: 45px;
+  right:100px; 
+  bottom: 0;
+  position:absolute;
+
 }
 </style>

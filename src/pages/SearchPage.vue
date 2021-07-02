@@ -66,22 +66,6 @@
                 </b-input-group-append >
               </b-input-group>
             </div>
-<!-- 
-            <div style="padding: 10px;">
-              <b-input-group prepend=" Sort Players:" style="width: 216px;">
-                <b-input-group-append>
-                  <b-form-radio-group
-                      :button-variant="buttonColor"
-                      id="input-group-sortPlayers"
-                      v-model="form.sortPlayers"
-                      :options="form.sortPlayersOptions"
-                      :aria-describedby="ariaDescribedby"
-                      name="radios-btn-default"
-                      buttons>
-                  </b-form-radio-group>
-                </b-input-group-append>
-              </b-input-group>
-            </div> -->
 
            <div>
             <b-input-group

@@ -6,15 +6,15 @@
     <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
 
       <div>
-          <div class="login-card" >
+          <div class="register-card" >
               <div class="login-box">
-                  <div class="login-snip" style="height: auto; width: auto;"> 
+                  <div class="login-snip" style="width: 320%;"> 
                     <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
                       <label for="tab-1" class="tab">Register</label>
                       <div class="login-space">
                           <div>
                              <!----------  username  ---------->
-                              <div class="group">
+                              <div class="group" >
                                 <b-form-group
                                   id="input-group-username"
                                   label-for="username">
@@ -66,7 +66,7 @@
                               </div>
 
                               <!----------  lastName  ---------->
-                              <div class="group">
+                              <div class="group" style="position: relative;left:600px;bottom:80px;">
                                 <b-form-group
                                   id="input-group-lastName"
                                   label-for="lastname"
@@ -93,7 +93,7 @@
                               </div>
 
                               <!----------  Country  ---------->
-                              <div class="group">
+                              <div class="group" style="position: relative;bottom:80px;">
                                 <b-form-group
                                   id="input-group-country"
                                   label-for="country"
@@ -115,7 +115,7 @@
                               </div>
 
                               <!----------  email  ---------->
-                              <div class="group">
+                              <div class="group" style="position: relative;left:600px;bottom:160px;">
                                 <b-form-group
                                   id="input-group-email"
                                   label-for="email">
@@ -139,7 +139,7 @@
                               </div>
 
                               <!----------  Password  ---------->
-                              <div class="group">
+                              <div class="group" style="position: relative;bottom:160px;">
                                   <b-form-group
                                     id="input-group-Password"
                                     label-for="password"
@@ -175,7 +175,7 @@
                               </div>
 
                               <!----------  confirmedPassword  ---------->
-                              <div class="group">
+                              <div class="group" style="position: relative;left:600px;bottom:240px;">
                                 <b-form-group
                                   id="input-group-confirmedPassword"
                                   label-for="confirmedPassword"
@@ -201,7 +201,7 @@
                                 </b-form-group>
                               </div>
 
-                             <div class="group">
+                             <div class="group" style="position: relative;bottom:240px;">
                             <!----------  image_url  ---------->
                                 <b-form-group
                                   id="input-group-image_url"
@@ -212,6 +212,8 @@
                                     class="input"
                                     id="image_url"
                                     type="text"
+                                    placeholder="Enter your url image "
+
                                     v-model="$v.form.image_url.$model"
                                     :state="validateState('image_url')"
                                   ></b-form-input>
@@ -223,21 +225,26 @@
                                   </b-form-invalid-feedback>
                                 </b-form-group>
                              </div>
-                              <div class="register-button">
+
+                              <div class="register-button" >
                                 <b-button
                                   type="submit"
                                   variant="primary"
-                                  style="border-radius: 10%; padding: 10px;"
-                                  >Register</b-button>
-                                  <b-button style="border-radius: 10%; padding: 10px;" type="reset" variant="danger" >Reset</b-button>
+                                  style="padding-inline: 70px;">Register</b-button>
                               </div>
-                              <div class="hr"></div>
-                              <div class="foot"> <label for="tab-1">Already Member?</label> </div>
-                              
-                              <div class="mt-2">
+                                  
+                              <div class="register-button" style="position:relative;bottom:333px;left:850px;">
+                                  <b-button 
+                                  type="reset" 
+                                  variant="danger"
+                                  style="padding-inline: 70px;" >Reset</b-button>
+                              </div>
+
+                              <div class="hr" style="width: 1000px; position:absolute ;bottom:220px;left:200px;">
                                 You have an account already?
-                                <router-link to="login"> Log in here</router-link>
-                              </div>
+                                <router-link to="login"> Log in here</router-link></div>
+                              
+                              
                             <b-alert
                               class="mt-2"
                               v-if="form.submitError"
@@ -398,38 +405,44 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-// .container {
-//   max-width: 500px;
-// }
+
 .register-css{
-  top: 45px;
-  right:400px; 
-  height: auto;
-  width: 650px;
-  bottom: 0;
+  height: 93.5%;
   position:absolute;
-  padding-top: 0px;
-  overflow: scroll;
-}
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+  background: #293241ef;
+  margin: auto;
+  color: white;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(190, 186, 186, 0.671);
-  border-radius: 10px;
+.login-snip {
+    padding: 90px 70px 50px 70px;
+    position:relative;
+    margin: auto; 
+    background: rgba(255, 255, 255, 0)
+
 }
+
+.register-card {
+    margin: auto;
+    width: 100.85%;
+    height: 95%;
+    position:absolute;
+
+}
+
 .register-button{
-  margin : auto;
-  padding-inline: 50px;
+  position: relative;
+  bottom:285px;
+  left:600px;
+  margin:auto;
+  padding-inline:20px;
+  padding-bottom: 10px;
 }
 
+.group{
+  height: auto;
+  width:500px;
+}
 </style>

@@ -44,19 +44,20 @@ form{
 
   /* margin-top: 20px;  */
 }
-.RandomRecipes {
-  margin: 10px 0 10px;
-}
-.blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
-}
-::v-deep .blur .recipe-preview {
-  pointer-events: none;
-  cursor: default;
-}
+// .RandomRecipes {
+//   margin: 10px 0 10px;
+// }
+// .blur {
+//   -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+//   filter: blur(2px);
+// }
+// ::v-deep .blur .recipe-preview {
+//   pointer-events: none;
+//   cursor: default;
+// }
 .login-css{
-  right:7.5px; 
-  position:relative;
+  position:absolute;
+  left: 99px
+
 }
 </style>

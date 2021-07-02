@@ -1,6 +1,5 @@
 <template>
   <div id="navigatorbar">
-    <div class="upper"></div>
 
     <b-navbar toggleable="lg" type="dark" variant="dark">
       
@@ -53,7 +52,8 @@
         </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
-    </b-navbar>
+    </b-navbar>    <div class="upper"></div>
+
   </div>
 </template>
 

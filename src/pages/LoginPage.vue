@@ -178,9 +178,6 @@ export default {
 <style lang="scss" scoped>
 
 .log-css{
-  top: -10px;
-  right:200px; 
-  bottom: 0;
-  position:relative;
+  margin: auto;
 }
 </style>

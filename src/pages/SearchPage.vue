@@ -293,7 +293,6 @@ export default {
   margin: auto;
   color: #fff !important;
   width: 50%;
-  padding: 10px;
   text-align: center;
   /* background: rgba(120, 122, 120, 0.3); */
 
@@ -304,11 +303,13 @@ export default {
 }
 .search{
   width: 1000px;
+  height:fit-content;;
   text-align: center;
-  background: rgba(109, 109, 109, 0.507);
   border-radius: 30px;
-  padding-top: 10px;
-  margin-top: 15px;
+  padding-top: 5px;
+  margin-top: 5px;
+  background: #293241e0;
+
 }
 /* width */
 ::-webkit-scrollbar {
@@ -332,8 +333,9 @@ export default {
 .my-container-css {
   overflow: scroll;
   width: 1000px;
-  background-color: rgba(109, 109, 109, 0.507); 
-  max-height:54vmin;
+  background-color: #293241e0;
+ 
+  max-height:56.4vmin;
 
 }
 

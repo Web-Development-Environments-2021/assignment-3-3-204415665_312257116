@@ -13,7 +13,6 @@
                                   id="input-group-Username"
                                   label-for="Username"
                                 ><label for="Username" class="label">Username</label>
-
                                   <b-form-input
                                     id="Username"
                                     v-model="$v.form.username.$model"
@@ -179,12 +178,9 @@ export default {
 <style lang="scss" scoped>
 
 .log-css{
-  top: 46px;
-  right:400px; 
-  height: auto;
-  width: 650px;
+  top: -10px;
+  right:200px; 
   bottom: 0;
-  position:absolute;
-  padding-top: 0px;
+  position:relative;
 }
 </style>

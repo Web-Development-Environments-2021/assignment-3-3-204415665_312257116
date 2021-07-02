@@ -56,10 +56,7 @@ form{
   cursor: default;
 }
 .login-css{
-  top: 0px;
-  right:250px; 
-  bottom: 0;
-  position:absolute;
-
+  right:7.5px; 
+  position:relative;
 }
 </style>

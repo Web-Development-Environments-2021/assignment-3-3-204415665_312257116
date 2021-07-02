@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <div class="row log-css">
       <b-form @submit.prevent="onLogin">
       <div>
@@ -179,5 +179,8 @@ export default {
 
 .log-css{
   margin: auto;
+  left: -10px;
+  position: absolute;
+
 }
 </style>

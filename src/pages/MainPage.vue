@@ -1,12 +1,11 @@
 <template>
-  <div class="container">
+  <div class="main">
     <b-form>
     <!-- <h1 class="title">Main Page</h1> -->
     <div class="login-css">
     <login-page class="login-css" v-if="!$root.store.username"></login-page>
     <favorite-matches v-else></favorite-matches>
     </div>
-
     <!-- <league-info></league-info> -->
     </b-form>
   </div>
@@ -26,6 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .title{
   margin: auto;
   color: #fff !important;
@@ -35,9 +35,18 @@ export default {
   /* background: rgba(120, 122, 120, 0.3); */
 
 }
-form{
-  margin: auto;
+.main{
   width: 100%;
+  height: 93.5%;
+  background-image: url('../assets/AdobeStock_82365803.jpeg');
+  background-size: cover;
+  background-color: #ffffff;
+  margin: auto;
+  position: absolute;
+}
+form{
+  // margin: auto;
+  // width: 100%;
   // text-align: center;
   // background: rgba(71, 68, 68, 0.76);
   // border-radius: 30px;
@@ -57,7 +66,6 @@ form{
 // }
 .login-css{
   position:absolute;
-  left: 99px
 
 }
 </style>

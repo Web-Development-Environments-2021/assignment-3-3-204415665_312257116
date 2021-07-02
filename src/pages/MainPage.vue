@@ -2,10 +2,12 @@
   <div class="container">
     <b-form>
     <!-- <h1 class="title">Main Page</h1> -->
-    
+    <div class="login-css">
     <login-page class="login-css" v-if="!$root.store.username"></login-page>
     <favorite-matches v-else></favorite-matches>
-    <league-info></league-info>
+    </div>
+
+    <!-- <league-info></league-info> -->
     </b-form>
   </div>
 </template>
@@ -16,7 +18,7 @@ import FavoriteMatches from "../components/FavoriteMatches";
 import LoginPage from "../pages/LoginPage";
 export default {
   components: {
-    LeagueInfo, 
+    // LeagueInfo, 
     LoginPage, 
     FavoriteMatches
   }
@@ -54,8 +56,8 @@ form{
   cursor: default;
 }
 .login-css{
-  top: 45px;
-  right:100px; 
+  top: 0px;
+  right:250px; 
   bottom: 0;
   position:absolute;
 

@@ -191,6 +191,43 @@ const shared_data = {
       // TODO: What to do We The Error ???
     }
   },
+  async initDataForSearch(){
+    try{
+
+      const responseForNewMatch = await this.getDetailsForNewMatch();
+      localStorage.setItem("teamsNames", JSON.stringify(responseForNewMatch.teamsNames));
+      localStorage.setItem("venuesNames", JSON.stringify(responseForNewMatch.venuesName));
+      localStorage.setItem("referees", JSON.stringify(responseForNewMatch.referees));
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+// -------------------------------getSearchInfo--------------------------------
+
+  // async getSearchInfo(){
+  //   try{
+  //     let include_params = "squad.player";
+  //     axios.withCredentials = true;
+  //     const response = await axios.get(
+  //         this.serverUrl + `/teams/season/18334`, {
+  //           params: {
+  //             api_token: process.env.api_token,
+  //             include: `${include_params}`,
+  //           },
+  //         });
+      
+  //     axios.withCredentials = false;
+  //     console.log(response.data);
+  //     return response.data;
+
+  //   } catch (error){
+  //     // TODO: What to do We The Error ???
+  //   }
+  // },
+
+// -------------------------------DataForUser--------------------------------
 
   async initDataForUser(){
     try{
@@ -216,10 +253,27 @@ const shared_data = {
     } catch (error){
       // TODO: What to do We The Error ???
     }
-  }
-};
+  },
 
+// -------------------------------getCurrentSeasonID--------------------------------
 
+  // async getCurrentSeasonID(){
+  //   try{
+  //   const league = await axios.get(
+  //     this.serverUrl +`/leagues/18334`,
+  //     {
+  //       params: {
+  //         api_token: process.env.api_token,
+  //       },
+  //     }
+  //   );
+  //     console.log(league);
+  //     localStorage.setItem("current_season_id", JSON.stringify(league.data.data.current_season_id));
+  //   } catch (error){
+  //     // TODO: What to do We The Error ???
+  //   }
+  // }
+}
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 

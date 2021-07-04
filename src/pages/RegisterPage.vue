@@ -186,8 +186,9 @@
                                     id="country"
                                     v-model="$v.form.country.$model"
                                     :options="countries"
-                                    class="select"
+
                                     type="select"
+                                    class="select"
                                     :state="validateState('country')"
                                   ></b-form-select>
                                   <b-form-invalid-feedback>
@@ -459,4 +460,14 @@ export default {
 .top-240{
   top: 240px;
 }
+.select{
+    border: none;
+    // padding: 15px 20px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);    // text-emphasis-color:#fff ;
+    display: block;
+    color: rgb(19, 3, 3);
+
+}
+
 </style>

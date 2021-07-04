@@ -80,9 +80,6 @@
 
   // -------------------------------------------------------------------------card css-------------------------------------------------------------------------
 
-  body{
-    background-color:#FCBF49;
-  }
   .wrapper{margin:10vh}
   //post card styles
   
@@ -149,8 +146,8 @@
   }
    .card-img-overlay {
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-   background: rgb(35,79,109);
-  background: linear-gradient(0deg, rgba(35,79,109,0.3785889355742297) 0%, rgba(69,95,113,1) 100%);
+   background: rgb(109, 58, 35);
+  background: linear-gradient(0deg, rgba(192, 179, 1, 0.379) 0%, rgba(11, 145, 100, 0.651) 100%);
   }
   }
 
@@ -233,8 +230,7 @@
 }
 
 .login-space .group .input  ,
-.login-space .group .button ,
-.login-space .group .select{
+.login-space .group .button {
     border: none;
     padding: 15px 20px;
     border-radius: 25px;

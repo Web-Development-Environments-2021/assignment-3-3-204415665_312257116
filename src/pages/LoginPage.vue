@@ -64,7 +64,7 @@
                               <div class="hr"></div>
 
                               <div class="foot"> <a href="#">Forgot Password?</a> </div>
-                              <div class="mt-2">
+                              <div class="mt-2 foot" style="color: white">
                                   Do not have an account yet?
                                   <router-link to="register"> Register in here</router-link>
                               </div>
@@ -183,6 +183,34 @@ export default {
   margin: auto;
   left: -10px;
   position: absolute;
-
 }
+.login-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    position: absolute;
+    // background: url(https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1268&q=80) no-repeat center;
+}
+
+.login-snip {
+    width:100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 30px;
+    padding: 30px 80px 0px 80px;
+    background: #293241e0;
+    margin: auto;
+}
+
+.login-card {
+    width: 1000px;
+    min-height:600px;
+    left: 300px;
+    top:10px;
+    border-radius: 20%;
+    position: absolute;
+    margin: auto;
+}
+
+
 </style>

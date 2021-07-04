@@ -8,8 +8,9 @@
      -->
     <!-- <router-link :to="{name:player}">
     </router-link> -->
-    <b-card-group deck>
-      <b-card
+    <b-card-group id="div-card" deck>
+      <b-card 
+        style=""
         :title="this.player.name"
         :img-src="this.player.image"
         img-alt="Image"

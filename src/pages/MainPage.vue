@@ -1,15 +1,21 @@
 <template>
   <div class="main">
-    <b-form>
-    <!-- <h1 class="title">Main Page</h1> -->
-    <div class="login-css">
-    <login-page class="login-css" v-if="!$root.store.username"></login-page>
-    <favorite-matches v-else></favorite-matches>
-    </div>
-    <!-- <league-info></league-info> -->
-    </b-form>
+    
+     <!-- <div class="body">
+      <section class="wrapper">
+        <div class="container" > -->
+            <b-form>
+            <login-page class="login-css" v-if="!$root.store.username"></login-page>
+              
+            <favorite-matches v-else></favorite-matches>
+            </b-form>  
+
+            <league-info class="LInfo"></league-info>
+            <!-- </div></section></div> -->
+
   </div>
 </template>
+    <!-- <h1 class="title">Main Page</h1> -->
 
 <script>
 import LeagueInfo from "../components/LeagueInfo";
@@ -17,7 +23,7 @@ import FavoriteMatches from "../components/FavoriteMatches";
 import LoginPage from "../pages/LoginPage";
 export default {
   components: {
-    // LeagueInfo, 
+    LeagueInfo, 
     LoginPage, 
     FavoriteMatches
   }
@@ -36,13 +42,10 @@ export default {
 
 }
 .main{
-  width: 100%;
-  height: 93.5%;
-  background-image: url('../assets/AdobeStock_82365803.jpeg');
-  background-size: cover;
-  background-color: #ffffff;
+
   margin: auto;
-  position: absolute;
+  position: relative;
+  
 }
 form{
   // margin: auto;
@@ -64,8 +67,14 @@ form{
 //   pointer-events: none;
 //   cursor: default;
 // }
-.login-css{
-  position:absolute;
+// .login-css{
+//   position:absolute;
 
+// }
+.LInfo{
+      position: absolute;
+      top: 0px;
+      right:0px;
+      margin: auto;
 }
 </style>

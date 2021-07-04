@@ -5,16 +5,16 @@
     <div class="row register-css">
     <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
 
-      <div>
-          <div class="register-card" >
-              <div class="login-box">
-                  <div class="login-snip" style="width: 320%;"> 
+      <!-- <div class="login-card">
+        <div class="login-box"> -->
+          <div><div>
+          <div class="login-snip"> 
                     <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
                       <label for="tab-1" class="tab">Register</label>
                       <div class="login-space">
                           <div>
                              <!----------  username  ---------->
-                              <div class="group" >
+                              <div class="group">
                                 <b-form-group
                                   id="input-group-username"
                                   label-for="username">
@@ -38,9 +38,31 @@
                                   </b-form-invalid-feedback>
                                 </b-form-group>
                               </div>
+                             <!----------  email  ---------->
+                              <div class="group left-input">
+                                <b-form-group
+                                  id="input-group-email"
+                                  label-for="email">
 
+                                  <label for="email" class="label">Email Address</label>
+                                  <b-form-input
+                                    id="email"
+                                    type="email" 
+                                    class="input" 
+                                    placeholder="Enter your email address"
+                                    v-model="$v.form.email.$model"
+                                    :state="validateState('email')"
+                                  ></b-form-input>
+                                  <b-form-invalid-feedback v-if="!$v.form.email.required">
+                                    Email is required
+                                  </b-form-invalid-feedback>
+                                  <b-form-invalid-feedback v-else-if="!$v.form.email.email">
+                                    Email is not valid
+                                  </b-form-invalid-feedback>
+                                </b-form-group>
+                              </div>
                                <!----------  firstName  ---------->
-                              <div class="group">
+                              <div class="group top-80">
                               <b-form-group
                                 id="input-group-firstName"
                                 label-for="firstName">                                
@@ -64,9 +86,8 @@
                                 </b-form-invalid-feedback>
                               </b-form-group>
                               </div>
-
                               <!----------  lastName  ---------->
-                              <div class="group" style="position: relative;left:600px;bottom:80px;">
+                              <div class="group left-input top-80">
                                 <b-form-group
                                   id="input-group-lastName"
                                   label-for="lastname"
@@ -91,55 +112,8 @@
                                   </b-form-invalid-feedback>
                                 </b-form-group>
                               </div>
-
-                              <!----------  Country  ---------->
-                              <div class="group" style="position: relative;bottom:80px;">
-                                <b-form-group
-                                  id="input-group-country"
-                                  label-for="country"
-                                >
-                                <label for="country" class="label">country</label>
-
-                                  <b-form-select
-                                    id="country"
-                                    v-model="$v.form.country.$model"
-                                    :options="countries"
-                                    class="select"
-                                    type="select"
-                                    :state="validateState('country')"
-                                  ></b-form-select>
-                                  <b-form-invalid-feedback>
-                                    Country is required
-                                  </b-form-invalid-feedback>
-                                </b-form-group>
-                              </div>
-
-                              <!----------  email  ---------->
-                              <div class="group" style="position: relative;left:600px;bottom:160px;">
-                                <b-form-group
-                                  id="input-group-email"
-                                  label-for="email">
-
-                                  <label for="email" class="label">Email Address</label>
-                                  <b-form-input
-                                    id="email"
-                                    type="email" 
-                                    class="input" 
-                                    placeholder="Enter your email address"
-                                    v-model="$v.form.email.$model"
-                                    :state="validateState('email')"
-                                  ></b-form-input>
-                                  <b-form-invalid-feedback v-if="!$v.form.email.required">
-                                    Email is required
-                                  </b-form-invalid-feedback>
-                                  <b-form-invalid-feedback v-else-if="!$v.form.email.email">
-                                    Email is not valid
-                                  </b-form-invalid-feedback>
-                                </b-form-group>
-                              </div>
-
                               <!----------  Password  ---------->
-                              <div class="group" style="position: relative;bottom:160px;">
+                              <div class="group top-160">
                                   <b-form-group
                                     id="input-group-Password"
                                     label-for="password"
@@ -173,9 +147,8 @@
                                     </b-form-invalid-feedback>
                                   </b-form-group>
                               </div>
-
                               <!----------  confirmedPassword  ---------->
-                              <div class="group" style="position: relative;left:600px;bottom:240px;">
+                              <div class="group left-input top-160">
                                 <b-form-group
                                   id="input-group-confirmedPassword"
                                   label-for="confirmedPassword"
@@ -201,8 +174,30 @@
                                 </b-form-group>
                               </div>
 
-                             <div class="group" style="position: relative;bottom:240px;">
+                              <!----------  Country  ---------->
+                              <div class="group top-240">
+                                <b-form-group
+                                  id="input-group-country"
+                                  label-for="country"
+                                >
+                                <label for="country" class="label">country</label>
+
+                                  <b-form-select
+                                    id="country"
+                                    v-model="$v.form.country.$model"
+                                    :options="countries"
+                                    class="select"
+                                    type="select"
+                                    :state="validateState('country')"
+                                  ></b-form-select>
+                                  <b-form-invalid-feedback>
+                                    Country is required
+                                  </b-form-invalid-feedback>
+                                </b-form-group>
+                              </div>
+
                             <!----------  image_url  ---------->
+                             <div class="group left-input top-240">
                                 <b-form-group
                                   id="input-group-image_url"
                                   label-for="image_url"
@@ -233,18 +228,16 @@
                                   style="padding-inline: 70px;">Register</b-button>
                               </div>
                                   
-                              <div class="register-button" style="position:relative;bottom:333px;left:850px;">
+                              <div class="register-button" style="left:850px;">
                                   <b-button 
                                   type="reset" 
                                   variant="danger"
                                   style="padding-inline: 70px;" >Reset</b-button>
                               </div>
 
-                              <div class="hr" style="width: 1000px; position:absolute ;bottom:220px;left:200px;">
+                              <div class="hr">
                                 You have an account already?
                                 <router-link to="login"> Log in here</router-link></div>
-                              
-                              
                             <b-alert
                               class="mt-2"
                               v-if="form.submitError"
@@ -256,9 +249,8 @@
                             </b-alert>
                           </div>
                       </div>
-                  </div>
-              </div>
           </div>
+       </div>
       </div>
       </b-form>
   </div>
@@ -407,42 +399,64 @@ export default {
 <style lang="scss" scoped>
 
 .register-css{
-  height: 93.5%;
-  position:absolute;
-  width: 100%;
-  overflow: hidden;
-  background: #293241ef;
+  max-width: 2000px;
   margin: auto;
   color: white;
 }
 
 .login-snip {
-    padding: 90px 70px 50px 70px;
-    position:relative;
-    margin: auto; 
-    background: rgba(255, 255, 255, 0)
-
+  height: 93.5%;
+  top:46px;
+  left:0px;
+  padding: 30px 0px 0px 80px;
+  margin-bottom: 100px;
 }
 
-.register-card {
-    margin: auto;
-    width: 100.85%;
-    height: 95%;
-    position:absolute;
-
+.group{
+  position: absolute; 
+  width:500px;
+  margin: auto;
 }
+
+// .login-card {
+//     width: 400px;
+//     min-height:674px;
+//     left: 0px;
+//     position: absolute;
+// }
+
+//   .login-box {
+//     width: 100%;
+//     height: 100%;
+//     position: absolute;
+//     background: url(https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1268&q=80) no-repeat center;
+// }
 
 .register-button{
-  position: relative;
-  bottom:285px;
+  position: absolute;
+  bottom:-50px;
   left:600px;
   margin:auto;
   padding-inline:20px;
   padding-bottom: 10px;
 }
 
-.group{
-  height: auto;
-  width:500px;
+.hr{
+  /* position:absolute; */
+  width:1000px;
+  margin: auto;
+  top:460px;
+}
+.left-input{
+  left:600px;
+}
+.top-80{
+  top: 80px;
+}
+.top-160{
+  top: 160px;
+}
+.top-240{
+  top: 240px;
 }
 </style>

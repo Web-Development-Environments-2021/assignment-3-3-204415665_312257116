@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         updateMatches(){
-            if ( JSON.parse(localStorage.getItem("leaguePastMatches")) != null ) {
+            if ( JSON.parse(localStorage.getItem("leaguePastMatches")) != null  ) {
 
                 if (  !( JSON.stringify( this.pastMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leaguePastMatches"))))){
 

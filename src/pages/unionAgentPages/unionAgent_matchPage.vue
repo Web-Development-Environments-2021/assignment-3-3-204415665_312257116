@@ -150,8 +150,9 @@
             v-if="form.submitError"
             variant="warning"
             dismissible
+            @dismissed="rebootError"
             show >
-            Register failed: {{ form.submitError }}
+            Add New Match Failed: {{ form.submitError }}
         </b-alert>
 
         <div id="return-btn-div" >
@@ -194,6 +195,14 @@ export default {
         },
         async onAddMatch() {
             this.$v.form.$touch();
+
+            var finalCheck = this.finalValidation();
+
+            if ( finalCheck.badDetails ){
+                this.form.submitError = finalCheck.message;
+                return;
+            }
+
             if (this.$v.form.$anyError) {
                 return;
             }
@@ -239,11 +248,12 @@ export default {
                 
             } catch (err) {
                 console.log(err);
-                this.form.submitError = err.response.data.message;
+                this.form.submitError = err.response.data;
             }
         },
         formatDateTime(date) {
             var formattedDateTime = date.slice(0, 19).replace('T', ' ');
+            formattedDateTime += ":00";
             return formattedDateTime;
         },
         onRowSelected(refereeRow) {
@@ -257,49 +267,47 @@ export default {
             var dateFormatted = this.formatDateTime(this.form.matchDate);
 
             var dateMatch = "";
-
-            if ( new Date( this.form.matchDate ) < new Date() ){ // Past Match
-
-                dateMatch = "matchDateAndTime";
-
-            } else {
-                dateMatch = "matchDate";
-            }
-
-            var pastMatches = JSON.parse(localStorage.getItem("leaguePastMatches"));
+            var matches = [];
 
             var badDetails = false;
             var message = "";
 
-            pastMatches.map( ( match ) => {
-                if ( match.matchDateAndTime == dateFormatted && match.venueName == this.form.venueName && 
-                    match.localTeamName == this.form.localTeamName && match.visitorTeamName == this.form.visitorTeamName ){
+            if ( new Date( this.form.matchDate ) < new Date() ){ // Past Match
 
+                dateMatch = "matchDateAndTime";
+                matches = JSON.parse(localStorage.getItem("leaguePastMatches"));
+            } else {
+                dateMatch = "matchDate";
+                matches = JSON.parse(localStorage.getItem("leagueFutureMatches"));
+            }
+
+            matches.map( ( match ) => {
+                if ( match[dateMatch] == dateFormatted && match.venueName == this.form.venueName && 
+                    match.localTeamName == this.form.localTeamName && match.visitorTeamName == this.form.visitorTeamName ){
+                    
                     badDetails = true;
                     message = "Match all ready exist";
                 } 
-                else if ( match.matchDateAndTime == dateFormatted && match.venueName == this.form.venueName ) {
+                else if ( match[dateMatch] == dateFormatted && match.venueName == this.form.venueName ) {
 
                     badDetails = true;
                     message = "Venue not available";
                 }
-                else if ( match.matchDateAndTime == dateFormatted && match.localTeamName == this.form.localTeamName ) {
+                else if ( match[dateMatch] == dateFormatted && match.localTeamName == this.form.localTeamName ) {
 
                     badDetails = true;
                     message = "Local team not available";
                 }
-                else if ( match.matchDateAndTime == dateFormatted && match.visitorTeamName == this.form.visitorTeamName ) {
+                else if ( match[dateMatch] == dateFormatted && match.visitorTeamName == this.form.visitorTeamName ) {
 
                     badDetails = true;
                     message = "Visitor team not available";
                 }
-
-                return { badDetails : badDetails, message: message };
-
             })
-
-            
-
+            return { badDetails : badDetails, message: message };
+        },
+        rebootError(){
+            this.form.submitError = undefined;
         }
     },
     computed: {

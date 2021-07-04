@@ -127,7 +127,7 @@ export default {
         },
         pastMatches: {
             type: Array,
-            require: false
+            require: true
         },
         isBusy: {
             type: Boolean,

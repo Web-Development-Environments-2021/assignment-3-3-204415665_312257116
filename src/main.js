@@ -31,7 +31,9 @@ import {
   TablePlugin,
   SpinnerPlugin,
   PopoverPlugin ,
-  IconsPlugin
+  IconsPlugin,
+  FormDatepickerPlugin,
+  FormTimepickerPlugin 
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -51,7 +53,9 @@ import {
   TablePlugin,
   SpinnerPlugin,
   PopoverPlugin ,
-  IconsPlugin
+  IconsPlugin,
+  FormDatepickerPlugin,
+  FormTimepickerPlugin 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

@@ -25,7 +25,6 @@ export default {
     components: {
         MatchesTable,
     },
-
     data(){
         return {
 
@@ -51,11 +50,9 @@ export default {
                     this.isBusy = true;
                     this.pastMatches = [];
                     this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
-                    // this.extractRefereesInformation(this.pastMatches, "past");
                     this.isBusy = false;
 
                     this.displayPastMatches = JSON.parse(JSON.stringify(this.pastMatches));
-                    this.past_rows = this.pastMatches.length;
 
                 }
                 if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
@@ -64,11 +61,9 @@ export default {
                     this.isBusy = true;
                     this.futureMatches = [];
                     this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
-                    // this.extractRefereesInformation(this.futureMatches, "future");
                     this.isBusy = false;
 
                     this.displayFutureMatches = JSON.parse(JSON.stringify(this.futureMatches));
-                    this.future_rows = this.futureMatches.length;
                 }
             }
             this.updateAddMatchButton();

@@ -1,11 +1,11 @@
 
 <template>
 
-      <div class="container" style="padding-top: 10px;">
+      <div class="container " style="padding-top: 10px;">
         <div class="row" >
         <div v-for="(g,index) in futureMatches" v-bind:key="g.matchID">
-          <div class="col-sm-4" >
-            <div class="card text-white card-has-bg click-col">
+          <div class="col-sm-4 " >
+            <div class="match-card card text-white card-has-bg click-col">
             <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">

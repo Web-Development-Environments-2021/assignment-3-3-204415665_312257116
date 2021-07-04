@@ -8,7 +8,7 @@
                   <div class="login-snip" > <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label> 
                       <div class="login-space">
                           <div>
-                              <div class="group">
+                            <div class="group">
                                  <b-form-group
                                   id="input-group-Username"
                                   label-for="Username"
@@ -49,7 +49,9 @@
                                   </b-form-group>
                               </div>
 
-                              <div class="group"> <input id="check" type="checkbox" class="check" checked> <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
+                              <div class="group"> 
+                                <input id="check" type="checkbox" class="check" checked>
+                                 <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
                               <div class="group">
                                 <b-button
                                   type="submit"

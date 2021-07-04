@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px;">
+  <div style="padding: 5px;">
     <!-- blue - #293241
          orang - #ee6c4d
          e0fbfc
@@ -8,24 +8,22 @@
      -->
     <!-- <router-link :to="{name:player}">
     </router-link> -->
-    <b-card-group deck>
-      <b-card
+    <b-card-group id="div-card" deck>
+      <b-card 
+        style=""
         :title="this.player.name"
         :img-src="this.player.image"
         img-alt="Image"
         img-top
-        img-width=10px
         tag="article"
-        class="mb-2"
-
+        class="mb-2 my-card"
       >
-        <b-card-text>
+      <b-card-text>
 
           team name:<b>{{this.player.team_name}}</b>
            <br> 
           position:<b>{{this.player.position}}</b>
         </b-card-text>
-        <b-button href="#" variant="primary">Go somewhere</b-button>
       </b-card>
     </b-card-group>
   </div>
@@ -49,23 +47,35 @@ export default {
 
 
   .card{
-    width: 16rem!important;
-    height: 26rem!important;
-    font-size: 13px!important;
-    background-color: rgb(255, 255, 255)!important;
-    padding: 3px;
-    box-shadow: 0 9px rgb(110, 110, 110);
+    width: 11rem!important;
+    height: 13rem!important;
+    font-size: 10.5px!important;
+    background-color: rgb(252, 151, 85)!important;
+    box-shadow: 4px 5px rgba(99, 36, 0, 0.856);
     border-radius: 30px;
-
-
+    padding: 5px;
   }
+
   .card-img-top {
-    width: 100%;
-    height: 13vw;
+    width: 55%;
+    height: 45%;
     object-fit: cover;
+    margin: auto;
+    border-radius: 100px;
+    border-color:rgb(161, 6, 6);
+    background-color: rgb(255, 255, 255)!important;
+
+    border-width:200px ;
+    box-shadow: 1px 1px 1px 1px rgb(2, 2, 2);
+
+    /* background-color: rgba(219, 157, 0, 0.966); */
 }
   .card-title{
-    font-size: 16px!important;
+    font-size: 13px!important;
+    font-weight:bold;
+    text-align: center;
   }
+
+
 </style>
 

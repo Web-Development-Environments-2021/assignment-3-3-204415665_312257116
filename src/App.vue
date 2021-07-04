@@ -10,11 +10,14 @@
 
 <script>
 import NavigatorBar from "./components/NavigatorBar.vue";
+import LoadingIcon from "./components/loading.vue"
+
 
 export default {
   name: "App",
     components: {
-    NavigatorBar
+    NavigatorBar,
+    
   },
   methods: {
     // ------------------------ Logout ------------------------ //

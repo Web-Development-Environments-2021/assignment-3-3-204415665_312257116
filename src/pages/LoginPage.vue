@@ -1,67 +1,101 @@
 <template>
-  <div class="container">
-    <h1 class="title">Login</h1>
-    <b-form @submit.prevent="onLogin">
-      <b-form-group
-        id="input-group-Username"
-        label-cols-sm="3"
-        label="Username:"
-        label-for="Username"
-      >
-        <b-form-input
-          id="Username"
-          v-model="$v.form.username.$model"
-          type="text"
-          :state="validateState('username')"
-        ></b-form-input>
-        <b-form-invalid-feedback>
-          Username is required
-        </b-form-invalid-feedback>
-      </b-form-group>
+  <div class="container" >
+    <div class="row log-css">
+      <b-form @submit.prevent="onLogin">
+      <div>
+          <div class="login-card">
+              <div class="login-box">
+                  <div class="login-snip" > <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label> 
+                      <div class="login-space">
+                          <div>
+                              <div class="group">
+                                 <b-form-group
+                                  id="input-group-Username"
+                                  label-for="Username"
+                                ><label for="Username" class="label">Username</label>
+                                  <b-form-input
+                                    id="Username"
+                                    v-model="$v.form.username.$model"
+                                    type="text"
+                                    class="input"
+                                    placeholder="Enter your username"
+                                    :state="validateState('username')"
+                                  ></b-form-input>
+                                  <b-form-invalid-feedback>
+                                    Username is required
+                                  </b-form-invalid-feedback>
+                                </b-form-group>
+                              </div>
+                              
+                              <div class="group">
+                                  <b-form-group
+                                    id="input-group-Password"
+                                    label-for="Password"
+                                  >
+                                   <label for="Password" class="label">Password</label>
 
-      <b-form-group
-        id="input-group-Password"
-        label-cols-sm="3"
-        label="Password:"
-        label-for="Password"
-      >
-        <b-form-input
-          id="Password"
-          type="password"
-          v-model="$v.form.password.$model"
-          :state="validateState('password')"
-        ></b-form-input>
-        <b-form-invalid-feedback>
-          Password is required
-        </b-form-invalid-feedback>
-      </b-form-group>
+                                    <b-form-input
+                                      id="Password"
+                                      type="password"
+                                      class="input"
+                                      data-type="password"
+                                      placeholder="Enter your password"
+                                      v-model="$v.form.password.$model"
+                                      :state="validateState('password')"
+                                    ></b-form-input>
+                                    <b-form-invalid-feedback>
+                                      Password is required
+                                    </b-form-invalid-feedback>
+                                  </b-form-group>
+                              </div>
 
-      <b-button
-        type="submit"
-        variant="primary"
-        style="width:100px;display:block;"
-        class="mx-auto w-100"
-        >Login</b-button
-      >
-      <div class="mt-2">
-        Do not have an account yet?
-        <router-link to="register"> Register in here</router-link>
+                              <div class="group"> <input id="check" type="checkbox" class="check" checked> <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
+                              <div class="group">
+                                <b-button
+                                  type="submit"
+                                  variant="primary"
+                                  style="width:100px;display:block;"
+                                  class="mx-auto w-100 button"
+                                  value="Sign In"
+                                  >Sign In</b-button>
+                              </div>
+                              <div class="hr"></div>
+
+                              <div class="foot"> <a href="#">Forgot Password?</a> </div>
+                              <div class="mt-2">
+                                  Do not have an account yet?
+                                  <router-link to="register"> Register in here</router-link>
+                              </div>
+                              <b-alert
+                                class="mt-2"
+                                v-if="form.submitError"
+                                variant="warning"
+                                dismissible
+                                show
+                              >
+                                Login failed: {{ form.submitError }}
+                              </b-alert>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
     </b-form>
-    <b-alert
-      class="mt-2"
-      v-if="form.submitError"
-      variant="warning"
-      dismissible
-      show
-    >
-      Login failed: {{ form.submitError }}
-    </b-alert>
+  </div>
+</div>
+</template>
+      
+
+
+
+
+
+
     <!-- <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card> -->
-  </div>
-</template>
+
 
 <script>
 import { required } from "vuelidate/lib/validators";
@@ -142,7 +176,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.container {
-  max-width: 400px;
+
+.log-css{
+  margin: auto;
+  left: -10px;
+  position: absolute;
+
 }
 </style>

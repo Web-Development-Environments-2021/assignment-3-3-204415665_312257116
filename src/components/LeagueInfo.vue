@@ -34,14 +34,14 @@ export default {
 <style>
 .league-preview {
   display: inline-block;
-  width: 250px;
-  height: 200px;
+  width: 300px;
+  height: 470px;
   position: relative;
   margin: 10px 10px;
   border-style: solid;
   border-radius: 10px;
   border-width: 5px;
-  border-color:rgb(44, 89, 116);
+  border-color:rgb(201, 0, 252);
 }
 
 .league-preview .league-title {

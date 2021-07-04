@@ -1,6 +1,5 @@
 <template>
   <div id="navigatorbar">
-        <div class="upper"></div>
 
     <b-navbar toggleable="lg" type="dark" variant="dark">
       
@@ -46,12 +45,15 @@
             </em>
 
           </template>
-          <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</b-dropdown-item>
-          <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</b-dropdown-item>
+          <div class="div-dropdown">
+            <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><em><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</em></b-dropdown-item>
+            <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><em><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</em></b-dropdown-item>
+          </div>
         </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
-    </b-navbar>
+    </b-navbar>    <div class="upper"></div>
+
   </div>
 </template>
 
@@ -70,13 +72,15 @@ export default {
 </script>
 
 <style lang="scss">
-  b nav {
-    padding: 30px;
+
+  .navbar {
+    padding: 0px!important;
   }
 
   nav a {
     font-weight: bold;
     color: #696969;
+    padding: 10px;
   }
 
   em {
@@ -86,6 +90,7 @@ export default {
   }
   .navbar.navbar-dark.bg-dark{
       background-color: #293241!important;
+
   }
   nav a.router-link-exact-active {
     color: #e7b4a5!important;
@@ -99,10 +104,22 @@ export default {
   .nav-dropdown-item{
     text-align: center!important;
     width: 200px;
+    background-color: #293241!important;
+    font-weight: bold!important;
+    padding: 10px;
   }
+  .nav-dropdown-item:hover{
+    text-align: center!important;
+    width: 200px;
+    background-color: #293241!important;
+    font-weight: bold!important;
+    padding: 10px;
+  }
+
   .nav-icon{
     position: absolute!important;
     left: 10px!important;
+    width: 20px!important;
     
   }
 </style>

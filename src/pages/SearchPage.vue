@@ -100,18 +100,23 @@
       </div>
 
         <div >
-          <div v-if="form.searchType == 'Players' && flag==true" class="container my-container-css">
+          <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css">
               <div class="row align-items-start my-row-css">
                   <PlayersInformation v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
              </div>
           </div>
-          <div  v-else-if="form.searchType == 'Teams'">
+          <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false">
                   <div v-for="res in this.results" v-bind:key="res.teamName">
                       <a>search Query:</a>
                   </div>
           </div>
           <div v-else-if="flag==false" class="container my-container-css">
                   <LoadingIcon/>
+          </div>
+          <div v-else-if="noResult==true" class="container my-container-css">
+              <div class="row align-items-start my-row-css">
+                  <h1 class="title">no result</h1>
+              </div>
           </div>
         </div>
     </div>
@@ -162,7 +167,8 @@ export default {
         results: [],
         submitError: undefined,
         buttonColor:"success",
-        flag:Boolean
+        flag:Boolean,
+        noResult:false
       };
     },
     validations: {
@@ -190,13 +196,9 @@ export default {
     }
   },
   mounted() {
-    console.log("sessionStorage is : ", sessionStorage.getItem("lastSearchQuery"));
-    console.log("sessionStorage is : ", sessionStorage.getItem("lastSearchResults"));
-    if (sessionStorage.getItem("lastSearchQuery") != null) {
-      console.log("got inside the load previous search");
-      // this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
-      // this.res = JSON.parse(sessionStorage.getItem("lastSearchResults"));
-    }
+
+
+    
   },
   methods: {
     sortOn(){
@@ -233,14 +235,18 @@ export default {
         console.log(response);
         console.log(response.data);
 
-
-        if(response.status==404){
+        if(response.status!==200 && response.status!==204){
           this.$router.push("*");
-        } 
+        }
+        else if  (response.status==204){
+              this.noResult=true;
+              console.log(this.noResult);
+        }
         else {
           this.results.push(...response.data.players);
         }
         this.flag=true;
+
         console.log("save to lastSearchQuery");
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
@@ -265,17 +271,16 @@ export default {
     },
     async onReset() {
       
-      this.form = {
-        searchQuery:"",
-        searchType: "Players",
-        sortTeamsAlphabetical: "",
-        sortPlayers: "",
-        sortPlayersBy: "",
-        filter_Players: "",
-      };
+      this.form.searchQuery="";
+      this.form.searchType= "Players";
+      this.form.sortTeamsAlphabetical= "";
+      this.form.sortPlayers= "";
+      this.form.sortPlayersBy= "";
+      this.form.filter_Players= "";
       this.flag=Boolean;
-      this.results=[],
-      location.reload(),
+      this.noResult=false;
+      this.results=[];
+      // location.reload();
       this.$nextTick(() => {
         this.$v.$reset();
         

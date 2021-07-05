@@ -33,7 +33,8 @@ import {
   PopoverPlugin ,
   IconsPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin 
+  FormTimepickerPlugin,
+  OverlayPlugin,
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -55,7 +56,8 @@ import {
   PopoverPlugin ,
   IconsPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin 
+  FormTimepickerPlugin,
+  OverlayPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

@@ -11,52 +11,64 @@
             </b-table>
         </div>
         <div id="add-referee-div" v-show="!showRefereeInfo" >
-            <h5> Select Referee : </h5>
-            <b-table id="referees-table"
-                table-variant="light"
-                head-variant="light"
-                responsive="sm"
-                hover
-                bordered
-                striped
-                outlined
-                no-border-collapse
-                selectable
-                select-mode=single
-                ref="refereeTable"
-                @row-selected="onRowSelected"
-                :items="referees"
-                :fields="refereeFields"
-                >
-                <template #cell(selected)="{ rowSelected }">
-                    <template v-if="rowSelected">
-                        <span aria-hidden="true">&check;</span>
-                        <span class="sr-only">Selected</span>
-                    </template>
-                    <template v-else>
-                        <span aria-hidden="true">&nbsp;</span>
-                        <span class="sr-only">Not selected</span>
-                    </template>
-                </template>
-            </b-table>
+            <h5 id="select-referee-title"> Select Referee : </h5>
             
-            <!----------  Cancel Button  ---------->
+            <b-overlay :show="loadingState" >
 
-            <b-button variant="danger" id="cancel-add-referee" @click="cancelBtn">
-                Cancel
-            </b-button>
+                <!----------  B-Table Referees  ---------->
 
-            <!----------  Add Button  ---------->
+                <b-table id="referees-table"
+                    table-variant="light"
+                    head-variant="light"
+                    responsive="sm"
+                    hover
+                    bordered
+                    striped
+                    outlined
+                    no-border-collapse
+                    selectable
+                    select-mode=single
+                    ref="refereeTable"
+                    @row-selected="onRowSelected"
+                    :items="referees"
+                    :fields="refereeFields"
+                    >
+                    <template #cell(selected)="{ rowSelected }">
+                        <template v-if="rowSelected">
+                            <span aria-hidden="true">&check;</span>
+                            <span class="sr-only">Selected</span>
+                        </template>
+                        <template v-else>
+                            <span aria-hidden="true">&nbsp;</span>
+                            <span class="sr-only">Not selected</span>
+                        </template>
+                    </template>
+                </b-table>
+                
+                <!----------  Cancel Button  ---------->
 
-            <b-button :disabled="!this.form.refereeID" variant="primary" class="ml-5 w-25" @click="addReferee()" v-if="!updateOrAdd" >
-                Add Referee
-            </b-button>
+                <b-button variant="danger" id="cancel-add-referee" @click="cancelBtn">
+                    Cancel
+                </b-button>
 
-            <!----------  Update Button  ---------->
+                <!----------  Add Button  ---------->
 
-            <b-button :disabled="!this.form.refereeID" variant="primary" class="ml-5 w-25" @click="updateReferee()" v-else>
-                Update Referee
-            </b-button>
+                <b-button :disabled="!this.form.refereeID" variant="primary" class="ml-5 w-25" @click="addReferee()" v-if="!updateOrAdd" >
+                    Add Referee
+                </b-button>
+
+                <!----------  Update Button  ---------->
+
+                <b-button :disabled="!this.form.refereeID" variant="primary" class="ml-5 w-25" @click="updateReferee()" v-else>
+                    Update Referee
+                </b-button>
+
+                <!----------  Overlay Loading  ---------->
+
+                <template #overlay>
+                    <loading/>
+                </template>
+            </b-overlay>
         </div>
         <div id="update-referee-btn">
             <b-button variant="primary" size="md" @click="updateRefereeBtn()" v-show="showRefereeInfo">
@@ -69,8 +81,14 @@
 
 <script>
 
+import Loading from '../loading.vue';
+
 export default {
     name: "RefereePreview",
+
+    components: {
+        Loading
+    },
 
     data() {
         return {
@@ -83,6 +101,7 @@ export default {
             },
             refereeFields: ['selected', "refereeID", "firstName", "lastName", "course"],
             updateRefereeState: false,
+            loadingState: false
         }
     },
 
@@ -128,6 +147,7 @@ export default {
         },
         async addReferee(){
             try{
+                this.loadingState = true;
                 this.axios.defaults.withCredentials = true;
 
                 const response = await this.axios.post(
@@ -143,8 +163,8 @@ export default {
                     this.updateLocalStorage();
                     this.$root.toast("Referee Add", "Referee Added successfully", "success");
                 }
+                this.loadingState = false;
 
-                
             } catch (err) {
                 console.log(err);
                 this.form.submitError = err.response.data;
@@ -152,6 +172,7 @@ export default {
         },
         async updateReferee(){
             try{
+                this.loadingState = true;
                 this.axios.defaults.withCredentials = true;
 
                 const response = await this.axios.put(
@@ -167,6 +188,7 @@ export default {
                     this.updateLocalStorage();
                     this.$root.toast("Referee Update", "Referee Updated successfully", "success");
                 }
+                this.loadingState = false;
                 
             } catch (err) {
                 console.log(err);
@@ -185,8 +207,6 @@ export default {
                 pastOrFuture = "future";
             }
 
-            console.log(matches);
-
             matches.map((match) => {
                 if (match.matchID == this.matchID){
                     match.refereeInformation = {
@@ -203,7 +223,6 @@ export default {
             } else {
                 localStorage.setItem("leagueFutureMatches", JSON.stringify(matches));
             }
-
         }
     },
     computed:{
@@ -265,6 +284,17 @@ export default {
 
 
 <style scoped>
+
+#loading-request {
+    width: 20%;
+    height: 20%;
+}
+
+#select-referee-title {
+    font-style: oblique;
+    text-decoration: underline;
+    font-weight: bold;
+}
 
 
 </style>

@@ -73,8 +73,7 @@
 
             <template #table-busy>
                 <div class="text-center text-danger my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                    <strong>Loading...</strong>
+                    <loading/>
                 </div>
             </template>
         </b-table>
@@ -94,6 +93,7 @@
 
 import RefereePreview from './unionAgent_RefereePreview.vue';
 import EventsLogPreview from './unionAgent_EventsLogPreview.vue';
+import Loading from '../loading.vue';
 
 export default {
     name: "MatchesTable",
@@ -101,11 +101,10 @@ export default {
     components:{
         RefereePreview,
         EventsLogPreview,
+        Loading,
     },
-
     data(){
         return{
-
             fields: [
                 { key : "matchID", sortable: true },
                 { key : "matchDate", sortable: true },
@@ -123,7 +122,6 @@ export default {
         }
     },
     props: {
-
         futureMatches: {
             type: Array,
             require: true

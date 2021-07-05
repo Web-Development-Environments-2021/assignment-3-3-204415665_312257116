@@ -67,6 +67,7 @@
                     </referee-preview>
 
                     <events-log-preview v-if="item.item._eventsShowing"
+                        :matchID="item.item.matchID"
                         :eventsLog="item.item.eventsLog" >
                     </events-log-preview>
 

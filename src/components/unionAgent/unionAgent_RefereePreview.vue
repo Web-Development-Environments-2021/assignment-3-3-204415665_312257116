@@ -285,16 +285,11 @@ export default {
 
 <style scoped>
 
-#loading-request {
-    width: 20%;
-    height: 20%;
-}
-
 #select-referee-title {
     font-style: oblique;
     text-decoration: underline;
     font-weight: bold;
+    margin: 15px;
 }
-
 
 </style>

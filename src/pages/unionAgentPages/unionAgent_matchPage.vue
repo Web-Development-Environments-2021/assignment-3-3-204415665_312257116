@@ -32,7 +32,7 @@
                 <b-form-group
                     id="input-group-local-team-name"
                     label-cols-sm="3"
-                    label="Local Team Name:"
+                    label="Local Team :"
                     label-for="localTeamName"
                     >
                     <b-form-select 
@@ -41,6 +41,9 @@
                         :options="teamsNames"
                         :state="validateState('localTeamName')"
                     >
+                        <template #first>
+                            <b-form-select-option value="" disabled>-- Please Select Local Team --</b-form-select-option>
+                        </template>
                     </b-form-select>
                     <b-form-invalid-feedback v-if="!$v.form.localTeamName.required">
                         Local Team is required
@@ -55,7 +58,7 @@
                 <b-form-group
                     id="input-group-visitor-team-name"
                     label-cols-sm="3"
-                    label="Visitor Team Name:"
+                    label="Visitor Team :"
                     label-for="visitorTeamName"
                     >
                     <b-form-select 
@@ -64,6 +67,9 @@
                         :options="teamsNames"
                         :state="validateState('visitorTeamName')"
                     >
+                        <template #first>
+                            <b-form-select-option value="" disabled>-- Please Select Visitor Team --</b-form-select-option>
+                        </template>
                     </b-form-select>
                     <b-form-invalid-feedback v-if="!$v.form.visitorTeamName.required">
                         Visitor team is required
@@ -78,7 +84,7 @@
                 <b-form-group
                     id="input-group-venue-name"
                     label-cols-sm="3"
-                    label="venue Name:"
+                    label="venue :"
                     label-for="venueName"
                     >
                     <b-form-select 
@@ -87,6 +93,9 @@
                         :options="venuesNames"
                         :state="validateState('venueName')"
                     >
+                        <template #first>
+                            <b-form-select-option value="" disabled>-- Please Select Venue --</b-form-select-option>
+                        </template>
                     </b-form-select>
                     <b-form-invalid-feedback v-if="!$v.form.venueName.required">
                         Venue is required

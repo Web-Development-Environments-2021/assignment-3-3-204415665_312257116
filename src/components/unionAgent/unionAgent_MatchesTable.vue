@@ -43,8 +43,8 @@
                 <b-button v-if="Object.keys(refereeInformation).length" @click="toggleRowDetails(item, 'referee')" variant="info" size="sm">
                     {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
-                <b-button v-else variant="primary" size="sm" > 
-                    Add Referee
+                <b-button v-else variant="primary" size="sm"  @click="toggleRowDetails(item, 'referee')"> 
+                    {{ item._refereeShowing ? 'Cancel' : 'Add Referee'}} 
                 </b-button>
             </template>
 
@@ -60,7 +60,10 @@
             <template #row-details="item">
                 <b-card>
                     <referee-preview v-if="item.item._refereeShowing"
-                        :refereeInfo="item.item.refereeInformation" >
+                        v-on:cancel-add-referee="toggleRowDetails(item.item, 'referee')"
+                        :refereeInfo="item.item.refereeInformation"
+                        :matchID="item.item.matchID"
+                        :matchDate="item.item.matchDate">
                     </referee-preview>
                     <events-log-preview v-if="item.item._eventsShowing"
                         :eventsLog="item.item.eventsLog" >

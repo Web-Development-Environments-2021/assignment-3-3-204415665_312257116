@@ -1,5 +1,6 @@
 <template>
   <div class="body" id="currentstagematches">
+
     <section class="wrapper">
       <div class="container">
         <div class="row">
@@ -17,7 +18,8 @@
                       <img class="mr-3 rounded-circle" src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png" alt="Generic placeholder image" style="max-width:50px">
                       <div class="media-body">
                           <h6 class="my-0 text-white d-block">Oz COruhlu</h6>
-                          <small>Director of UI/UX</small>
+                          <!-- <small>Director of UI/UX</small><FavoriteIcon/> -->
+
                       </div>
                   </div>
                 </div>
@@ -33,9 +35,11 @@
 
 <script>
 import LoadingIcon from "../../components/loading.vue"
+import LikeIcon from "../../components/FavoriteIcon.vue"
 export default {
     name: "CurrentStageMatches",
     components:{
+      // FavoriteIcon
     }
     
 }

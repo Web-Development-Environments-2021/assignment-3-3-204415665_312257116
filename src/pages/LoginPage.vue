@@ -5,9 +5,10 @@
       <div>
           <div class="login-card">
               <div class="login-box">
-                  <div class="login-snip" > <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label> 
+                  <div class="login-snip"> <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label> 
                       <div class="login-space">
                           <div>
+                            <!--------------- Username --------------->
                             <div class="group">
                                  <b-form-group
                                   id="input-group-Username"
@@ -26,7 +27,8 @@
                                   </b-form-invalid-feedback>
                                 </b-form-group>
                               </div>
-                              
+
+                            <!--------------- Password --------------->
                               <div class="group">
                                   <b-form-group
                                     id="input-group-Password"
@@ -49,6 +51,7 @@
                                   </b-form-group>
                               </div>
 
+                            <!--------------- Password --------------->
                               <div class="group"> 
                                 <input id="check" type="checkbox" class="check" checked>
                                  <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
@@ -109,9 +112,11 @@ export default {
         username: "",
         password: "",
         submitError: undefined
-      }
+      },
+      mainStyle:false
     };
   },
+
   validations: {
     form: {
       username: {
@@ -150,7 +155,6 @@ export default {
         }
 
         await this.$root.store.initDataForUser();
-
         // console.log(localStorage.getItem("UserFavoriteMatches"));
         if ( this.$route.path != "/" ) {
           this.$router.push("/");
@@ -184,33 +188,32 @@ export default {
   left: -10px;
   position: absolute;
 }
-.login-box {
-    width: 100%;
-    height: 100%;
-    border-radius: 30px;
-    position: absolute;
-    // background: url(https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1268&q=80) no-repeat center;
-}
+// .login-box {
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 30px;
+//     position: absolute;
+//     // background: url(https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1268&q=80) no-repeat center;
+// }
 
-.login-snip {
-    width:100%;
-    height: 100%;
-    position: absolute;
-    border-radius: 30px;
-    padding: 30px 80px 0px 80px;
-    background: #293241e0;
-    margin: auto;
-}
+// .login-snip {
+//     width:100%;
+//     height: 100%;
+//     position: absolute;
+//     border-radius: 30px;
+//     padding: 30px 80px 0px 80px;
+//     background: #293241e0;
+//     margin: auto;
+// }
 
-.login-card {
-    width: 1000px;
-    min-height:600px;
-    left: 300px;
-    top:10px;
-    border-radius: 20%;
-    position: absolute;
-    margin: auto;
-}
-
+// .login-card {
+//     width: 1000px;
+//     min-height:600px;
+//     left: 300px;
+//     top:10px;
+//     border-radius: 20%;
+//     position: absolute;
+//     margin: auto;
+// }
 
 </style>

@@ -1,8 +1,7 @@
 
 <template>
-
-      <div class="container " style="padding-top: 10px;">
-        <div class="row" >
+    <div class="container " style="padding-top: 10px;">
+      <div class="row" >
         <div v-for="(g,index) in futureMatches" v-bind:key="g.matchID">
           <div class="col-sm-4 " >
             <div class="match-card card text-white card-has-bg click-col">
@@ -39,6 +38,7 @@
                       <div class="media-body">
                           <small>{{ $root.store.username }}</small>
                       </div> -->
+                      
                   </div>
                 </div>
               </div>

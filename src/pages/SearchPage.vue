@@ -1,125 +1,138 @@
 
 <template class = "search">
-    <div>
-      <div  class = "search">
-        <b-form @submit.prevent="onSearch" @reset.prevent="onReset" > 
-            <h1 class="title">Search Page</h1>
-            <b-input-group 
-              id="search-input"
-              label-cols-sm="3"
-              label="searchQuery:"
-              label-for="searchQuery"
-              class="mt-3"
-              >
-              <b-form-input
-              type="text"
-              v-model="form.searchQuery"
-              >  
-              </b-form-input>
-              <b-input-group-append>
-                <b-form-group v-slot="{ ariaDescribedby }">
-                  <b-form-radio-group
-                      :button-variant="buttonColor"
-                      id="input-group-searchType"
-                      v-model="form.searchType"
-                      :options="form.searchTypeOptions"
-                      :aria-describedby="ariaDescribedby"
-                      name="radios-btn-default"
-                      buttons
-                  ></b-form-radio-group>  
-                </b-form-group>
-              </b-input-group-append>
-            </b-input-group>
+  <div>
+      <div v-if="loadingSearchInfo">
+        <div  class = "search">
+          <b-form @submit.prevent="onSearch" @reset.prevent="onReset" > 
+              <h1 class="title">Search Page</h1>
+              <b-input-group 
+                id="search-input"
+                label-cols-sm="3"
+                label="searchQuery:"
+                label-for="searchQuery"
+                class="mt-3"
+                >
+                <b-form-input
+                type="text"
+                v-model="form.searchQuery"
+                >  
+                </b-form-input>
+                  <b-form-group v-slot="{ ariaDescribedby }">
+                    <b-form-select
+                        :button-variant="buttonColor"
+                        id="input-group-searchType"
+                        v-model="form.searchType"
+                        :options="form.searchTypeOptions"
+                        :aria-describedby="ariaDescribedby"
+                        name="radios-btn-default"
+                        buttons
+                    ></b-form-select>  
+                  </b-form-group>
+              </b-input-group>
 
-          <!-- if searchType is Teams -->
-          <div class="row">
-            <b-input-group prepend=" Sort Teams:" v-if="form.searchType == 'Teams'" style="width: 209px;" v-slot="{ ariaDescribedby }">
-              <b-input-group-append>
-              <b-form-radio-group
-                  :button-variant="buttonColor"
-                  id="input-group-sortTeamsAlphabetical"
-                  v-model="form.sortTeamsAlphabetical"
-                  :options="form.sortTeamsAlphabeticalOptions"
-                  :aria-describedby="ariaDescribedby"
-                  name="radios-btn-default"
-                  buttons
-              ></b-form-radio-group>
-              </b-input-group-append>
-            </b-input-group>
-          </div>
-
-          <!-- if searchType is Players -->
-          <b-form-group class="my-div" v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
-          <div class="row ">
-            <div>
-              <b-input-group  prepend=" Sort Players By:" style="width: 346px; " @click="sortOn()">
-              <b-input-group-append>
-                  <b-form-radio-group
-                      :button-variant="buttonColor"
-                      id="input-group-sortPlayersBy"
-                      v-model="form.sortPlayersBy"
-                      :options="form.sortPlayersByOptions"
-                      :aria-describedby="ariaDescribedby"
-                      name="radios-btn-default"
-                      buttons
-                  ></b-form-radio-group>
-                </b-input-group-append >
+            <!-- if searchType is Teams -->
+            <div class="row">
+              <b-input-group prepend=" Sort Teams:" v-if="form.searchType == 'Teams'" style="width: 209px;" v-slot="{ ariaDescribedby }">
+                <b-form-select
+                    :button-variant="buttonColor"
+                    id="input-group-sortTeamsAlphabetical"
+                    v-model="form.sortTeamsAlphabetical"
+                    :options="form.sortTeamsAlphabeticalOptions"
+                    :aria-describedby="ariaDescribedby"
+                    name="radios-btn-default"
+                    buttons
+                ></b-form-select>
               </b-input-group>
             </div>
 
-           <div>
-            <b-input-group
-            id="input-group-filter_Players"
-            label-for="filter_Players"
-            prepend=" Filter players by:" 
-            >
-            <b-form-input
-                id="filter_Players"
-                v-model="form.filter_Players" 
-                type="text"
-            ></b-form-input>
-              <b-input-group-append>
-                <b-button  id="popover-target-i">
-                  <b-icon id="popover-target-i" icon="question-circle-fill" aria-label="Help"></b-icon>
-                </b-button>     
-              </b-input-group-append>
-            </b-input-group>
-           </div>
-            <b-popover target="popover-target-i" triggers="hover" placement="top">
-              <template #title>information</template>
-              Enter a number to filter by player position
-              or enter a player team name
-            </b-popover>
-          </div>
-          </b-form-group>
-
-          <!-- buttons - submit and reset-->
-          <b-button id="submit-b" type="submit" variant="success">Search</b-button>
-          <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
-        </b-form>
-      </div>
-
-        <div >
-          <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css">
-              <div class="row align-items-start my-row-css">
-                  <PlayersInformation v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
-             </div>
-          </div>
-          <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false">
-                  <div v-for="res in this.results" v-bind:key="res.teamName">
-                      <a>search Query:</a>
-                  </div>
-          </div>
-          <div v-else-if="flag==false" class="container my-container-css">
-                  <LoadingIcon/>
-          </div>
-          <div v-else-if="noResult==true" class="container my-container-css">
-              <div class="row align-items-start my-row-css">
-                  <h1 class="title">no result</h1>
+            <!-- if searchType is Players -->
+            <b-form-group class="my-div" v-if="form.searchType == 'Players'" v-slot="{ ariaDescribedby }">
+              
+            <div class="row ">
+              <div>
+                <b-input-group  prepend=" Sort Players By:" style="width: 300px; " @click="sortOn()">
+                    <b-form-select
+                        :button-variant="buttonColor"
+                        id="input-group-sortPlayersBy"
+                        v-model="form.sortPlayersBy"
+                        :options="form.sortPlayersByOptions"
+                        :aria-describedby="ariaDescribedby"
+                        name="radios-btn-default"
+                        buttons
+                    ></b-form-select>
+                </b-input-group>
               </div>
-          </div>
+
+            <div>
+              <b-input-group
+              id="input-group-filter_Players"
+              label-for="filter_Players"
+              prepend=" Filter players by:" 
+              style="width: 400px;"
+              >
+              <b-form-select
+                :variant="buttonColor"
+                id="input-group-sortPlayersBy"
+                v-model="form.filterPlayersByTeam"
+                :options="form.filterPlayersTeamsOptions"
+                :aria-describedby="ariaDescribedby"
+                aria-placeholder="select team"
+                name="radios-btn-default"
+                buttons
+                style="width: 100px;"
+
+            ></b-form-select>
+
+              <b-form-input
+                  id="filterPlayersByPosition"
+                  v-model="form.filterPlayersByPosition" 
+                  type="text"
+              ></b-form-input>
+                <b-input-group-append>
+                  <b-button  id="popover-target-i">
+                    <b-icon id="popover-target-i" icon="question-circle-fill" aria-label="Help"></b-icon>
+                  </b-button>     
+                </b-input-group-append>
+              </b-input-group>
+            </div>
+              <b-popover target="popover-target-i" triggers="hover" placement="top">
+                <template #title>information</template>
+                Enter a number to filter by player position 
+              </b-popover>
+            </div>
+            </b-form-group>
+
+            <!-- buttons - submit and reset-->
+            <b-button id="submit-b" type="submit" variant="success">Search</b-button>
+            <b-button id="reset-b" type="reset" variant="danger">Reset</b-button> 
+          </b-form>
         </div>
-    </div>
+
+          <div >
+            <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css">
+                <div class="row align-items-start my-row-css">
+                    <players-information v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
+              </div>
+            </div>
+            <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false">
+                    <div v-for="res in this.results" v-bind:key="res.teamName">
+                        <a>search Query:</a>
+                    </div>
+            </div>
+            <div v-else-if="flag==false" class="container my-container-css">
+                    <loading-icon/>
+            </div>
+            <div v-else-if="noResult==true" class="container my-container-css">
+                <div class="row align-items-start my-row-css">
+                    <h1 class="title">no result</h1>
+                </div>
+            </div>
+          </div>
+      </div>
+      <div v-else-if="!loadingSearchInfo">
+          <loading-icon/>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -159,16 +172,36 @@ export default {
         ],
         sortPlayersBy: '',
         sortPlayersByOptions: [
-          { text: 'own name', value: 'own name' },
+          { text: 'player name', value: 'player name' },
           { text: 'team name', value: 'team name' },
         ],
-        filter_Players:"",
+
+        filterPlayersByTeam:"",
+        filterPlayersTeamsOptions: [
+        {text: "-----",value: ""},
+        {text: "København",value: "København"},
+        {text: "Silkeborg",value: "Silkeborg"},
+        {text: "Brøndby",value: "Brøndby"},
+        {text: "SønderjyskE",value: "SønderjyskE"},
+        {text: "Midtjylland",value: "Midtjylland"},
+        {text: "AaB",value: "AaB"},
+        {text: "OB",value: "OB"},
+        {text: "Randers",value: "Randers"},
+        {text: "Nordsjælland",value: "Nordsjælland"},
+        {text: "Viborg",value: "Viborg"},
+        {text: "AGF",value: "AGF"},
+        {text: "Vejle",value: "Vejle"}
+        ],
+        filterPlayersByPosition:""
         },
         results: [],
         submitError: undefined,
         buttonColor:"success",
-        flag:Boolean,
-        noResult:false
+        flag: Boolean,
+        noResult:false,
+        playersInfoList:[],
+        teamsInfoList:[],
+
       };
     },
     validations: {
@@ -196,11 +229,34 @@ export default {
     }
   },
   mounted() {
+    this.PlayersInfoInit();
+    this.TeamsInfoInit();
+    console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
+    console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
+    if (sessionStorage.getItem("lastSearchQuery") != null) {
+      console.log("got inside the load previous search");
+      this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
+      this.results = JSON.parse(sessionStorage.getItem("lastSearchResults"));
+      this.flag=true;
+    }
 
-
-    
   },
   methods: {
+    loadingSearchInfo(){
+          if (localStorage.getItem("playersInfo") != null && localStorage.getItem("teamsInfo")!=null){
+            return true;
+          }
+          return false;
+    },
+    PlayersInfoInit()
+    {
+      this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
+    },
+    
+    TeamsInfoInit()
+    {
+      this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
+    },
     sortOn(){
       this.form.sortPlayers='yes';
     },
@@ -210,40 +266,65 @@ export default {
     },
     async Search() {
       try {
-        let params ={};
-        params.Search_Type= this.form.searchType;
+        // let params ={};
+        // params.Search_Type= this.form.searchType;
 
-        if(this.form.sortTeamsAlphabetical!=""){
-          params.Sort_Teams_Alphabetical= this.form.sortTeamsAlphabetical;
-        }
-        if(this.form.sortPlayers!=""){
-          params.Sort_Players= this.form.sortPlayers;
-        }
-        if(this.form.sortPlayersBy!=""){
-          params.Sort_Players_By= this.form.sortPlayersBy;
+        // if(this.form.sortTeamsAlphabetical!=""){
+        //   params.Sort_Teams_Alphabetical= this.form.sortTeamsAlphabetical;
+        // }
+        // if(this.form.sortPlayers!=""){
+        //   params.Sort_Players= this.form.sortPlayers;
+        // }
+        // if(this.form.sortPlayersBy!=""){
+        //   params.Sort_Players_By= this.form.sortPlayersBy;
 
-        }
-        if(this.form.filter_Players!=""){
-          params.Filter_Players= this.form.filter_Players;
-        }
+        // }
+        // if(this.form.filter_Players!=""){
+        //   params.Filter_Players= this.form.filter_Players;
+        // }
 
-        this.axios.defaults.withCredentials = true;
-        const response = await this.axios.get(
-          this.$root.store.serverUrl + "league/search/" + this.form.searchQuery, {params:params}
-        );
-        this.axios.defaults.withCredentials = false;
+        // this.axios.defaults.withCredentials = true;
+        // const response = await this.axios.get(
+        //   this.$root.store.serverUrl + "league/search/" + this.form.searchQuery, {params:params}
+        // );
+        // this.axios.defaults.withCredentials = false;
+        // console.log(response.data);
+
+        // if(response.status!==200 && response.status!==204){
+        //   this.$router.push("*");
+        // }
+        
+        // const response = SQL_searchByQuery(this.form.Search_Type,  this.form.Sort_Teams_Alphabetical,  this.form.Sort_Players,  this.form.Sort_Players_By,  this.form.Filter_Players);
+        let currentSearchInfo;
+        let response=[];
+
+        if(this.form.searchType=="Players"){
+           currentSearchInfo =this.playersInfoList;
+        }
+        else{
+           currentSearchInfo =this.TeamsInfoInit;
+        }
+        currentSearchInfo.forEach(element => {
+          if(this.form.searchType=="Players"){
+            if(element.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            {
+                response.push(element);
+            }
+          }
+          else{
+            if(element.teamName.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            {
+                response.push(element);
+            }
+          }
+        });
+
         console.log(response);
-        console.log(response.data);
-
-        if(response.status!==200 && response.status!==204){
-          this.$router.push("*");
-        }
-        else if  (response.status==204){
+        if(response==[]){
               this.noResult=true;
-              console.log(this.noResult);
         }
         else {
-          this.results.push(...response.data.players);
+          this.results=response;
         }
         this.flag=true;
 
@@ -251,7 +332,6 @@ export default {
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
-
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response?.data.message;
@@ -283,13 +363,66 @@ export default {
       // location.reload();
       this.$nextTick(() => {
         this.$v.$reset();
-        
-      });
 
-      
-;
+      });
+    },
+    async SQL_searchByQuery( Search_Type, Sort_Teams_Alphabetical, Sort_Players, Sort_Players_By, Filter_Players) {
+//-------------------------------------- Teams --------------------------------------//
+    let Qsearch;
+    if(Search_Type=="Teams" ){
+      Qsearch=this.teamsInfoList;    
+      if(Sort_Teams_Alphabetical=="yes"){
+        //Sort the teams in alphabetical order by teamName
+        Qsearch.sort((a, b) => 
+        (('' + a["teamName"]).localeCompare(b["teamName"])));
+      }
+      resultQ = Qsearch;    
+      return {teams: Qsearch};
     }
-  }
+  //-------------------------------------- Players --------------------------------------//
+  
+    else if(Search_Type=="Players"){
+      Qsearch=this.playersInfoList;
+      if(Sort_Players=="yes"){
+  
+      // ------ Sort_Players_By players name ------ //
+  
+        if (Sort_Players_By=="own name"){
+          Qsearch.sort((a, b) => 
+          ((''+a["name"]).localeCompare(b["name"])));
+        }
+  
+      // ------ Sort_Players_By team name ------ //
+  
+        else if (Sort_Players_By=="team name"){
+          Qsearch.sort((a, b) => 
+          ((''+a["team_name"]).localeCompare(b["team_name"])));
+  
+        }
+      }
+      // ------ Filter_Players ------ //
+      if (Filter_Players != undefined || Filter_Players > 0){
+  
+      // ------ Filter_Players - position ------ //
+  
+        if (!isNaN(Filter_Players)){
+          resultQ = Qsearch.filter(function (el) {return el.position == Filter_Players});
+        }
+  
+      // ------ Filter_Players - teams name ------ //
+        else{
+          resultQ = Qsearch.filter(function (el) {return el.team_name.includes(Filter_Players)});
+        } 
+      }
+      else{
+        resultQ = Qsearch;
+      }
+      
+    }
+    return {players:resultQ};
+    }
+  },
+  
 }
 </script>
 
@@ -401,7 +534,7 @@ div {
 }
 #input-group-filter_Players {
   /* margin-left:px;  */
-  width: 350px; 
+  width: 300px; 
 }
 .b.form-radio-group{
     background-color: #ee6c4d!important;
@@ -411,7 +544,14 @@ div {
     padding-inline: 140px;
     position: relative;
 }
-
+select{
+    /* padding: .6rem .8rem calc(.6rem + 1px) .8rem !important; */
+    border: none;
+    /* padding: 15px 20px; */
+    /* background: rgb(92, 92, 92); */
+    color: rgb(0, 0, 0);
+    /* border-radius: 20px; */
+}
 
 
 

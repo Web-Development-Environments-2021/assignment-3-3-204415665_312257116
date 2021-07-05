@@ -5,7 +5,8 @@
       <section class="wrapper">
         <div class="container" > -->
             <b-form>
-            <login-page class="login-css" v-if="!$root.store.username"></login-page>
+              
+            <login-page v-if="!$root.store.username"/>
               
             <favorite-matches v-else></favorite-matches>
             </b-form>  
@@ -47,29 +48,25 @@ export default {
   position: relative;
   
 }
-form{
-  // margin: auto;
-  // width: 100%;
-  // text-align: center;
-  // background: rgba(71, 68, 68, 0.76);
-  // border-radius: 30px;
+// .login-box {
+//     width: 100%;
+//     height: 100%;
+//     position: absolute;
+// }
 
-  /* margin-top: 20px;  */
-}
-// .RandomRecipes {
-//   margin: 10px 0 10px;
+// .login-snip {
+//     width:100%;
+//     height: 100%;
+//     position: absolute;
+//     padding: 30px 80px 0px 80px;
+//     background: #293241e0;
+//     margin: auto;
 // }
-// .blur {
-//   -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
-//   filter: blur(2px);
-// }
-// ::v-deep .blur .recipe-preview {
-//   pointer-events: none;
-//   cursor: default;
-// }
-// .login-css{
-//   position:absolute;
-
+// .login-card {
+//     width: 400px;
+//     min-height:674px;
+//     left: 0px;
+//     position: absolute;
 // }
 .LInfo{
       position: absolute;

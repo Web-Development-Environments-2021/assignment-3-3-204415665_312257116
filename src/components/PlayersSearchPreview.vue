@@ -33,14 +33,14 @@
 export default {
     name: "PlayersInformation",
 
-    props: {
+props: {
         player: {
             type: Object,
             required: true
         }
         
     }
-}
+    } 
 </script>
 
 <style scoped>

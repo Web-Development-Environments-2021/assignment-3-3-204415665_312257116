@@ -109,6 +109,8 @@ const shared_data = {
     console.log("logout");
     localStorage.removeItem("username");
     localStorage.removeItem("UserFavoriteMatches");
+    localStorage.removeItem("teamsInfo");
+    localStorage.removeItem("playersInfo");
 
     if ( this.username == "daniMoshe" ){
       this.cleanUnionAgentData();
@@ -191,6 +193,31 @@ const shared_data = {
       // TODO: What to do We The Error ???
     }
   },
+  
+  async getDataForSearch(){
+    try{
+      console.log("Start init search info");
+      const searchResponse = await this.initSearchInfo();
+      localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
+      localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
+      console.log("Ends init search info");
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
+  },
+
+  async initSearchInfo(){
+    try{
+      axios.withCredentials = true;
+      const response = await axios.get(
+          this.serverUrl + "league/search/searchInfo"
+      );
+      axios.withCredentials = false;
+      return response.data;
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
+  },
   async initDataForSearch(){
     try{
 
@@ -255,24 +282,6 @@ const shared_data = {
     }
   },
 
-// -------------------------------getCurrentSeasonID--------------------------------
-
-  // async getCurrentSeasonID(){
-  //   try{
-  //   const league = await axios.get(
-  //     this.serverUrl +`/leagues/18334`,
-  //     {
-  //       params: {
-  //         api_token: process.env.api_token,
-  //       },
-  //     }
-  //   );
-  //     console.log(league);
-  //     localStorage.setItem("current_season_id", JSON.stringify(league.data.data.current_season_id));
-  //   } catch (error){
-  //     // TODO: What to do We The Error ???
-  //   }
-  // }
 }
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
@@ -295,6 +304,9 @@ new Vue({
         autoHideDelay: 3000
       });
     }
+  },
+  mounted(){
+    this.$root.store.getDataForSearch();
   },
   render: (h) => h(App)
 }).$mount("#app");

@@ -51,21 +51,6 @@ const routes = [
     name: "match",
     component: () => import("./pages/unionAgentPages/unionAgent_matchPage")
   },
-  {
-    path: "/unionAgent/addMatchResult",
-    name: "addMatchResult",
-    component: () => import("./pages/unionAgentPages/unionAgent_addMatchResultPage")
-  },
-  {
-    path: "/unionAgent/addMatchEventsLog",
-    name: "addMatchEventsLog",
-    component: () => import("./pages/unionAgentPages/unionAgent_addMatchEventsLogPage")
-  },
-  {
-    path: "/unionAgent/addRefereeToMatch",
-    name: "addRefereeToMatch",
-    component: () => import("./pages/unionAgentPages/unionAgent_addRefereeToMatchPage")
-  },
 
   //* ------------------------------ Players ------------------------------ *//
 

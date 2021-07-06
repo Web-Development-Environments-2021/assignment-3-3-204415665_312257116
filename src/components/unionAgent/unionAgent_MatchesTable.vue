@@ -32,8 +32,8 @@
                         <b>{{ row.item.localTeamScore }}</b> : <b>{{row.item.visitorTeamScore}}</b>
                     </b-col>
                     <b-col v-else >
-                        <b-button variant="primary" size="sm" >
-                            Add Match Result
+                        <b-button variant="primary" size="sm"  @click="toggleRowDetails(row.item, 'matchResult')">
+                            {{ row.item._matchResultShowing ? 'Cancel' : 'Add'}} Match Result
                         </b-button>
                     </b-col>
                 </b-row>
@@ -43,8 +43,8 @@
                 <b-button v-if="Object.keys(refereeInformation).length" @click="toggleRowDetails(item, 'referee')" variant="info" size="sm">
                     {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
-                <b-button v-else variant="primary" size="sm" > 
-                    Add Referee
+                <b-button v-else variant="primary" size="sm"  @click="toggleRowDetails(item, 'referee')"> 
+                    {{ item._refereeShowing ? 'Cancel' : 'Add'}} Referee 
                 </b-button>
             </template>
 
@@ -52,26 +52,38 @@
                 <b-button v-if="eventsLog.length" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
                     {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
-                <b-button v-else variant="primary" size="sm"> 
-                    Add Event Log
+                <b-button v-else variant="primary" size="sm" @click="toggleRowDetails(item,'events')" > 
+                    {{ item._eventsShowing ? 'Cancel' : 'Add'}} Event Log
                 </b-button>
             </template>
 
             <template #row-details="item">
                 <b-card>
                     <referee-preview v-if="item.item._refereeShowing"
-                        :refereeInfo="item.item.refereeInformation" >
+                        v-on:cancel-add-referee="toggleRowDetails(item.item, 'referee')"
+                        :refereeInfo="item.item.refereeInformation"
+                        :matchID="item.item.matchID"
+                        :matchDate="item.item.matchDate">
                     </referee-preview>
+
                     <events-log-preview v-if="item.item._eventsShowing"
+                        v-on:cancel-add-event="toggleRowDetails(item.item,'events')"
+                        :matchID="item.item.matchID"
                         :eventsLog="item.item.eventsLog" >
                     </events-log-preview>
+
+                    <add-match-result v-if="item.item._matchResultShowing"
+                        v-on:cancel-add-match-result="toggleRowDetails(item.item, 'matchResult')"
+                        :matchID="item.item.matchID"
+                        :localTeamName="item.item.localTeamName"
+                        :visitorTeamName="item.item.visitorTeamName" >
+                    </add-match-result>
                 </b-card>
             </template>
 
             <template #table-busy>
                 <div class="text-center text-danger my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                    <strong>Loading...</strong>
+                    <loading/>
                 </div>
             </template>
         </b-table>
@@ -91,6 +103,8 @@
 
 import RefereePreview from './unionAgent_RefereePreview.vue';
 import EventsLogPreview from './unionAgent_EventsLogPreview.vue';
+import AddMatchResult from './unionAgent_AddMatchResult.vue';
+import Loading from '../loading.vue';
 
 export default {
     name: "MatchesTable",
@@ -98,11 +112,11 @@ export default {
     components:{
         RefereePreview,
         EventsLogPreview,
+        AddMatchResult,
+        Loading,
     },
-
     data(){
         return{
-
             fields: [
                 { key : "matchID", sortable: true },
                 { key : "matchDate", sortable: true },
@@ -120,7 +134,6 @@ export default {
         }
     },
     props: {
-
         futureMatches: {
             type: Array,
             require: true
@@ -183,44 +196,80 @@ export default {
         }
     },
     methods:{
-        toggleRowDetails(row, refereeOrEvents) {
+        toggleRowDetails(row, refereeOrEventsOrMatchResult) {
 
             // Not Showing Row
             if ( ! row._showDetails ){
 
-                if ( refereeOrEvents == 'referee' ){ // Open Referee
+                if ( refereeOrEventsOrMatchResult == 'referee' ){ // Open Referee
 
                     this.$set(row, '_refereeShowing', !row._refereeShowing);
 
-                } else if ( refereeOrEvents == 'events' ){ // Open Events
+                } else if ( refereeOrEventsOrMatchResult == 'events' ){ // Open Events
 
                     this.$set(row, '_eventsShowing', !row._eventsShowing);
-                }
+
+                } else if ( refereeOrEventsOrMatchResult == 'matchResult' ){ // Open Events
+
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+                } 
                 this.$set(row, '_showDetails', !row._showDetails);
 
             } else{
                
-                if ( refereeOrEvents == 'referee' && !row._eventsShowing ){ // Close Referee
+                if ( refereeOrEventsOrMatchResult == 'referee' && !row._eventsShowing && !row._matchResultShowing ){ // Close Referee
 
                     this.$set(row, '_refereeShowing', !row._refereeShowing);
                     this.$set(row, '_showDetails', !row._showDetails);
 
                 } 
-                else if( refereeOrEvents == 'events' && !row._refereeShowing ){ // Close Events
+                else if( refereeOrEventsOrMatchResult == 'events' && !row._refereeShowing && !row._matchResultShowing ){ // Close Events
 
                     this.$set(row, '_eventsShowing', !row._eventsShowing);
                     this.$set(row, '_showDetails', !row._showDetails);
 
                 }
-                else if ( refereeOrEvents == 'events' && row._refereeShowing ){ // Change From Referee To Events
+                else if( refereeOrEventsOrMatchResult == 'matchResult' && !row._refereeShowing && !row._eventsShowing ){ // Close MatchResult
+
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+                    this.$set(row, '_showDetails', !row._showDetails);
+
+                }
+                else if ( refereeOrEventsOrMatchResult == 'events' && row._refereeShowing && !row._matchResultShowing ){ // Change From Referee To Events
 
                     this.$set(row, '_refereeShowing', !row._refereeShowing);
                     this.$set(row, '_eventsShowing', !row._eventsShowing);
 
                 }
-                else if ( refereeOrEvents == 'referee' && row._eventsShowing ){ // Change From Events To Referee
+                else if ( refereeOrEventsOrMatchResult == 'matchResult' && row._refereeShowing && !row._matchResultShowing ){ // Change From Referee To MatchResult
+
+                    this.$set(row, '_refereeShowing', !row._refereeShowing);
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+
+                }
+                else if ( refereeOrEventsOrMatchResult == 'referee' && row._eventsShowing && !row._matchResultShowing ){ // Change From Events To Referee
+
                     this.$set(row, '_refereeShowing', !row._refereeShowing);
                     this.$set(row, '_eventsShowing', !row._eventsShowing);
+
+                }
+                else if ( refereeOrEventsOrMatchResult == 'matchResult' && row._eventsShowing && !row._refereeShowing ){ // Change From Events To MatchResult
+
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+                    this.$set(row, '_eventsShowing', !row._eventsShowing);
+
+                }
+                else if ( refereeOrEventsOrMatchResult == 'referee' && row._matchResultShowing && !row._eventsShowing){ // Change From MatchResult To Referee
+
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+                    this.$set(row, '_refereeShowing', !row._refereeShowing);
+
+                }
+                else if ( refereeOrEventsOrMatchResult == 'events' && row._matchResultShowing && !row._refereeShowing ){ // Change From MatchResult To Events
+
+                    this.$set(row, '_matchResultShowing', !row._matchResultShowing);
+                    this.$set(row, '_eventsShowing', !row._eventsShowing);
+
                 }
             }
         },

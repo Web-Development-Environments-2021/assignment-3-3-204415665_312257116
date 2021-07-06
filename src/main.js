@@ -253,30 +253,29 @@ const shared_data = {
     try{
       var favoriteResponse = await this.getUserFavoriteMatches();
       var stagerResponse = await this.getCurrentStageMatches();
-      FavoriteResponse.map(fav => fav.myToggle=true);
-      if(favoriteResponse.length>0 && stagerResponse.length>0)
-      {
-        stagerResponse.futureMatches.map(Stage =>
-          favoriteResponse.map(fev =>
+            
+      console.log(favoriteResponse);
+      console.log(stagerResponse);
+
+      favoriteResponse?.map(fav => fav.myToggle=true);
+      stagerResponse?.futureMatches?.map(fav => fav.myToggle=false);
+      // if(favoriteResponse.length>0 && stagerResponse.length>0)
+      // {
+        stagerResponse?.futureMatches?.map(Stage =>
+          favoriteResponse?.map(fev =>
             {
               if(!Stage?.myToggle){
                 if(fev.matchID==Stage.matchID){
                   Stage.myToggle=true;
                 }
-                else{
-                  Stage.myToggle=false;
-                }
               }
             }
           )
         );
-      }
-      // else{
-      //   stagerResponse.map(fav => fav.myToggle=false);
-      // }
+
       
       console.log(favoriteResponse);
-      console.log(StagerResponse);
+      console.log(stagerResponse);
 
       localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(stagerResponse.futureMatches));
       localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(stagerResponse.pastMatches));
@@ -295,7 +294,7 @@ const shared_data = {
             this.serverUrl + "users/favoriteMatches"
         );
         axios.withCredentials = false;
-        return response.data;
+        return response?.data;
 
     } catch (error){
       // TODO: What to do We The Error ???
@@ -309,7 +308,7 @@ const shared_data = {
             this.serverUrl + "matches/currentStageMatches"
         );
         axios.withCredentials = false;
-        return response.data;
+        return response?.data;
 
     } catch (error){
       // TODO: What to do We The Error ???

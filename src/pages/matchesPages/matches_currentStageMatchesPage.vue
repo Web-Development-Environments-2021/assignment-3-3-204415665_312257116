@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     hasRefereeInfo(element){
-      return Object.keys(element?.refereeInformation).length;
+      return Object.keys(element.refereeInformation).length;
     },
 
     async clickHandler(g){
@@ -87,10 +87,16 @@ export default {
         console.log(response);
         favoriteMatches.push(g);
       }
-
-
+      this.currentStageMatches?.map(Stage =>{
+          if(Stage.matchID==g.matchID){
+            Stage.myToggle=g.myToggle;
+          }
+        }  
+      );
 
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteMatches));
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.currentStageMatches));
+
       console.log("done - Game update ");
     },
 
@@ -147,7 +153,30 @@ export default {
   },
   beforeDestroy(){
     clearInterval(this.updateMatches);
+  },
+  onUpdated(){
+    this.currentStageMatches = [];
+    let favoriteMatches =[];
+    console.log("start onUpdated");
+    favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+
+         this.currentStageMatches?.map(Stage =>
+          favoriteMatches?.map(fev =>
+            {
+              if(fev.matchID==Stage.matchID){
+                Stage.myToggle=true;
+              }
+              // else{
+              //   Stage.myToggle=false;
+              // }
+              }
+            
+          )
+        );
+
   }
+
 };
 </script>
 

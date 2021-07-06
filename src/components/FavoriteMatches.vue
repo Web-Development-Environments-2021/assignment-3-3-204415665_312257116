@@ -37,7 +37,7 @@
                   <div>
                     <div class='form-check form-switch'>
                     </div>
-                    <b-button style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                    <b-button style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
                      <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                   </div>
               </div>
@@ -60,22 +60,20 @@ export default {
     return {
       favoriteMatchesList:[],
       updateInterval: undefined,
-
     };
   },
   methods: {
     hasRefereeInfo(element){
-      return Object.keys(element?.refereeInformation).length;
+      return element?.refereeInformation;
+    },
 
-    },
-    FavoriteMatchesInit(){
-    },
     async clickHandler(g){
       console.log(g);
       let response;
       if(g.myToggle==true){
         response = await this.DeleteFavoriteMatches(g.matchID);
         this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
+            g.myToggle = !g.myToggle;
             return value.matchID != g.matchID;
       });
       }
@@ -85,33 +83,32 @@ export default {
         this.favoriteMatchesList.push(g);
       }
 
-      g.myToggle = !g.myToggle;
       console.log(this.favoriteMatchesList)
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
       console.log(this.favoriteMatchesList);
       console.log("done - Game update ");
     },
 
-    async postFavoriteMatches(matchID){
-        try{
-            console.log("done - Game update ");
+    // async postFavoriteMatches(matchID){
+    //     try{
+    //         console.log("done - Game update ");
 
-            this.axios.defaults.withCredentials = true;
-            const response = await this.axios.post(
-                this.$root.store.serverUrl + "users/favoriteMatches",
-                {
-                  matchID:matchID
-                }
-            );
-            this.axios.defaults.withCredentials = false;
-            console.log("POST done - Favorite Matches update ");
+    //         this.axios.defaults.withCredentials = true;
+    //         const response = await this.axios.post(
+    //             this.$root.store.serverUrl + "users/favoriteMatches",
+    //             {
+    //               matchID:matchID
+    //             }
+    //         );
+    //         this.axios.defaults.withCredentials = false;
+    //         console.log("POST done - Favorite Matches update ");
 
-            return response;
+    //         return response;
 
-        } catch (error){
-          // TODO: What to do We The Error ???
-        }
-    },
+    //     } catch (error){
+    //       // TODO: What to do We The Error ???
+    //     }
+    // },
 
     async DeleteFavoriteMatches(matchID){
         try{
@@ -130,7 +127,7 @@ export default {
 
     updateFavoriteMatches(){
 
-      if ( JSON.parse(localStorage.getItem("UserFavoriteMatches")) != null ){
+      if ( localStorage?.getItem("UserFavoriteMatches")!= null ){
         if ( ! (JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));

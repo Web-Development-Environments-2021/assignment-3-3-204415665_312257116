@@ -93,6 +93,9 @@ export default {
         console.log("UA - League management page Destroyed");
 
     },
+    onUpdated(){
+        
+    }
 
 }
 

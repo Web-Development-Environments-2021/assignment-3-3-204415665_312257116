@@ -13,10 +13,8 @@
                         <div :title="g.matchID" class="match-title">
                             <a>Match Id:</a> {{ g.matchID }}
                         </div>
-                        <div class="future-match-content">
-                                                   
-                          <div class="row" >
-                            
+                        <div class="future-match-content">                                           
+                          <div class="row" >     
                           <div class="teamsName"> {{ g.localTeamName }} VS {{ g.visitorTeamName }}</div>
                           <!-- <div class="teamsName col">   </div>
                           <div class="teamsName col"></div> -->
@@ -67,31 +65,30 @@ export default {
   },
   methods: {
     hasRefereeInfo(element){
-      return element?.refereeInformation;
+      return Object.keys(element?.refereeInformation).length;
 
     },
     FavoriteMatchesInit(){
     },
     async clickHandler(g){
       console.log(g);
-      let filter; 
       let response;
       if(g.myToggle==true){
         response = await this.DeleteFavoriteMatches(g.matchID);
-        this.FavoriteMatchesList = this.FavoriteMatchesList.filter(function(value){ 
+        this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
             return value.matchID != g.matchID;
       });
       }
       else if(g.myToggle==false){
         response = await this.postFavoriteMatches(g.matchID);
         console.log(response);
-        this.FavoriteMatchesList.push(g);
+        this.favoriteMatchesList.push(g);
       }
 
       g.myToggle = !g.myToggle;
-
-      localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.FavoriteMatchesList));
-      console.log(this.FavoriteMatchesList);
+      console.log(this.favoriteMatchesList)
+      localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
+      console.log(this.favoriteMatchesList);
       console.log("done - Game update ");
     },
 
@@ -101,8 +98,10 @@ export default {
 
             this.axios.defaults.withCredentials = true;
             const response = await this.axios.post(
-                this.$root.store.serverUrl + "users/favoriteMatches?matchID=",
-                { matchID:matchID}
+                this.$root.store.serverUrl + "users/favoriteMatches",
+                {
+                  matchID:matchID
+                }
             );
             this.axios.defaults.withCredentials = false;
             console.log("POST done - Favorite Matches update ");
@@ -124,11 +123,11 @@ export default {
             console.log("delete done - Favorite Matches update");
             return response;
             
-
         } catch (error){
           // TODO: What to do We The Error ???
         }
     },
+
     updateFavoriteMatches(){
 
       if ( JSON.parse(localStorage.getItem("UserFavoriteMatches")) != null ){

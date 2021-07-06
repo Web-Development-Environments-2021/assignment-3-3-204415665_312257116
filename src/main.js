@@ -118,6 +118,8 @@ const shared_data = {
     localStorage.removeItem("UserFavoriteMatches");
     localStorage.removeItem("teamsInfo");
     localStorage.removeItem("playersInfo");
+    localStorage.removeItem("CurrentStageMatchesFutureMatches");
+    localStorage.removeItem("CurrentStageMatchesPastMatches");
 
     if ( this.username == "daniMoshe" ){
       this.cleanUnionAgentData();
@@ -249,29 +251,36 @@ const shared_data = {
 
   async initDataForUser(){
     try{
-      var FavoriteResponse = await this.getUserFavoriteMatches();
-      var StagerResponse = await this.getCurrentStageMatches();
+      var favoriteResponse = await this.getUserFavoriteMatches();
+      var stagerResponse = await this.getCurrentStageMatches();
       FavoriteResponse.map(fav => fav.myToggle=true);
-
-      StagerResponse.futureMatches.map(Stage =>
-        FavoriteResponse.map(fev =>
-          {
-            if(!Stage?.myToggle){
-              if(fev.matchID==Stage.matchID){
-                Stage.myToggle=true;
-              }
-              else{
-                Stage.myToggle=false;
+      if(favoriteResponse.length>0 && stagerResponse.length>0)
+      {
+        stagerResponse.futureMatches.map(Stage =>
+          favoriteResponse.map(fev =>
+            {
+              if(!Stage?.myToggle){
+                if(fev.matchID==Stage.matchID){
+                  Stage.myToggle=true;
+                }
+                else{
+                  Stage.myToggle=false;
+                }
               }
             }
-          }
-          ));
-      console.log(FavoriteResponse);
+          )
+        );
+      }
+      // else{
+      //   stagerResponse.map(fav => fav.myToggle=false);
+      // }
+      
+      console.log(favoriteResponse);
       console.log(StagerResponse);
 
-      // localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StagerResponse.futureMatches));
-      // localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(StagerResponse.pastMatches));
-      localStorage.setItem("UserFavoriteMatches", JSON.stringify(FavoriteResponse));
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(stagerResponse.futureMatches));
+      localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(stagerResponse.pastMatches));
+      localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
       console.log("done - Init Data From User");
 
     }catch ( error ){

@@ -153,6 +153,7 @@ export default {
 
           this.$root.store.initDataForUnionAgent();
         }
+        
         await this.$root.store.initDataForUser();
         // console.log(localStorage.getItem("UserFavoriteMatches"));
         if ( this.$route.path != "/" ) {

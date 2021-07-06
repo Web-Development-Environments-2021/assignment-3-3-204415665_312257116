@@ -40,9 +40,8 @@
                   <div>
                       <div class='form-check form-switch'>
                       </div>
-                   <b-button style="float:right;" :pressed="onPress(g)"  variant="outline-warning"> ⭐ </b-button>
-                     <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p>
-
+                   <b-button style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                     <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                   </div>
               </div>
             </div>
@@ -59,73 +58,75 @@ export default {
   name: "FavoriteMatches",
   components: {
     RefereeInformation,
-    
   },
   data() {
     return {
-      // FavoriteMatchesList:[],
-      FavoriteMatchesList: [
-        {
-          matchID:25,
-          matchDate: "08-08-2021 20:00:00",
-          localTeamName: "Maccabi Tel-Aviv",
-          visitorTeamName: "Hapoel Beer-Sheva",
-          venueName: "Teddy",
-          myToggle:true,
-          refereeInformation: {
-            refereeID: 2,
-            firstname: "dini",
-            lastname: "pinchas",
-            course: "Regular"
-          }
-        },
-        {
-          matchID:39,
-          matchDate: "10-10-2021 19:00:00",
-          localTeamName: "Hapoel Tel-Aviv",
-          visitorTeamName: "Maccabi Haifa",
-          venueName: "Bloom",
-          myToggle:true,
-          refereeInformation: {}
-        }
-      ],
-      
+      FavoriteMatchesList: [],
     };
   },
   computed: {
-      // btnStates() {
-      //   return this.buttons.map(btn => btn.state)
-      // }
-      
-  },
-
-  mounted(){
-      this.FavoriteMatchesInit();
   
   },
+  mounted(){
+    this.FavoriteMatchesInit();
+  },
+  
   methods: {
       hasRefereeInfo(element){
-        return Object.keys(element.refereeInformation).length ;
+        return Object.keys(element?.refereeInformation).length ;
       },
 
       FavoriteMatchesInit(){
-        this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-        for (let index = 0; index < this.FavoriteMatchesList.length; index++) {
-          this.FavoriteMatchesList[index].myToggle=true; 
-        }
-
+        this?.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
       },
 
-      // btnStates(g) {
-      //   return g.buttons.map(btn => btn.state)
-      // },
+      async clickHandler(g){
+        // console.log(g.myToggle);
+        // if(g.myToggle==true){
+        //   await this.DeleteFavoriteMatches(g.matchId)
+        // }
+        // else if(g.myToggle==false){
+        //   await this.postFavoriteMatches(g.matchId)
+        // }
+        // localStorage.removeItem("UserFavoriteMatches");
+        // await this.$root.store.initDataForUser();
 
-      onPress(g) {
-            g.myToggle = !g.myToggle; 
+        // console.log("done - Game update ");
+        g.myToggle = !g?.myToggle
+      },
+
+      async postFavoriteMatches(matchId){
+          try{
+              // axios.withCredentials = true;
+              const response = await axios.post(
+                  this.serverUrl + "users/favoriteMatches",{params:{matchId:matchId}}
+              );
+              // axios.withCredentials = false;
+              console.log("POST done - Favorite Matches update ");
+
+              return response;
+
+          } catch (error){
+            // TODO: What to do We The Error ???
           }
-          
-        
-      }
+        },
+
+      async DeleteFavoriteMatches(matchId){
+          try{
+              // axios.withCredentials = true;
+              const response = await axios.delete(
+                  this.serverUrl + "users/favoriteMatches",{params:{matchId:matchId}}
+              );
+              // axios.withCredentials = false;
+              console.log("delete done - Favorite Matches update ");
+              return response;
+              
+
+          } catch (error){
+            // TODO: What to do We The Error ???
+          }
+        },
+
 
     
   //   async updateGames(){
@@ -147,7 +148,7 @@ export default {
   // mounted(){
   //   console.log("favorite games mounted");
   //   this.updateGames(); 
-  // }
+  }
 };
 </script>
 

@@ -269,7 +269,16 @@ const shared_data = {
   async initDataForUser(){
     try{
       // console.log(localStorage.getItem("username"));
-      const response = await this.getUserFavoriteMatches();
+      let response = await this.getUserFavoriteMatches();
+      console.log(response);
+
+      for (let index = 0; index < response.length; index++) {
+
+        response[index].myToggle=true; 
+        console.log(response[index]);
+
+      }
+      
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(response));
       console.log("done - Init Data From User");
 

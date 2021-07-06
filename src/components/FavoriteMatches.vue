@@ -2,8 +2,8 @@
 <template>
     <div class="container " style="padding-top: 15px;">
       <div class="row" >
-        <div v-for="(g,index) in FavoriteMatchesList" v-bind:key="g.matchID">
-          <div v-if="index < 3 && Object.keys(FavoriteMatchesList).length!=0" class="col-sm-4">
+        <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID">
+          <div v-if="index < 3 && Object.keys(favoriteMatchesList).length!=0" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
             <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
               <div class="card-img-overlay d-flex flex-column">
@@ -60,101 +60,93 @@ export default {
   },
   data() {
     return {
-      FavoriteMatchesList:[],
+      favoriteMatchesList:[],
+      updateInterval: undefined,
+
     };
   },
-  computed:{
-    matches(){
-            var mergedMatches = [];
-
-            if (this.FavoriteMatchesList.length != 0 ){
-
-                this.FavoriteMatchesList.map( ( pastMatch ) => {
-
-                    mergedMatches.push( {                
-                        matchID : pastMatch.matchID,
-                        matchDate : pastMatch.matchDateAndTime,
-                        localTeamName : pastMatch.localTeamName,
-                        visitorTeamName : pastMatch.visitorTeamName,
-                        venueName : pastMatch.venueName,
-                        localTeamScore : pastMatch.localTeamScore,
-                        visitorTeamScore : pastMatch.visitorTeamScore,
-                        refereeInformation : pastMatch.refereeInformation,
-                    }             
-              )});
-            }
-            return mergedMatches;
-
-          }
-  },
   methods: {
-      hasRefereeInfo(element){
-        return element?.refereeInformation;
+    hasRefereeInfo(element){
+      return element?.refereeInformation;
 
-      },
-      FavoriteMatchesInit(){
-      },
-      async clickHandler(g){
-        console.log(g);
-        let filter; 
-        let response;
-        if(g.myToggle==true){
-          response = await this.DeleteFavoriteMatches(g.matchID);
-          this.FavoriteMatchesList = this.FavoriteMatchesList.filter(function(value){ 
-              return value.matchID != g.matchID;
-        });
+    },
+    FavoriteMatchesInit(){
+    },
+    async clickHandler(g){
+      console.log(g);
+      let filter; 
+      let response;
+      if(g.myToggle==true){
+        response = await this.DeleteFavoriteMatches(g.matchID);
+        this.FavoriteMatchesList = this.FavoriteMatchesList.filter(function(value){ 
+            return value.matchID != g.matchID;
+      });
+      }
+      else if(g.myToggle==false){
+        response = await this.postFavoriteMatches(g.matchID);
+        console.log(response);
+        this.FavoriteMatchesList.push(g);
+      }
+
+      g.myToggle = !g.myToggle;
+
+      localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.FavoriteMatchesList));
+      console.log(this.FavoriteMatchesList);
+      console.log("done - Game update ");
+    },
+
+    async postFavoriteMatches(matchID){
+        try{
+            console.log("done - Game update ");
+
+            this.axios.defaults.withCredentials = true;
+            const response = await this.axios.post(
+                this.$root.store.serverUrl + "users/favoriteMatches?matchID=",
+                { matchID:matchID}
+            );
+            this.axios.defaults.withCredentials = false;
+            console.log("POST done - Favorite Matches update ");
+
+            return response;
+
+        } catch (error){
+          // TODO: What to do We The Error ???
         }
-        else if(g.myToggle==false){
-          response = await this.postFavoriteMatches(g.matchID);
-          console.log(response);
-          this.FavoriteMatchesList.push(g);
+    },
+
+    async DeleteFavoriteMatches(matchID){
+        try{
+            this.axios.defaults.withCredentials = true;
+            const response = await this.axios.delete(
+                this.$root.store.serverUrl + "users/favoriteMatches?matchID=" + matchID
+            );
+            this.axios.defaults.withCredentials = false;
+            console.log("delete done - Favorite Matches update");
+            return response;
+            
+
+        } catch (error){
+          // TODO: What to do We The Error ???
         }
- 
-        g.myToggle = !g.myToggle;
+    },
+    updateFavoriteMatches(){
 
-        localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.FavoriteMatchesList));
-        console.log(this.FavoriteMatchesList);
-        console.log("done - Game update ");
-      },
+      if ( JSON.parse(localStorage.getItem("UserFavoriteMatches")) != null ){
 
-      async postFavoriteMatches(matchID){
-          try{
-              console.log("done - Game update ");
+        if ( ! (JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+          this.favoriteMatchesList = [];
+          this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
 
-              this.axios.defaults.withCredentials = true;
-              const response = await this.axios.post(
-                  this.$root.store.serverUrl + "users/favoriteMatches?matchID=",
-                  { matchID:matchID}
-              );
-              this.axios.defaults.withCredentials = false;
-              console.log("POST done - Favorite Matches update ");
-
-              return response;
-
-          } catch (error){
-            // TODO: What to do We The Error ???
-          }
-        },
-
-      async DeleteFavoriteMatches(matchID){
-          try{
-              this.axios.defaults.withCredentials = true;
-              const response = await this.axios.delete(
-                 this.$root.store.serverUrl + "users/favoriteMatches?matchID=" + matchID
-              );
-              this.axios.defaults.withCredentials = false;
-              console.log("delete done - Favorite Matches update");
-              return response;
-              
-
-          } catch (error){
-            // TODO: What to do We The Error ???
-          }
-        },
+        }
+      }
+    }
   },
   mounted()  {
-    this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
+  },
+  beforeDestroy(){
+    clearInterval(this.updateMatches);
   }
 };
 </script>

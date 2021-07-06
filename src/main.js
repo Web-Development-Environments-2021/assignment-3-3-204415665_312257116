@@ -13,6 +13,7 @@ const router = new VueRouter({
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import {
   AvatarPlugin,
   FormGroupPlugin,
@@ -33,7 +34,10 @@ import {
   PopoverPlugin ,
   IconsPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin 
+  FormTimepickerPlugin ,
+  FormRatingPlugin,
+  FormCheckboxPlugin
+
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -55,7 +59,9 @@ import {
   PopoverPlugin ,
   IconsPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin 
+  FormTimepickerPlugin ,
+  FormRatingPlugin,
+  FormCheckboxPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -196,6 +202,9 @@ const shared_data = {
   
   async getDataForSearch(){
     try{
+      if (localStorage.getItem("teamsInfo") !=null && localStorage.getItem("playersInfo") !=null){
+        return;
+      }
       console.log("Start init search info");
       const searchResponse = await this.initSearchInfo();
       localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
@@ -305,7 +314,7 @@ new Vue({
       });
     }
   },
-  mounted(){
+  created(){
     this.$root.store.getDataForSearch();
   },
   render: (h) => h(App)

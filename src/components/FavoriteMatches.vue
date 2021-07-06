@@ -1,46 +1,49 @@
 
 <template>
-    <div class="container " style="padding-top: 10px;">
+    <div class="container " style="padding-top: 15px;">
       <div class="row" >
-        <div v-for="(g,index) in futureMatches" v-bind:key="g.matchID">
-          <div class="col-sm-4 " >
-            <div class="match-card card text-white card-has-bg click-col">
-            <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?">
+        <div v-for="(g,index) in FavoriteMatchesList" v-bind:key="g.matchID">
+          <div v-if="index < 3" class="col-sm-4">
+           <div class="match-card card text-white card-has-bg click-col">
+            <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
               <div class="card-img-overlay d-flex flex-column">
-                <div class="card-body">
-                    <small class="card-meta mb-2"></small>
-                    <h4 class="card-title mt-0" :v-if="index<3">
+                <div class="card-body">                         
+                    <h4 class="card-title mt-0" >
                       <!-- <a class="text-white" herf="#"> -->
-                        <div :title="g.matchID" class="future-match-title">
-                          <b>Match Id:</b> {{ g.matchID }}
-                        </div>
-                        <ul class="future-match-content">
-                          <!-- <b id="teams">Local team:</b> <a></a><b id="teams">Visitor team:</b> -->
-                          <a id="teamsName"> {{ g.localTeamName }}  VS  {{ g.visitorTeamName }}</a><br><hr>
+                        <div :title="g.matchID" class="match-title">
+                          <a>Match Id:</a> {{ g.matchID }}
                           
-                          <li> Venue: {{ g.venueName }}</li>
-                          <li> Referee Information:
-                            <referee-information v-if="g.hasRefereeInfo"
+                        </div>
+                        <div class="future-match-content">
+                                                   
+                          <div class="row" >
+                            
+                          <div class="teamsName"> {{ g.localTeamName }} VS {{ g.visitorTeamName }}</div>
+                          <!-- <div class="teamsName col">   </div>
+                          <div class="teamsName col"></div> -->
+                          <br><hr>
+                        </div>
+                          <div class=match-info> Venue: {{ g.venueName }}</div>
+                          <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
+                            <referee-information 
                               :refereeID="g.refereeInformation.refereeID"
                               :firstname="g.refereeInformation.firstname"
                               :lastname="g.refereeInformation.lastname"
                               :course="g.refereeInformation.course">
                             </referee-information>
-                          </li>
-                        </ul>
-                      <!-- </a> -->
+                          </div>
+                        </div>
                     </h4>
-                    <small>{{ g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,)}} </small>
+                  <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
+
                 </div>
-                <div class="card-footer">
-                  <div class="media">
-                      <!-- <img class="mr-3 rounded-circle" src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png" alt="Generic placeholder image" style="max-width:30px;right:0px">
-                      <div class="media-body">
-                          <small>{{ $root.store.username }}</small>
-                      </div> -->
-                      
+                  <div>
+                      <div class='form-check form-switch'>
+                      </div>
+                   <b-button style="float:right;" :pressed="onPress(g)"  variant="outline-warning"> ⭐ </b-button>
+                     <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p>
+
                   </div>
-                </div>
               </div>
             </div>
           </div>
@@ -51,28 +54,24 @@
 
 <script>
 
-import FutureMatchPreview from "./matches/matches_futureMatchPreview";
 import RefereeInformation from "./RefereeInformation";
-
 export default {
   name: "FavoriteMatches",
   components: {
-    RefereeInformation
+    RefereeInformation,
+    
   },
-  computed: {
-      hasRefereeInfo(){
-        return Object.keys(this.refereeInformation).length
-      }
-  }, 
   data() {
     return {
-      futureMatches: [
+      // FavoriteMatchesList:[],
+      FavoriteMatchesList: [
         {
           matchID:25,
           matchDate: "08-08-2021 20:00:00",
           localTeamName: "Maccabi Tel-Aviv",
           visitorTeamName: "Hapoel Beer-Sheva",
           venueName: "Teddy",
+          myToggle:true,
           refereeInformation: {
             refereeID: 2,
             firstname: "dini",
@@ -86,18 +85,49 @@ export default {
           localTeamName: "Hapoel Tel-Aviv",
           visitorTeamName: "Maccabi Haifa",
           venueName: "Bloom",
+          myToggle:true,
           refereeInformation: {}
         }
       ],
       
     };
   },
+  computed: {
+      // btnStates() {
+      //   return this.buttons.map(btn => btn.state)
+      // }
+      
+  },
 
+  mounted(){
+      this.FavoriteMatchesInit();
+  
+  },
   methods: {
-    // date2String(date){
-    //   let newdate=new Date(date);
-    //   return newdate.toDateString();
-    // },
+      hasRefereeInfo(element){
+        return Object.keys(element.refereeInformation).length ;
+      },
+
+      FavoriteMatchesInit(){
+        this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+        for (let index = 0; index < this.FavoriteMatchesList.length; index++) {
+          this.FavoriteMatchesList[index].myToggle=true; 
+        }
+
+      },
+
+      // btnStates(g) {
+      //   return g.buttons.map(btn => btn.state)
+      // },
+
+      onPress(g) {
+            g.myToggle = !g.myToggle; 
+          }
+          
+        
+      }
+
+    
   //   async updateGames(){
   //     console.log("response");
   //     try {
@@ -117,34 +147,50 @@ export default {
   // mounted(){
   //   console.log("favorite games mounted");
   //   this.updateGames(); 
-  }
+  // }
 };
 </script>
 
 <style lang="scss" scoped>
   .card{
       min-height: 250px !important;
-      min-width: 300px !important;
-      background-image:url('../assets/AdobeStock_204313610.jpeg');
-      background-size: cover;
+      min-width: 330px !important;
+      background-image:url('../assets/AdobeStock_203017792.jpeg');
+      // background-size: cover;
+      font-size: 17px;
+
   }
-  li{
-      font-size: 12px!important;
-  }
-  .future-match-title{
-    font-size: 16px!important;
+  .match-title{
+    font-size: 25px!important;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     text-align: center;
+    position: absolute;
+    top:30px;
+    left: 100px;
+    margin: auto;
+    color: rgb(32, 32, 32);
   }
-  #teamsName{
-    font-size: 14px!important;
-    text-align: center!important;
-    // padding-inline: 20px;
+
+  .teamsName{
+    position: absolute;
+    top: 75px;
+    left: 20px;
+    text-align: center;
+    // width: 200px;
+    // word-wrap: break-word;
+    font-size: 15px!important;
   }
-    #teams{
+
+  .match-info{
+    position: relative;
+    top: 25px;
     font-size: 12px!important;
-    text-align: center;
-    padding: 0px;
-    padding-inline: 20px;
+    text-align: left;
+    padding: 3px;
+  }
+  small{
+    position: absolute;
+    top: 210px;
   }
 </style> 
 

@@ -3,7 +3,7 @@
     <div class="container " style="padding-top: 15px;">
       <div class="row" >
         <div v-for="(g,index) in FavoriteMatchesList" v-bind:key="g.matchID">
-          <div v-if="index < 3" class="col-sm-4">
+          <div v-if="index < 3 && Object.keys(FavoriteMatchesList).length!=0" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
             <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
               <div class="card-img-overlay d-flex flex-column">
@@ -11,8 +11,7 @@
                     <h4 class="card-title mt-0" >
                       <!-- <a class="text-white" herf="#"> -->
                         <div :title="g.matchID" class="match-title">
-                          <a>Match Id:</a> {{ g.matchID }}
-                          
+                            <a>Match Id:</a> {{ g.matchID }}
                         </div>
                         <div class="future-match-content">
                                                    
@@ -38,9 +37,9 @@
 
                 </div>
                   <div>
-                      <div class='form-check form-switch'>
-                      </div>
-                   <b-button style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                    <div class='form-check form-switch'>
+                    </div>
+                    <b-button style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
                      <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                   </div>
               </div>
@@ -61,47 +60,73 @@ export default {
   },
   data() {
     return {
-      FavoriteMatchesList: [],
+      FavoriteMatchesList:[],
     };
   },
-  computed: {
-  
+  computed:{
+    matches(){
+            var mergedMatches = [];
+
+            if (this.FavoriteMatchesList.length != 0 ){
+
+                this.FavoriteMatchesList.map( ( pastMatch ) => {
+
+                    mergedMatches.push( {                
+                        matchID : pastMatch.matchID,
+                        matchDate : pastMatch.matchDateAndTime,
+                        localTeamName : pastMatch.localTeamName,
+                        visitorTeamName : pastMatch.visitorTeamName,
+                        venueName : pastMatch.venueName,
+                        localTeamScore : pastMatch.localTeamScore,
+                        visitorTeamScore : pastMatch.visitorTeamScore,
+                        refereeInformation : pastMatch.refereeInformation,
+                    }             
+              )});
+            }
+            return mergedMatches;
+
+          }
   },
-  mounted(){
-    this.FavoriteMatchesInit();
-  },
-  
   methods: {
       hasRefereeInfo(element){
-        return Object.keys(element?.refereeInformation).length ;
-      },
+        return element?.refereeInformation;
 
+      },
       FavoriteMatchesInit(){
-        this?.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
       },
-
       async clickHandler(g){
-        // console.log(g.myToggle);
-        // if(g.myToggle==true){
-        //   await this.DeleteFavoriteMatches(g.matchId)
-        // }
-        // else if(g.myToggle==false){
-        //   await this.postFavoriteMatches(g.matchId)
-        // }
-        // localStorage.removeItem("UserFavoriteMatches");
-        // await this.$root.store.initDataForUser();
+        console.log(g);
+        let filter; 
+        let response;
+        if(g.myToggle==true){
+          response = await this.DeleteFavoriteMatches(g.matchID);
+          this.FavoriteMatchesList = this.FavoriteMatchesList.filter(function(value){ 
+              return value.matchID != g.matchID;
+        });
+        }
+        else if(g.myToggle==false){
+          response = await this.postFavoriteMatches(g.matchID);
+          console.log(response);
+          this.FavoriteMatchesList.push(g);
+        }
+ 
+        g.myToggle = !g.myToggle;
 
-        // console.log("done - Game update ");
-        g.myToggle = !g?.myToggle
+        localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.FavoriteMatchesList));
+        console.log(this.FavoriteMatchesList);
+        console.log("done - Game update ");
       },
 
-      async postFavoriteMatches(matchId){
+      async postFavoriteMatches(matchID){
           try{
-              // axios.withCredentials = true;
-              const response = await axios.post(
-                  this.serverUrl + "users/favoriteMatches",{params:{matchId:matchId}}
+              console.log("done - Game update ");
+
+              this.axios.defaults.withCredentials = true;
+              const response = await this.axios.post(
+                  this.$root.store.serverUrl + "users/favoriteMatches?matchID=",
+                  { matchID:matchID}
               );
-              // axios.withCredentials = false;
+              this.axios.defaults.withCredentials = false;
               console.log("POST done - Favorite Matches update ");
 
               return response;
@@ -111,14 +136,14 @@ export default {
           }
         },
 
-      async DeleteFavoriteMatches(matchId){
+      async DeleteFavoriteMatches(matchID){
           try{
-              // axios.withCredentials = true;
-              const response = await axios.delete(
-                  this.serverUrl + "users/favoriteMatches",{params:{matchId:matchId}}
+              this.axios.defaults.withCredentials = true;
+              const response = await this.axios.delete(
+                 this.$root.store.serverUrl + "users/favoriteMatches?matchID=" + matchID
               );
-              // axios.withCredentials = false;
-              console.log("delete done - Favorite Matches update ");
+              this.axios.defaults.withCredentials = false;
+              console.log("delete done - Favorite Matches update");
               return response;
               
 
@@ -126,28 +151,10 @@ export default {
             // TODO: What to do We The Error ???
           }
         },
-
-
-    
-  //   async updateGames(){
-  //     console.log("response");
-  //     try {
-  //       const response = await this.axios.get(
-  //         "http://localhost:3000/games/favoriteGames",
-  //       );
-  //       const games = response.data.games;
-  //       this.games = [];
-  //       this.games.push(...games);
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log("error in update games")
-  //       console.log(error);
-  //     }
-  //   }
-  // }, 
-  // mounted(){
-  //   console.log("favorite games mounted");
-  //   this.updateGames(); 
+  },
+  mounted()  {
+    this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    console.log("favorite games mounted");
   }
 };
 </script>

@@ -201,16 +201,17 @@ const shared_data = {
     }
   },
   
+// -------------------------------getSearchInfo--------------------------------
+
   async getDataForSearch(){
     try{
-      if (localStorage.getItem("teamsInfo") !=null && localStorage.getItem("playersInfo") !=null){
-        return;
-      }
-      console.log("Start init search info");
-      const searchResponse = await this.initSearchInfo();
-      localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
-      localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
-      console.log("Ends init search info");
+      if (localStorage.getItem("teamsInfo") == null && localStorage.getItem("playersInfo") == null){
+          console.log("Start init search info");
+          const searchResponse = await this.initSearchInfo();
+          localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
+          localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
+          console.log("Ends init search info");
+    }
     } catch (error){
       // TODO: What to do We The Error ???
     }
@@ -228,6 +229,7 @@ const shared_data = {
       // TODO: What to do We The Error ???
     }
   },
+
   async initDataForSearch(){
     try{
 
@@ -241,45 +243,35 @@ const shared_data = {
     }
   },
 
-// -------------------------------getSearchInfo--------------------------------
 
-  // async getSearchInfo(){
-  //   try{
-  //     let include_params = "squad.player";
-  //     axios.withCredentials = true;
-  //     const response = await axios.get(
-  //         this.serverUrl + `/teams/season/18334`, {
-  //           params: {
-  //             api_token: process.env.api_token,
-  //             include: `${include_params}`,
-  //           },
-  //         });
-      
-  //     axios.withCredentials = false;
-  //     console.log(response.data);
-  //     return response.data;
-
-  //   } catch (error){
-  //     // TODO: What to do We The Error ???
-  //   }
-  // },
 
 // -------------------------------DataForUser--------------------------------
 
   async initDataForUser(){
     try{
-      // console.log(localStorage.getItem("username"));
-      let response = await this.getUserFavoriteMatches();
-      console.log(response);
+      var FavoriteResponse = await this.getUserFavoriteMatches();
+      var StagerResponse = await this.getCurrentStageMatches();
+      FavoriteResponse.map(fav => fav.myToggle=true);
 
-      for (let index = 0; index < response.length; index++) {
+      StagerResponse.futureMatches.map(Stage =>
+        FavoriteResponse.map(fev =>
+          {
+            if(!Stage?.myToggle){
+              if(fev.matchID==Stage.matchID){
+                Stage.myToggle=true;
+              }
+              else{
+                Stage.myToggle=false;
+              }
+            }
+          }
+          ));
+      console.log(FavoriteResponse);
+      console.log(StagerResponse);
 
-        response[index].myToggle=true; 
-        console.log(response[index]);
-
-      }
-      
-      localStorage.setItem("UserFavoriteMatches", JSON.stringify(response));
+      // localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StagerResponse.futureMatches));
+      // localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(StagerResponse.pastMatches));
+      // localStorage.setItem("UserFavoriteMatches", JSON.stringify(FavoriteResponse));
       console.log("done - Init Data From User");
 
     }catch ( error ){
@@ -289,11 +281,11 @@ const shared_data = {
 
   async getUserFavoriteMatches(){
     try{
-        // axios.withCredentials = true;
+        axios.withCredentials = true;
         const response = await axios.get(
             this.serverUrl + "users/favoriteMatches"
         );
-        // axios.withCredentials = false;
+        axios.withCredentials = false;
         return response.data;
 
     } catch (error){
@@ -301,6 +293,19 @@ const shared_data = {
     }
   },
 
+  async getCurrentStageMatches(){
+    try{
+        axios.withCredentials = true;
+        const response = await axios.get(
+            this.serverUrl + "matches/currentStageMatches"
+        );
+        axios.withCredentials = false;
+        return response.data;
+
+    } catch (error){
+      // TODO: What to do We The Error ???
+    }
+  },
 }
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;

@@ -44,7 +44,7 @@
                     {{ item._refereeShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
                 <b-button v-else variant="primary" size="sm"  @click="toggleRowDetails(item, 'referee')"> 
-                    {{ item._refereeShowing ? 'Cancel' : 'Add Referee'}} 
+                    {{ item._refereeShowing ? 'Cancel' : 'Add'}} Referee 
                 </b-button>
             </template>
 
@@ -52,8 +52,8 @@
                 <b-button v-if="eventsLog.length" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
                     {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
-                <b-button v-else variant="primary" size="sm"> 
-                    Add Event Log
+                <b-button v-else variant="primary" size="sm" @click="toggleRowDetails(item,'events')" > 
+                    {{ item._eventsShowing ? 'Cancel' : 'Add'}} Event Log
                 </b-button>
             </template>
 
@@ -67,6 +67,7 @@
                     </referee-preview>
 
                     <events-log-preview v-if="item.item._eventsShowing"
+                        v-on:cancel-add-event="toggleRowDetails(item.item,'events')"
                         :matchID="item.item.matchID"
                         :eventsLog="item.item.eventsLog" >
                     </events-log-preview>

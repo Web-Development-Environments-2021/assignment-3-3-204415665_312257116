@@ -2,8 +2,8 @@
 <template>
     <div class="container " style="padding-top: 15px;">
       <div class="row" >
-        <div v-for="(g,index) in FavoriteMatchesList" v-bind:key="g.matchID">
-          <div v-if="index < 3 && Object.keys(FavoriteMatchesList).length!=0" class="col-sm-4">
+        <div v-for="(g,index) in matches" v-bind:key="g.matchID">
+          <div v-if="index < 3" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
             <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
               <div class="card-img-overlay d-flex flex-column">
@@ -64,39 +64,26 @@ export default {
     };
   },
   computed:{
+    hasRefereeInfo(element){
+        return element?.refereeInformation;
+    },
+
     matches(){
-            var mergedMatches = [];
-
-            if (this.FavoriteMatchesList.length != 0 ){
-
-                this.FavoriteMatchesList.map( ( pastMatch ) => {
-
-                    mergedMatches.push( {                
-                        matchID : pastMatch.matchID,
-                        matchDate : pastMatch.matchDateAndTime,
-                        localTeamName : pastMatch.localTeamName,
-                        visitorTeamName : pastMatch.visitorTeamName,
-                        venueName : pastMatch.venueName,
-                        localTeamScore : pastMatch.localTeamScore,
-                        visitorTeamScore : pastMatch.visitorTeamScore,
-                        refereeInformation : pastMatch.refereeInformation,
-                    }             
-              )});
-            }
-            return mergedMatches;
-
-          }
+    if(JSON.parse(localStorage.getItem("UserFavoriteMatches"))!=null)
+    {
+        let temp;
+        temp.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+        console.log(temp);
+        return JSON.parse(localStorage.getItem("UserFavoriteMatches"));
+    }
+      return [];
+    }
   },
   methods: {
-      hasRefereeInfo(element){
-        return element?.refereeInformation;
 
-      },
-      FavoriteMatchesInit(){
-      },
-      async clickHandler(g){
+      async clickHandler(g)
+      {
         console.log(g);
-        let filter; 
         let response;
         if(g.myToggle==true){
           response = await this.DeleteFavoriteMatches(g.matchID);
@@ -145,15 +132,15 @@ export default {
               this.axios.defaults.withCredentials = false;
               console.log("delete done - Favorite Matches update");
               return response;
-              
-
           } catch (error){
             // TODO: What to do We The Error ???
           }
         },
   },
   mounted()  {
-    this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    if(JSON.parse(localStorage.getItem("UserFavoriteMatches"))!=null){
+        this.FavoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    }
     console.log("favorite games mounted");
   }
 };

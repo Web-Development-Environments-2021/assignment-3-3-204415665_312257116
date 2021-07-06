@@ -271,7 +271,7 @@ const shared_data = {
 
       // localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StagerResponse.futureMatches));
       // localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(StagerResponse.pastMatches));
-      // localStorage.setItem("UserFavoriteMatches", JSON.stringify(FavoriteResponse));
+      localStorage.setItem("UserFavoriteMatches", JSON.stringify(FavoriteResponse));
       console.log("done - Init Data From User");
 
     }catch ( error ){

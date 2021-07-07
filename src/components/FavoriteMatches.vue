@@ -22,7 +22,7 @@
       <!---------------------- have contact ---------------------->
         <div v-else v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
             <div v-if="index < 3" class="col-sm-4">
-              <div class="match-card card text-white card-has-bg click-col">
+              <div class="match-card favoriteMatches card  text-white card-has-bg click-col">
                 <div class="card-img-overlay d-flex flex-column">
                   <div class="card-body">                         
                       <h4 class="card-title mt-0" >
@@ -206,12 +206,17 @@ export default {
 
 <style lang="scss" scoped>
   .card{
+      min-height: 100px !important;
+      min-width: 330px !important;
+      font-size: 17px;
+  }
+  
+  .match-card.favoriteMatches.card{
       min-height: 250px !important;
       min-width: 330px !important;
       background-image:url('../assets/AdobeStock_203017792.jpeg');
       // background-size: cover;
       font-size: 17px;
-
   }
   .match-title{
     font-size: 25px!important;

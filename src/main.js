@@ -144,8 +144,6 @@ const shared_data = {
   },
   onEnter(){
     localStorage.setItem("UserFavoriteMatches", []);
-    localStorage.setItem("teamsInfo", []);
-    localStorage.setItem("playersInfo", []);
     localStorage.setItem("CurrentStageMatchesFutureMatches", []);
     localStorage.setItem("CurrentStageMatchesPastMatches", []);
   },
@@ -224,8 +222,8 @@ const shared_data = {
 
   async getDataForSearch(){
     try{
-      if (localStorage.getItem("teamsInfo") == null && localStorage.getItem("playersInfo") == null){
-          console.log("Start init search info");
+      console.log("Start init search info");
+      if (localStorage.getItem("teamsInfo")?.length==0 && localStorage.getItem("playersInfo")?.length==0){
           const searchResponse = await this.initSearchInfo();
           localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
           localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));

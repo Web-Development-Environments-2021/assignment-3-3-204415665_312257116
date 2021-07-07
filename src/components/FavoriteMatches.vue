@@ -65,6 +65,9 @@ export default {
   },
   methods: {
     hasRefereeInfo(element){
+      if(element?.refereeInformation==undefined){
+        return false
+      }
       return Object.keys(element.refereeInformation).length;
     },
 

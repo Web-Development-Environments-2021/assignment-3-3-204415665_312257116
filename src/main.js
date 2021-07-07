@@ -265,33 +265,9 @@ const shared_data = {
   async initDataForUser(){
     try{
       var favoriteResponse = await this.getUserFavoriteMatches();
-      var stagerResponseFutureMatches = [];
-      stagerResponseFutureMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-
       favoriteResponse?.map(fav => fav.myToggle=true);
-
-      // stagerResponseFutureMatches?.map(fav => fav.myToggle=false);
-      // // if(favoriteResponse.length>0 && stagerResponse.length>0)
-      // // {
-      //   stagerResponseFutureMatches?.map(Stage =>
-      //     favoriteResponse?.map(fev =>
-      //       {
-      //         if(!Stage?.myToggle){
-      //           if(fev.matchID==Stage.matchID){
-      //             Stage.myToggle=true;
-      //           }
-      //         }
-      //       }
-      //     )
-      //   );
-
-      // console.log(favoriteResponse);
-      // console.log(stagerResponseFutureMatches);
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(stagerResponseFutureMatches));
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
       console.log("done - Init Data From User");
-
-
     }catch ( error ){
       // TODO: What to do We The Error ???
     }

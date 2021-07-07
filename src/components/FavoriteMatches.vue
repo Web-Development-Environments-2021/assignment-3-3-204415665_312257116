@@ -4,7 +4,7 @@
       <!------------------------ display ------------------------>
       <div class="row" v-if="loadingFlag">
       <!----------------------- no contact ---------------------->
-        <div v-if="favoriteMatchesList.length==0 " style="padding-top: 15px;">
+        <div v-if="resultFlag" style="padding-top: 15px;">
             <div class="match-card noContact card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body" >                         
@@ -76,6 +76,7 @@
 
 import RefereeInformation from "./RefereeInformation";
 import Loading from "./loading";
+import currentStageMatches from "../pages/matchesPages/matches_currentStageMatchesPage.vue"
 
 export default {
   name: "FavoriteMatches",
@@ -88,7 +89,7 @@ export default {
       favoriteMatchesList:[],
       updateInterval: undefined,
       loadingFlag:false,
-      resultFlag:true
+      resultFlag:false
     };
   },
   methods: {
@@ -157,45 +158,33 @@ export default {
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.loadingFlag=false;
             this.favoriteMatchesList = [];
-
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
             this.loadingFlag=true;
 
-            this.upDateFavoriteMatchesBT();
 
         }
+      }     
+      if(this.favoriteMatchesList.length==0){
+          this.resultFlag=true;
+      }else{
+          this.resultFlag=false;
       }
 
     },
-    upDateFavoriteMatchesBT(){
-      let currentStageMatches =[];
-      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-      
-      currentStageMatches?.map(Stage =>
-          this.favoriteMatchesList?.map(fev =>
-            {
-              if(fev.matchID==Stage.matchID){
-                Stage.myToggle=true;
-              }
-            }
-          )
-        );
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-    },
+
     moveToCurrentMatch() {
         this.$router.push("/matches/currentStageMatches");
     },
   },
-
   //**--------------------------------------------mounted------------------------------------ */
-
-  mounted()  {
-    this.loadingFlag=true;
+  created(){
     let currentStageMatches =[];
     currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
     currentStageMatches?.map(fav => fav.myToggle=false);
     localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-
+  },
+  mounted()  {
+    this.loadingFlag=true;
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
   },
@@ -204,6 +193,21 @@ export default {
 
   beforeDestroy(){
     clearInterval(this.updateMatches);
+  },
+
+  updated(){ 
+    let currentStageMatches =[];
+    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+    currentStageMatches?.map(Stage =>
+    this.favoriteMatchesList?.map(fev =>
+      {
+      if(fev.matchID==Stage.matchID){
+      Stage.myToggle=true;
+        }
+      }
+    )
+    );
+    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
   }
 };
 </script>

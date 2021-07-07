@@ -2,7 +2,7 @@
 <template>
     <div class="container " style="padding-top: 15px;">
       <div class="row" >
-        <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID">
+        <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
           <div v-if="index < 3 && Object.keys(favoriteMatchesList).length!=0" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     hasRefereeInfo(element){
-      return element?.refereeInformation;
+      return Object.keys(element.refereeInformation).length;
     },
 
 
@@ -143,8 +143,8 @@ export default {
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){
-      if (localStorage.getItem("UserFavoriteMatches")!="undefined"){
-        if ( ! (JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+      if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+        if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
         }

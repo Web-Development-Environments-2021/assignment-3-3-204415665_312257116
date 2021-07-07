@@ -2,7 +2,7 @@
 <template>
     <div class="container " style="padding-top: 15px;">
       <div class="row" >
-        <div v-for="g in currentStageMatches" v-bind:key="g.matchID">
+        <div v-for="g in currentStageMatches" v-bind:key="g.matchID"  style="padding-top: 15px;">
           <div class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
             <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
@@ -37,7 +37,7 @@
                   <div>
                     <div class='form-check form-switch'>
                     </div>
-                    <b-button style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                    <b-button v-if="myToggleCheck(g)" style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
                      <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                   </div>
               </div>
@@ -136,11 +136,16 @@ export default {
         }
     },
 
+    myToggleCheck(g){
+        return g?.myToggle!=undefined;
+    },
+
     updateFavoriteMatches(){
-      if ( localStorage.getItem("CurrentStageMatchesFutureMatches") != "undefined" ){
+      if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.currentStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             this.currentStageMatches = [];
             this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+            // this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
         }
       }
     }
@@ -153,28 +158,21 @@ export default {
     clearInterval(this.updateMatches);
   },
   onUpdated(){
-    this.currentStageMatches = [];
-    let favoriteMatches =[];
-    console.log("start onUpdated");
-    favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-    this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-
-         this.currentStageMatches?.map(Stage =>
-          favoriteMatches?.map(fev =>
-            {
-              if(fev.matchID==Stage.matchID){
-                Stage.myToggle=true;
-              }
-              // else{
-              //   Stage.myToggle=false;
-              // }
-              }
-            
-          )
-        );
-
+    // this.currentStageMatches = [];
+    // let favoriteMatches =[];
+    // console.log("start onUpdated");
+    // favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+    // this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+    // this.currentStageMatches?.map(Stage =>
+    //   favoriteMatches?.map(fev =>
+    //     {
+    //       if(fev.matchID==Stage.matchID){
+    //         Stage.myToggle=true;
+    //       }
+    //     }  
+    //   )
+    // );
   }
-
 };
 </script>
 

@@ -115,11 +115,13 @@ const shared_data = {
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
-    localStorage.removeItem("UserFavoriteMatches");
-    localStorage.removeItem("teamsInfo");
-    localStorage.removeItem("playersInfo");
-    localStorage.removeItem("CurrentStageMatchesFutureMatches");
-    localStorage.removeItem("CurrentStageMatchesPastMatches");
+    // localStorage.removeItem("UserFavoriteMatches");
+    localStorage.setItem("teamsInfo", []);
+    localStorage.setItem("playersInfo", []);
+    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
+    localStorage.setItem("CurrentStageMatchesPastMatches", []);
+    localStorage.setItem("UserFavoriteMatches",[]);
+
 
     if ( this.username == "daniMoshe" ){
       this.cleanUnionAgentData();
@@ -345,6 +347,11 @@ new Vue({
   },
   created(){
     this.$root.store.getDataForSearch();
+    // localStorage.setItem("CurrentStageMatches", {CurrentStageMatchesPastMatches:stagerResponse.pastMatches, CurrentStageMatchesFutureMatches:[]});
+    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
+    localStorage.setItem("CurrentStageMatchesPastMatches", []);
+    localStorage.setItem("UserFavoriteMatches",[]);
+
   },
   render: (h) => h(App)
 }).$mount("#app");

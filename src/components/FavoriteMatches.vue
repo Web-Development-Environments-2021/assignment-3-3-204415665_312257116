@@ -5,13 +5,14 @@
       <div class="row" v-if="loadingFlag">
       <!----------------------- no contact ---------------------->
         <div v-if="favoriteMatchesList.length==0" style="padding-top: 15px;">
-            <div class="match-card card text-white card-has-bg click-col">
+            <div class="match-card noContact card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
-                <div class="card-body">                         
-                  <h4 class="card-title mt-0" >
+                <div class="card-body" >                         
+                  <h4 class="card-title mt-0">
                     <!-- <a class="text-white" herf="#"> -->
-                      <div class="match-title">
-                          <a>----No Res----</a> 
+                      <div style="text-align:center;">
+                          <a>You have no favorite games at the moment<br>To add, click here</a><br><br>
+                          <b-button @click="moveToCurrentMatch" variant="primary">Add matches</b-button>
                       </div>
                     </h4>
                   </div>
@@ -181,6 +182,9 @@ export default {
         );
       localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
     },
+    moveToCurrentMatch() {
+        this.$router.push("/matches/currentStageMatches");
+    },
   },
 
   //**--------------------------------------------mounted------------------------------------ */
@@ -205,9 +209,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .card{
-      min-height: 100px !important;
-      min-width: 330px !important;
+  .match-card.noContact.card{
+      min-height: 200px !important;
+      min-width: 500px !important;
       font-size: 17px;
   }
   

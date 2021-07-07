@@ -137,12 +137,10 @@ export default {
     },
 
     updateFavoriteMatches(){
-
-      if ( JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")) != null ){
+      if ( localStorage.getItem("CurrentStageMatchesFutureMatches") != "undefined" ){
         if (!(JSON.stringify(this.currentStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             this.currentStageMatches = [];
             this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-
         }
       }
     }

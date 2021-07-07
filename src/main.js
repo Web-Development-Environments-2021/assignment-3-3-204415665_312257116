@@ -254,7 +254,7 @@ const shared_data = {
       var favoriteResponse = await this.getUserFavoriteMatches();
       var stagerResponse = await this.getCurrentStageMatches();
             
-      console.log(favoriteResponse);
+      
       console.log(stagerResponse);
 
       favoriteResponse?.map(fav => fav.myToggle=true);
@@ -294,6 +294,9 @@ const shared_data = {
             this.serverUrl + "users/favoriteMatches"
         );
         axios.withCredentials = false;
+        if(response.status==204){
+          return undefined;
+        }
         return response?.data;
 
     } catch (error){
@@ -308,6 +311,9 @@ const shared_data = {
             this.serverUrl + "matches/currentStageMatches"
         );
         axios.withCredentials = false;
+        if(response.status==204){
+          return undefined;
+        }
         return response?.data;
 
     } catch (error){

@@ -5,7 +5,6 @@
         <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID">
           <div v-if="index < 3 && Object.keys(favoriteMatchesList).length!=0" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
-            <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">                         
                     <h4 class="card-title mt-0" >
@@ -15,13 +14,15 @@
                         </div>
                         <div class="future-match-content">                                           
                           <div class="row" >     
-                          <div class="teamsName"> {{ g.localTeamName }} VS {{ g.visitorTeamName }}</div>
-                          <!-- <div class="teamsName col">   </div>
-                          <div class="teamsName col"></div> -->
-                          <br><hr>
+                            <div class="teamsName">
+                              {{ g.localTeamName }} VS {{ g.visitorTeamName }}
+                            </div>
+                            <br><hr>
                         </div>
-                          <div class=match-info> Venue: {{ g.venueName }}</div>
-                          <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
+                        <div class=match-info>
+                           Venue: {{ g.venueName }}
+                        </div>
+                        <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
                             <referee-information 
                               :refereeID="g.refereeInformation.refereeID"
                               :firstname="g.refereeInformation.firstname"
@@ -67,9 +68,14 @@ export default {
       return element?.refereeInformation;
     },
 
+
+// ------------------------------------------clickHandler------------------------------------------
     async clickHandler(g){
       console.log(g);
       let response;
+      let currentStageMatches=[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+
       if(g.myToggle==true){
         response = await this.DeleteFavoriteMatches(g.matchID);
         this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
@@ -82,9 +88,16 @@ export default {
         console.log(response);
         this.favoriteMatchesList.push(g);
       }
+      currentStageMatches?.map(Stage =>{
+          if(Stage.matchID==g.matchID){
+            Stage.myToggle=g.myToggle;
+          }
+        }  
+      );
 
       console.log(this.favoriteMatchesList)
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
       console.log(this.favoriteMatchesList);
       console.log("done - Game update ");
     },
@@ -110,6 +123,9 @@ export default {
     //     }
     // },
 
+/**
+ * ------------------------------------------clickHandler------------------------------------------
+ */
     async DeleteFavoriteMatches(matchID){
         try{
             this.axios.defaults.withCredentials = true;
@@ -125,9 +141,9 @@ export default {
         }
     },
 
+//**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){
-
-      if ( localStorage?.getItem("UserFavoriteMatches")!= null ){
+      if (localStorage.getItem("UserFavoriteMatches")!="undefined"){
         if ( ! (JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
@@ -135,10 +151,17 @@ export default {
       }
     }
   },
+
+
+  //**--------------------------------------------mounted------------------------------------ */
+
   mounted()  {
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
   },
+
+ //**--------------------------------------------beforeDestroy------------------------------------ */
+
   beforeDestroy(){
     clearInterval(this.updateMatches);
   }

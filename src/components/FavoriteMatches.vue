@@ -215,6 +215,8 @@ export default {
       min-height: 200px !important;
       min-width: 500px !important;
       font-size: 17px;
+      background-image:url('../assets/AdobeStock_203017792.jpeg');
+
   }
   
   .match-card.favoriteMatches.card{

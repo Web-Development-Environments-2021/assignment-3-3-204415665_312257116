@@ -128,8 +128,6 @@ const shared_data = {
   //* ------------------------------ UnionAgent ------------------------------ *//
   onLogOut(){
     localStorage.setItem("UserFavoriteMatches", []);
-    localStorage.setItem("teamsInfo", []);
-    localStorage.setItem("playersInfo", []);
     let currentStageMatches=[];
     currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
     currentStageMatches?.map(fav => delete fav.myToggle);

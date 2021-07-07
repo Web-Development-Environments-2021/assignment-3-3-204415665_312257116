@@ -115,13 +115,7 @@ const shared_data = {
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
-    // localStorage.removeItem("UserFavoriteMatches");
-    localStorage.setItem("teamsInfo", []);
-    localStorage.setItem("playersInfo", []);
-    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
-    localStorage.setItem("CurrentStageMatchesPastMatches", []);
-    localStorage.setItem("UserFavoriteMatches",[]);
-
+    this.onLogOut();
 
     if ( this.username == "daniMoshe" ){
       this.cleanUnionAgentData();
@@ -132,8 +126,29 @@ const shared_data = {
 
 
   //* ------------------------------ UnionAgent ------------------------------ *//
-
-
+  onLogOut(){
+    localStorage.setItem("UserFavoriteMatches", []);
+    localStorage.setItem("teamsInfo", []);
+    localStorage.setItem("playersInfo", []);
+    let currentStageMatches=[];
+    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+    currentStageMatches?.map(fav => delete fav.myToggle);
+    localStorage.setItem("CurrentStageMatchesFutureMatches",JSON.stringify(currentStageMatches));
+  },
+  onExit(){
+    localStorage.removeItem("UserFavoriteMatches");
+    localStorage.removeItem("teamsInfo");
+    localStorage.removeItem("playersInfo");
+    localStorage.removeItem("CurrentStageMatchesFutureMatches");
+    localStorage.removeItem("CurrentStageMatchesPastMatches");
+  },
+  onEnter(){
+    localStorage.setItem("UserFavoriteMatches", []);
+    localStorage.setItem("teamsInfo", []);
+    localStorage.setItem("playersInfo", []);
+    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
+    localStorage.setItem("CurrentStageMatchesPastMatches", []);
+  },
   cleanUnionAgentData(){
 
     localStorage.removeItem("unionAgentLogged");
@@ -254,35 +269,32 @@ const shared_data = {
   async initDataForUser(){
     try{
       var favoriteResponse = await this.getUserFavoriteMatches();
-      var stagerResponse = await this.getCurrentStageMatches();
-            
-      
-      console.log(stagerResponse);
+      var stagerResponseFutureMatches = [];
+      stagerResponseFutureMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
 
       favoriteResponse?.map(fav => fav.myToggle=true);
-      stagerResponse?.futureMatches?.map(fav => fav.myToggle=false);
-      // if(favoriteResponse.length>0 && stagerResponse.length>0)
-      // {
-        stagerResponse?.futureMatches?.map(Stage =>
-          favoriteResponse?.map(fev =>
-            {
-              if(!Stage?.myToggle){
-                if(fev.matchID==Stage.matchID){
-                  Stage.myToggle=true;
-                }
-              }
-            }
-          )
-        );
 
-      
-      console.log(favoriteResponse);
-      console.log(stagerResponse);
+      // stagerResponseFutureMatches?.map(fav => fav.myToggle=false);
+      // // if(favoriteResponse.length>0 && stagerResponse.length>0)
+      // // {
+      //   stagerResponseFutureMatches?.map(Stage =>
+      //     favoriteResponse?.map(fev =>
+      //       {
+      //         if(!Stage?.myToggle){
+      //           if(fev.matchID==Stage.matchID){
+      //             Stage.myToggle=true;
+      //           }
+      //         }
+      //       }
+      //     )
+      //   );
 
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(stagerResponse.futureMatches));
-      localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(stagerResponse.pastMatches));
+      // console.log(favoriteResponse);
+      // console.log(stagerResponseFutureMatches);
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(stagerResponseFutureMatches));
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
       console.log("done - Init Data From User");
+
 
     }catch ( error ){
       // TODO: What to do We The Error ???
@@ -297,7 +309,7 @@ const shared_data = {
         );
         axios.withCredentials = false;
         if(response.status==204){
-          return undefined;
+          return [];
         }
         return response?.data;
 
@@ -308,15 +320,18 @@ const shared_data = {
 
   async getCurrentStageMatches(){
     try{
+        console.log("starts - getCurrentStageMatches")
         axios.withCredentials = true;
         const response = await axios.get(
             this.serverUrl + "matches/currentStageMatches"
         );
         axios.withCredentials = false;
         if(response.status==204){
-          return undefined;
+          response.data= [];
         }
-        return response?.data;
+        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response?.data.futureMatches));
+        localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response?.data.pastMatches));
+        console.log("finises - getCurrentStageMatches")
 
     } catch (error){
       // TODO: What to do We The Error ???
@@ -346,12 +361,15 @@ new Vue({
     }
   },
   created(){
+    this.$root.store.onEnter();
     this.$root.store.getDataForSearch();
-    // localStorage.setItem("CurrentStageMatches", {CurrentStageMatchesPastMatches:stagerResponse.pastMatches, CurrentStageMatchesFutureMatches:[]});
-    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
-    localStorage.setItem("CurrentStageMatchesPastMatches", []);
+    this.$root.store.getCurrentStageMatches();
     localStorage.setItem("UserFavoriteMatches",[]);
 
   },
+  // destroyed(){
+  //   this.$root.store.onExit();
+  // },
+
   render: (h) => h(App)
 }).$mount("#app");

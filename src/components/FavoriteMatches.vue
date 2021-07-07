@@ -1,7 +1,7 @@
 
 <template>
     <div class="container " style="padding-top: 15px;">
-      <div class="row" >
+      <div class="row" v-if="flag">
         <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
           <div v-if="index < 3 && Object.keys(favoriteMatchesList).length!=0" class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
@@ -45,22 +45,29 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
+      <div v-else>
+        <loading/>
+      </div>
       </div>
 </template>
 
 <script>
 
 import RefereeInformation from "./RefereeInformation";
+import Loading from "./loading";
+
 export default {
   name: "FavoriteMatches",
   components: {
     RefereeInformation,
+    Loading,
   },
   data() {
     return {
       favoriteMatchesList:[],
       updateInterval: undefined,
+      flag:false,
     };
   },
   methods: {
@@ -100,6 +107,7 @@ export default {
 
       console.log(this.favoriteMatchesList)
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
+      
       localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
       console.log(this.favoriteMatchesList);
       console.log("done - Game update ");
@@ -149,7 +157,24 @@ export default {
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];
+            let currentStageMatches =[];
+            this.flag=true;
+
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+            currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+            currentStageMatches?.map(fav => fav.myToggle=false);
+            currentStageMatches?.map(Stage =>
+                this.favoriteMatchesList?.map(fev =>
+                  {
+                    if(fev.matchID==Stage.matchID){
+                      Stage.myToggle=true;
+                    }
+                  }
+                )
+              );
+            localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+
+
         }
       }
     }

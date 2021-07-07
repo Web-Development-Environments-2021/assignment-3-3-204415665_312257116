@@ -1,7 +1,7 @@
 
 <template>
     <div class="container " style="padding-top: 15px;">
-      <div class="row" >
+      <div class="row" v-if="flag">
         <div v-for="g in currentStageMatches" v-bind:key="g.matchID"  style="padding-top: 15px;">
           <div class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
@@ -44,22 +44,29 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
+      <div v-else>
+        <loading/>
+      </div>
       </div>
 </template>
 
 <script>
 
 import RefereeInformation from "../../components/RefereeInformation";
+import Loading from "../../components/loading";
+
 export default {
   name: "CurrentStageMatches",
   components: {
     RefereeInformation,
+    Loading
   },
   data() {
     return {
       currentStageMatches:[],
       updateInterval: undefined,
+      flag:false,
 
     };
   },
@@ -147,8 +154,9 @@ export default {
       if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.currentStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             this.currentStageMatches = [];
+            this.flag=true;
             this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-            // this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
+            this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
         }
       }
     }

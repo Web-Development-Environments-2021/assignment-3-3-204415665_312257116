@@ -1,67 +1,70 @@
 
 <template>
     <div class="container " style="padding-top: 15px;">
+      <!------------------------ display ------------------------>
       <div class="row" v-if="loadingFlag">
-
-       <div v-if="favoriteMatchesList.length==0" style="padding-top: 15px;">
-          <div class="match-card card text-white card-has-bg click-col">
-            <div class="card-img-overlay d-flex flex-column">
-              <div class="card-body">                         
-                <h4 class="card-title mt-0" >
-                  <!-- <a class="text-white" herf="#"> -->
-                    <div class="match-title">
-                        <a>----No Res----</a> 
-                    </div>
-                  </h4>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <div v-else v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
-          <div v-if="index < 3" class="col-sm-4">
+      <!----------------------- no contact ---------------------->
+        <div v-if="favoriteMatchesList.length==0" style="padding-top: 15px;">
             <div class="match-card card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">                         
-                    <h4 class="card-title mt-0" >
-                      <!-- <a class="text-white" herf="#"> -->
-                        <div :title="g.matchID" class="match-title">
-                            <a>Match Id:</a> {{ g.matchID }}
-                        </div>
-                        <div class="future-match-content">                                           
-                          <div class="row" >     
-                            <div class="teamsName">
-                              {{ g.localTeamName }} VS {{ g.visitorTeamName }}
-                            </div>
-                            <br><hr>
-                        </div>
-                        <div class=match-info>
-                           Venue: {{ g.venueName }}
-                        </div>
-                        <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
-                            <referee-information 
-                              :refereeID="g.refereeInformation.refereeID"
-                              :firstname="g.refereeInformation.firstname"
-                              :lastname="g.refereeInformation.lastname"
-                              :course="g.refereeInformation.course">
-                            </referee-information>
-                          </div>
-                        </div>
+                  <h4 class="card-title mt-0" >
+                    <!-- <a class="text-white" herf="#"> -->
+                      <div class="match-title">
+                          <a>----No Res----</a> 
+                      </div>
                     </h4>
-                  <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
-
-                </div>
-                  <div>
-                    <div class='form-check form-switch'>
-                    </div>
-                    <b-button style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
-                     <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                   </div>
+                </div>
+              </div>
+        </div>
+
+      <!---------------------- have contact ---------------------->
+        <div v-else v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
+            <div v-if="index < 3" class="col-sm-4">
+              <div class="match-card card text-white card-has-bg click-col">
+                <div class="card-img-overlay d-flex flex-column">
+                  <div class="card-body">                         
+                      <h4 class="card-title mt-0" >
+                        <!-- <a class="text-white" herf="#"> -->
+                          <div :title="g.matchID" class="match-title">
+                              <a>Match Id:</a> {{ g.matchID }}
+                          </div>
+                          <div class="future-match-content">                                           
+                            <div class="row" >     
+                              <div class="teamsName">
+                                {{ g.localTeamName }} VS {{ g.visitorTeamName }}
+                              </div>
+                              <br><hr>
+                          </div>
+                          <div class=match-info>
+                            Venue: {{ g.venueName }}
+                          </div>
+                          <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
+                              <referee-information 
+                                :refereeID="g.refereeInformation.refereeID"
+                                :firstname="g.refereeInformation.firstname"
+                                :lastname="g.refereeInformation.lastname"
+                                :course="g.refereeInformation.course">
+                              </referee-information>
+                            </div>
+                          </div>
+                      </h4>
+                    <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
+
+                  </div>
+                    <div>
+                      <div class='form-check form-switch'>
+                      </div>
+                      <b-button style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                      <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
+                    </div>
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
+      <!------------------------ loading  ------------------------>
       <div v-else>
         <loading/>
       </div>
@@ -98,7 +101,6 @@ export default {
 
 // ------------------------------------------clickHandler------------------------------------------
     async clickHandler(g){
-      console.log(g);
       let response;
       let currentStageMatches=[];
       currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
@@ -129,28 +131,6 @@ export default {
       console.log(this.favoriteMatchesList);
       console.log("done - Game update ");
     },
-
-    // async postFavoriteMatches(matchID){
-    //     try{
-    //         console.log("done - Game update ");
-
-    //         this.axios.defaults.withCredentials = true;
-    //         const response = await this.axios.post(
-    //             this.$root.store.serverUrl + "users/favoriteMatches",
-    //             {
-    //               matchID:matchID
-    //             }
-    //         );
-    //         this.axios.defaults.withCredentials = false;
-    //         console.log("POST done - Favorite Matches update ");
-
-    //         return response;
-
-    //     } catch (error){
-    //       // TODO: What to do We The Error ???
-    //     }
-    // },
-
 /**
  * ------------------------------------------clickHandler------------------------------------------
  */

@@ -1,19 +1,28 @@
 <template>
     <div class="league-preview">
-      <b-card
-      img-alt="Image"
+      <div class="match-card league-card  text-white">
+      <!-- img-alt="Image"
       tag="article"
       style="max-width: 20rem;"
       class="mb-2"
-    >
-      <b-card-title>{{leagueName}}</b-card-title>
-      <b-card-text>
-        Season: {{ season }}
-        <br/>
-        Stage: {{ stage }}
-      </b-card-text>
-      <b-button href="#" variant="primary">Go somewhere</b-button>
-    </b-card>
+    > -->
+    <div class="card-img-overlay d-flex flex-column">
+      <div class="card-body" >                         
+        <h4 class="card-title mt-0">
+          <!-- <a class="text-white" herf="#"> -->
+            <div>
+              <b-card-title>{{leagueName}}</b-card-title>
+              <b-card-text>
+                Season: {{ season }}
+                <br/>
+                Stage: {{ stage }}
+              </b-card-text>
+            </div>
+          </h4>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -23,25 +32,31 @@ export default {
   
   data() {
       return {
-        leagueName: "superliga", 
-        season: "season", 
-        stage: "stage"
+        leagueName:"superliga", 
+        season:"season", 
+        stage:"stage"
       };
     },
 }
 </script>
 
 <style>
+.match-card.league-card{
+    min-height: 100% !important;
+    border-radius: 0px;
+    font-size: 17px;
+    background: #293241e0;
+
+}
 .league-preview {
   display: inline-block;
   width: 300px;
-  height: 470px;
+  height: 673px;
   position: relative;
   margin: 10px 10px;
-  border-style: solid;
-  border-radius: 10px;
+  /* border-style: solid; */
+  /* border-radius: 10px; */
   border-width: 5px;
-  border-color:rgb(201, 0, 252);
 }
 
 .league-preview .league-title {

@@ -41,7 +41,7 @@
         <b-nav-item-dropdown right>
           <template #button-content>
             <em>Welcome {{ $root.store.username }}
-            <b-avatar variant="success" :text="$root.store.username.slice(0, 2)"></b-avatar>
+            <b-avatar size="25px" class="avatar" variant="success" :text="$root.store.username.slice(0, 2)"></b-avatar>
             </em>
 
           </template>
@@ -123,6 +123,11 @@ export default {
     position: absolute!important;
     left: 10px!important;
     width: 20px!important;
-    
   }
+  .avatar {
+  vertical-align: middle;
+  width: 10px;
+  height: 50px;
+  border-radius: 50%;
+}
 </style>

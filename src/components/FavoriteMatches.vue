@@ -29,7 +29,7 @@
                       <h4 class="card-title mt-0" >
                         <!-- <a class="text-white" herf="#"> -->
                           <div :title="g.matchID" class="match-title">
-                              <a>Match Id:</a> {{ g.matchID }}
+                              <a>Match Id:{{ g.matchID }}</a> 
                           </div>
                           <div class="future-match-content">                                           
                             <div class="row" >     
@@ -156,7 +156,7 @@ export default {
 
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
-            this.loadingFlag=false;
+            
             this.favoriteMatchesList = [];
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
             this.loadingFlag=true;
@@ -184,7 +184,7 @@ export default {
     localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
   },
   mounted()  {
-    this.loadingFlag=true;
+    // this.loadingFlag=false;
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
   },
@@ -201,8 +201,8 @@ export default {
     currentStageMatches?.map(Stage =>
     this.favoriteMatchesList?.map(fev =>
       {
-      if(fev.matchID==Stage.matchID){
-      Stage.myToggle=true;
+        if(fev.matchID==Stage.matchID){
+        Stage.myToggle=true;
         }
       }
     )
@@ -217,6 +217,12 @@ export default {
       min-height: 200px !important;
       min-width: 500px !important;
       font-size: 17px;
+
+
+  }
+  .container{
+      left: 0px!important;
+      position: absolute!important;
   }
   
   .match-card.favoriteMatches.card{

@@ -11,7 +11,7 @@
                     <h4 class="card-title mt-0" >
                       <!-- <a class="text-white" herf="#"> -->
                         <div :title="g.matchID" class="match-title">
-                            <a>Match Id:</a> {{ g.matchID }}
+                            <a style="color: #000;">Match Id:{{ g.matchID }}</a>
                         </div>
                         <div class="future-match-content">                                           
                           <div class="row" >     

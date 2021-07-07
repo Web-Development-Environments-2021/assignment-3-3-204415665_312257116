@@ -46,7 +46,7 @@
         </div>
       </div>
       <div v-else>
-        <loading/>
+        <!-- <loading/> -->
       </div>
       </div>
 </template>
@@ -60,7 +60,7 @@ export default {
   name: "CurrentStageMatches",
   components: {
     RefereeInformation,
-    Loading
+    // Loading
   },
   data() {
     return {

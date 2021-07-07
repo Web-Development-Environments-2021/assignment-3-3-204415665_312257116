@@ -4,7 +4,7 @@
       <!------------------------ display ------------------------>
       <div class="row" v-if="loadingFlag">
       <!----------------------- no contact ---------------------->
-        <div v-if="favoriteMatchesList.length==0 && resultFlag" style="padding-top: 15px;">
+        <div v-if="favoriteMatchesList.length==0 " style="padding-top: 15px;">
             <div class="match-card noContact card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body" >                         
@@ -88,7 +88,7 @@ export default {
       favoriteMatchesList:[],
       updateInterval: undefined,
       loadingFlag:false,
-      resultFlag:false
+      resultFlag:true
     };
   },
   methods: {
@@ -156,8 +156,6 @@ export default {
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.loadingFlag=false;
-            this.resultFlag=true;
-
             this.favoriteMatchesList = [];
 
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
@@ -215,8 +213,6 @@ export default {
       min-height: 200px !important;
       min-width: 500px !important;
       font-size: 17px;
-      background-image:url('../assets/AdobeStock_203017792.jpeg');
-
   }
   
   .match-card.favoriteMatches.card{

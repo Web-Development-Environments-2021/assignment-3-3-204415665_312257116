@@ -1,10 +1,26 @@
 
 <template>
     <div class="container " style="padding-top: 15px;">
-      <div class="row" v-if="flag">
-        <div v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
-          <div v-if="index < 3 && Object.keys(favoriteMatchesList).length!=0" class="col-sm-4">
-           <div class="match-card card text-white card-has-bg click-col">
+      <div class="row" v-if="loadingFlag">
+
+       <div v-if="favoriteMatchesList.length==0" style="padding-top: 15px;">
+          <div class="match-card card text-white card-has-bg click-col">
+            <div class="card-img-overlay d-flex flex-column">
+              <div class="card-body">                         
+                <h4 class="card-title mt-0" >
+                  <!-- <a class="text-white" herf="#"> -->
+                    <div class="match-title">
+                        <a>----No Res----</a> 
+                    </div>
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div v-else v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
+          <div v-if="index < 3" class="col-sm-4">
+            <div class="match-card card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">                         
                     <h4 class="card-title mt-0" >
@@ -67,7 +83,8 @@ export default {
     return {
       favoriteMatchesList:[],
       updateInterval: undefined,
-      flag:false,
+      loadingFlag:false,
+      resultFlag:false
     };
   },
   methods: {
@@ -153,41 +170,52 @@ export default {
     },
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
-    updateFavoriteMatches(){
+    updateFavoriteMatches(){  
+
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+            this.loadingFlag=false;
             this.favoriteMatchesList = [];
-            let currentStageMatches =[];
-            this.flag=true;
 
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-            currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-            currentStageMatches?.map(fav => fav.myToggle=false);
-            currentStageMatches?.map(Stage =>
-                this.favoriteMatchesList?.map(fev =>
-                  {
-                    if(fev.matchID==Stage.matchID){
-                      Stage.myToggle=true;
-                    }
-                  }
-                )
-              );
-            localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+            this.loadingFlag=true;
 
+            this.upDateFavoriteMatchesBT();
 
         }
       }
-    }
-  },
 
+    },
+    upDateFavoriteMatchesBT(){
+      let currentStageMatches =[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      
+      currentStageMatches?.map(Stage =>
+          this.favoriteMatchesList?.map(fev =>
+            {
+              if(fev.matchID==Stage.matchID){
+                Stage.myToggle=true;
+              }
+            }
+          )
+        );
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+    },
+  },
 
   //**--------------------------------------------mounted------------------------------------ */
 
   mounted()  {
+    this.loadingFlag=true;
+    let currentStageMatches =[];
+    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+    currentStageMatches?.map(fav => fav.myToggle=false);
+    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
   },
-
+ 
  //**--------------------------------------------beforeDestroy------------------------------------ */
 
   beforeDestroy(){
@@ -237,5 +265,6 @@ export default {
     position: absolute;
     top: 210px;
   }
+  
 </style> 
 

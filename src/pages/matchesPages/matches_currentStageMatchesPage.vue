@@ -1,8 +1,8 @@
 
 <template>
     <div class="container " style="padding-top: 15px;">
-      <div class="row" v-if="flag">
-        <div v-for="g in currentStageMatches" v-bind:key="g.matchID"  style="padding-top: 15px;">
+      <div class="row" v-if="loadingFlag">
+        <div v-for="g in currentStageMatches" v-bind:key="g.matchID" style="padding-top: 15px;">
           <div class="col-sm-4">
            <div class="match-card card text-white card-has-bg click-col">
             <!-- <img class="card-img d-none" src="https://source.unsplash.com/600x900/?tech,street" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"> -->
@@ -66,7 +66,7 @@ export default {
     return {
       currentStageMatches:[],
       updateInterval: undefined,
-      flag:false,
+      loadingFlag:false,
 
     };
   },
@@ -154,9 +154,9 @@ export default {
       if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.currentStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             this.currentStageMatches = [];
-            this.flag=true;
+            this.loadingFlag=true;
             this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-            this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
+            // this.currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
         }
       }
     }

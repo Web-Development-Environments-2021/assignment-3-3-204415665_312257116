@@ -4,7 +4,7 @@
       <!------------------------ display ------------------------>
       <div class="row" v-if="loadingFlag">
       <!----------------------- no contact ---------------------->
-        <div v-if="favoriteMatchesList.length==0" style="padding-top: 15px;">
+        <div v-if="favoriteMatchesList.length==0 && resultFlag" style="padding-top: 15px;">
             <div class="match-card noContact card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body" >                         
@@ -156,6 +156,8 @@ export default {
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.loadingFlag=false;
+            this.resultFlag=true;
+
             this.favoriteMatchesList = [];
 
             this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));

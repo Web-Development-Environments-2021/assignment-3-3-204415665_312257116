@@ -2,7 +2,11 @@
   <div>
     <b-button @click="modalShow = !modalShow">Open Modal</b-button>
 
-    <b-modal modal-class="my-class" v-model="modalShow">Hello From Modal!</b-modal>
+    <b-modal v-model="modalShow">
+      <div class="my-class">
+      Hello From Modal!
+      </div>
+      </b-modal>
   </div>
 </template>
 
@@ -18,9 +22,11 @@
 
 <style lang="scss" scoped>
 
-  /deep/ .my-class {
-  color: rgb(255, 0, 0);
+  .my-class {
   margin:auto!important;
+  // padding-top: 200px;
+  min-width: 10000px;
+  min-height: 500px;
   }
 </style>
 

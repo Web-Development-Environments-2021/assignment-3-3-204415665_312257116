@@ -76,13 +76,14 @@
 
 import RefereeInformation from "./RefereeInformation";
 import Loading from "./loading";
-import currentStageMatches from "../pages/matchesPages/matches_currentStageMatchesPage.vue"
+import currentStageMatches from "../pages/matchesPages/matches_currentStageMatchesPage"
 
 export default {
   name: "FavoriteMatches",
   components: {
     RefereeInformation,
     Loading,
+    // currentStageMatches
   },
   data() {
     return {
@@ -103,36 +104,38 @@ export default {
 
 // ------------------------------------------clickHandler------------------------------------------
     async clickHandler(g){
-      let response;
-      let currentStageMatches=[];
-      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      try{
+          let response;
+          let currentStageMatches=[];
+          currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+          g.myToggle = !g.myToggle;
+          currentStageMatches?.map(Stage =>{
+            if(Stage.matchID==g.matchID){
+              Stage.myToggle=g.myToggle;
+            }
+          });
 
-      if(g.myToggle==true){
-        response = await this.DeleteFavoriteMatches(g.matchID);
-        this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
-            g.myToggle = !g.myToggle;
-            return value.matchID != g.matchID;
-      });
-      }
-      else if(g.myToggle==false){
-        response = await this.postFavoriteMatches(g.matchID);
-        console.log(response);
-        this.favoriteMatchesList.push(g);
-      }
-      currentStageMatches?.map(Stage =>{
-          if(Stage.matchID==g.matchID){
-            Stage.myToggle=g.myToggle;
+          if(g.myToggle==false){
+            response = await this.DeleteFavoriteMatches(g.matchID);
+            if(response != null){
+              this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
+                return value.matchID != g.matchID;
+              });
+            }
           }
-        }  
-      );
+          console.log(response);
+          localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
+          localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+          console.log("done - Game update ");
+          this.$root.toast("status", "The game was successfully removed from favorites", "success");
 
-      console.log(this.favoriteMatchesList)
-      localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
+      }catch
+      {
+        this.$root.toast("Error", "Multiple clicks - the game has been added once", "failure");
+      }
       
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-      console.log(this.favoriteMatchesList);
-      console.log("done - Game update ");
     },
+
 /**
  * ------------------------------------------clickHandler------------------------------------------
  */
@@ -156,59 +159,52 @@ export default {
 
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
-            
             this.favoriteMatchesList = [];
-            this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
             this.loadingFlag=true;
-
-
+            this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+            this.updatedChanges();
         }
       }     
       if(this.favoriteMatchesList.length==0){
-          this.resultFlag=true;
+        this.loadingFlag=true;
+        this.resultFlag=true;
       }else{
-          this.resultFlag=false;
+        this.loadingFlag=true;
+        this.resultFlag=false;
       }
 
-    },
 
+    },
     moveToCurrentMatch() {
         this.$router.push("/matches/currentStageMatches");
     },
+
+    updatedChanges(){ 
+      let currentStageMatches =[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      currentStageMatches?.map(Stage =>
+        this.favoriteMatchesList?.map(fev =>
+        {
+          if(fev.matchID==Stage.matchID){
+            Stage.myToggle=true;
+          }
+        })
+      );
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+    }
   },
   //**--------------------------------------------mounted------------------------------------ */
-  created(){
-    let currentStageMatches =[];
-    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-    currentStageMatches?.map(fav => fav.myToggle=false);
-    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-  },
   mounted()  {
-    // this.loadingFlag=false;
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
   },
- 
  //**--------------------------------------------beforeDestroy------------------------------------ */
-
   beforeDestroy(){
     clearInterval(this.updateMatches);
   },
 
-  updated(){ 
-    let currentStageMatches =[];
-    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-    currentStageMatches?.map(Stage =>
-    this.favoriteMatchesList?.map(fev =>
-      {
-        if(fev.matchID==Stage.matchID){
-        Stage.myToggle=true;
-        }
-      }
-    )
-    );
-    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-  }
+
+
 };
 </script>
 
@@ -217,8 +213,7 @@ export default {
       min-height: 200px !important;
       min-width: 500px !important;
       font-size: 17px;
-
-
+      left: 20px;
   }
   .container{
       left: 0px!important;

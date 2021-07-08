@@ -152,7 +152,7 @@ export default {
         currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
         currentStageMatches?.map(fav => fav.myToggle=false);
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
-        
+
         if ( this.form.username == "daniMoshe" ){
 
           this.$root.store.initDataForUnionAgent();

@@ -90,6 +90,7 @@ export default {
         if (JSON.stringify(localStorage.getItem("UserFavoriteMatches"))!="[]"){
             favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
         }
+        console.log(g);
         g.myToggle = !g.myToggle;
         this.FutureStageMatches?.map(Stage =>{
             if(Stage.matchID==g.matchID){
@@ -97,7 +98,9 @@ export default {
             }
           }  
         );
+        console.log(g.myToggle);
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
+
 
         if(g.myToggle==false){
           favoriteMatches = favoriteMatches?.filter(function(value){ 
@@ -161,19 +164,15 @@ export default {
         return g?.myToggle!=undefined;
     },
 
-    combineMatches(){
-
-    },
-
     updateFavoriteMatches(){
-      var neededUpdateFlag=false;
+      var neededUpdateFlag = false;
       if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.FutureStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             neededUpdateFlag=true;
             this.FutureStageMatches = [];
             this.FutureStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-
-            if(! this.FutureStageMatches?.myToggle && this.$root.store.username){
+            console.log((this.FutureStageMatches.myToggle!=undefined))
+            if(this.FutureStageMatches?.myToggle!=undefined && this.$root.store?.username!=undefined){
                this.FutureStageMatches?.map(fav => fav.myToggle=false);
                localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
             }
@@ -188,20 +187,29 @@ export default {
       if(neededUpdateFlag){
         this.loadingFlag=true;
         this.currentStageMatches=[];
-        this.currentStageMatches=this.FutureStageMatches;
-        this.currentStageMatches = this.currentStageMatches.concat(this.pastStageMatches);
+        this.currentStageMatches=this.FutureStageMatches.concat(this.pastStageMatches);
       }
+    }
+    },
 
+    updatedChanges(){ 
       let currentStageMatches =[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      currentStageMatches?.map(Stage =>
+        this.favoriteMatchesList?.map(fev =>
+        {
+          if(fev.matchID==Stage.matchID){
+            Stage.myToggle=true;
+          }
+        })
+      );
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+    }
 
-    }
-    }
   },
   mounted()  {
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
-    
-
   },
 
   beforeDestroy(){

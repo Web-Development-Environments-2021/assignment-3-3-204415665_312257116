@@ -187,11 +187,19 @@ export default {
         this.currentStageMatches=this.FutureStageMatches;
         this.currentStageMatches = this.currentStageMatches.concat(this.pastStageMatches);
       }
+      let currentStageMatches =[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      if(!currentStageMatches?.myToggle){
+      currentStageMatches?.map(fav => fav.myToggle=false);
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+    }
     }
   },
   mounted()  {
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
     console.log("favorite games mounted");
+    
+
   },
 
   beforeDestroy(){

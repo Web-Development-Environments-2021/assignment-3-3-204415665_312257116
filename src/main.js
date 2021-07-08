@@ -260,7 +260,7 @@ const shared_data = {
 
 
 
-// -------------------------------DataForUser--------------------------------
+// -------------------------------Data For User--------------------------------
 
   async initDataForUser(){
     try{
@@ -269,7 +269,7 @@ const shared_data = {
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
       console.log("done - Init Data From User");
     }catch ( error ){
-      // TODO: What to do We The Error ???
+      // TODO: What to do We The Error
     }
   },
 
@@ -283,7 +283,7 @@ const shared_data = {
         if(response.status==204){
           return [];
         }
-        return response?.data;
+        return response.data;
 
     } catch (error){
       // TODO: What to do We The Error ???
@@ -301,16 +301,18 @@ const shared_data = {
         if(response.status==204){
           response.data= [];
         }
-        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response?.data.futureMatches));
-        localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response?.data.pastMatches));
+        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
+        localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
         console.log("finises - getCurrentStageMatches")
 
-    } catch (error){
-      // TODO: What to do We The Error ???
-    }
+      } catch (error){
+        // TODO: What to do We The Error ???
+      }
   },
+
 }
 console.log(shared_data);
+
 // Vue.prototype.$root.store = shared_data;
 
 new Vue({
@@ -336,7 +338,7 @@ new Vue({
     this.$root.store.onEnter();
     this.$root.store.getDataForSearch();
     this.$root.store.getCurrentStageMatches();
-    localStorage.setItem("UserFavoriteMatches",[]);
+    localStorage.setItem("UserFavoriteMatches", JSON.stringify([]));
 
   },
   // destroyed(){

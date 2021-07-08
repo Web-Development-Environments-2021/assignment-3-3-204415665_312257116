@@ -148,12 +148,15 @@ export default {
 
         this.$root.store.login(this.form.username);
 
+        let currentStageMatches =[];
+        currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+        currentStageMatches?.map(fav => fav.myToggle=false);
+        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
         
         if ( this.form.username == "daniMoshe" ){
 
           this.$root.store.initDataForUnionAgent();
         }
-        
         await this.$root.store.initDataForUser();
         // console.log(localStorage.getItem("UserFavoriteMatches"));
         if ( this.$route.path == "/Login" ) {

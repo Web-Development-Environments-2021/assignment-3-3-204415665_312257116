@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <NavigatorBar @Logout="Logout" />
+    <navigatorBar @Logout="Logout" />
     <router-view />
 
   <!-- <br /> -->
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import NavigatorBar from "./components/NavigatorBar.vue";
+import NavigatorBar from "./components/NavigatorBar";
 import LoadingIcon from "./components/loading.vue"
 
 

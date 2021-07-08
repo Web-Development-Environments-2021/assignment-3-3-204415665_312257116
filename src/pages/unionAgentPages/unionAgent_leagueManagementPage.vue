@@ -1,14 +1,14 @@
 <template>
   <div>
     <h2 class="match-headline"> Future Matches </h2>
-    <matches-table 
+    <matches-table
+        v-on:update-match-delete="updateMatchDelete"
         :futureMatches="displayFutureMatches" 
         :pastMatches="displayPastMatches"
-        :isBusy="isBusy"
-        :matchToDelete="deleteMatchID">
+        :isBusy="isBusy">
     </matches-table>
 
-    <b-button :disabled="!deleteMatchID" variant="danger" size="lg" id="delete-match-btn" >
+    <b-button :disabled="!deleteMatchID" @click="deleteMatch()" variant="danger" size="lg" id="delete-match-btn" >
         Delete Match
     </b-button>
 
@@ -86,7 +86,73 @@ export default {
                 this.addMatchDisabled = true;
             }
         },
-        // matchDelete
+        updateMatchDelete(matchID){
+            this.deleteMatchID = matchID;
+        },
+        async deleteMatch(){
+            try{
+                this.isBusy = true;
+                this.axios.defaults.withCredentials = true;
+
+                const response = await this.axios.delete(
+                    this.$root.store.serverUrl + "unionAgent/match",
+                    {
+                        params: { 
+                            matchID: this.deleteMatchID
+                        }
+                    }
+                );
+                this.axios.defaults.withCredentials = false;
+                
+                if ( response.status == 200 ){
+                    this.updateStorageAfterDelete();
+                    this.$root.toast("Match Delete", "Match deleted successfully", "success");
+                }
+                this.isBusy = false;
+                
+            } catch (err) {
+                // this.form.submitError = err.response.data;
+            }    
+        },
+        updateStorageAfterDelete(){
+
+            var foundMatch = false;
+        
+            var matches = JSON.parse(localStorage.getItem("leaguePastMatches"));
+
+            var resultFromRemove = this.removeMatchFromLS(matches);
+
+            foundMatch = resultFromRemove.foundMatch;
+
+            if ( ! foundMatch){
+            
+                var matches = JSON.parse(localStorage.getItem("leagueFutureMatches"));
+                resultFromRemove = this.removeMatchFromLS(matches);
+                matches = resultFromRemove.matches;
+                localStorage.setItem("leagueFutureMatches", JSON.stringify(matches));
+
+            } else {
+
+                matches = resultFromRemove.matches;
+                localStorage.setItem("leaguePastMatches", JSON.stringify(matches));
+
+            }
+        },
+        removeMatchFromLS(matches){
+            var foundMatch = false;
+            var index, idx = 0;
+            matches.map((match) => {
+                if ( match.matchID == this.deleteMatchID ){
+                    foundMatch = true;
+                    index = idx;
+                }
+                idx++;
+            });
+            if ( index > -1 ) {
+                matches.splice(index, 1);
+            }
+            return { foundMatch : foundMatch, matches : matches };
+        }
     },
     mounted() {
         

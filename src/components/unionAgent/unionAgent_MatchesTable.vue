@@ -218,7 +218,7 @@ export default {
             return this.futureMatches.length + this.pastMatches.length;
         }
     },
-    methods:{
+    methods: {
         toggleRowDetails(row, refereeOrEventsOrMatchResult) {
 
             // Not Showing Row
@@ -307,7 +307,7 @@ export default {
             return true;
         },
         onRowSelected(matchRow) {
-            this.matchToDelete = matchRow[0]?.matchID;
+            this.$emit('update-match-delete',matchRow[0]?.matchID);
         }
     }
 }
@@ -331,11 +331,5 @@ export default {
 .btn-info,  .btn-primary {
     width: 70%;
 }
-
-#delete-match-btn {
-    margin-right: 45% ;
-    margin-left: 45% ;
-}
-
 
 </style>

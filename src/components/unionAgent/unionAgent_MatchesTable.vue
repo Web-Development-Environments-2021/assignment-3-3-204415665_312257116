@@ -275,7 +275,7 @@ export default {
         },
         checkAddMatchResult(row){
 
-            if ( !row.item.localTeamScore && ! row.item.visitorTeamScore ){
+            if ( row.item.localTeamScore==null && row.item.visitorTeamScore==null ){
 
                 if( Date.parse(row.item.matchDate) < Date.parse(new Date()) ){
                     return false;   

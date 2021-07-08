@@ -172,8 +172,12 @@ export default {
             neededUpdateFlag=true;
             this.FutureStageMatches = [];
             this.FutureStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+
+            if(! this.FutureStageMatches?.myToggle && this.$root.store.username){
+               this.FutureStageMatches?.map(fav => fav.myToggle=false);
+               localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
+            }
         }
-      }
       if ((localStorage.getItem("CurrentStageMatchesPastMatches")).length!=0 ){
         if (!(JSON.stringify(this.pastStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"))))) {
             neededUpdateFlag=true;
@@ -187,11 +191,9 @@ export default {
         this.currentStageMatches=this.FutureStageMatches;
         this.currentStageMatches = this.currentStageMatches.concat(this.pastStageMatches);
       }
+
       let currentStageMatches =[];
-      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-      if(!currentStageMatches?.myToggle){
-      currentStageMatches?.map(fav => fav.myToggle=false);
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+
     }
     }
   },

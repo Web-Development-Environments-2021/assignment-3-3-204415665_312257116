@@ -1,11 +1,16 @@
 <template>
   <div>
     <h2 class="match-headline"> Future Matches </h2>
-    <matches-table 
+    <matches-table
+        v-on:update-match-delete="updateMatchDelete"
         :futureMatches="displayFutureMatches" 
         :pastMatches="displayPastMatches"
         :isBusy="isBusy">
     </matches-table>
+
+    <b-button :disabled="!deleteMatchID" @click="deleteMatch()" variant="danger" size="lg" id="delete-match-btn" >
+        Delete Match
+    </b-button>
 
     <b-button :disabled="addMatchDisabled" @click="moveToAddMatch()"  variant="primary" size="lg" id="btn-add-new-match">
         Add New Match
@@ -25,7 +30,7 @@ export default {
     components: {
         MatchesTable,
     },
-    data(){
+    data() {
         return {
 
             futureMatches: [],
@@ -36,7 +41,8 @@ export default {
 
             displayFutureMatches: [],
             displayPastMatches: [],
-            isBusy: true
+            isBusy: true,
+            deleteMatchID: undefined
         }
     },
     methods: {
@@ -79,9 +85,76 @@ export default {
             } else {
                 this.addMatchDisabled = true;
             }
+        },
+        updateMatchDelete(matchID){
+            this.deleteMatchID = matchID;
+        },
+        async deleteMatch(){
+            try{
+                this.isBusy = true;
+                this.axios.defaults.withCredentials = true;
+
+                const response = await this.axios.delete(
+                    this.$root.store.serverUrl + "unionAgent/match",
+                    {
+                        params: { 
+                            matchID: this.deleteMatchID
+                        }
+                    }
+                );
+                this.axios.defaults.withCredentials = false;
+                
+                if ( response.status == 200 ){
+                    this.updateStorageAfterDelete();
+                    this.$root.toast("Match Delete", "Match deleted successfully", "success");
+                }
+                this.isBusy = false;
+                
+            } catch (err) {
+                // this.form.submitError = err.response.data;
+            }    
+        },
+        updateStorageAfterDelete(){
+
+            var foundMatch = false;
+        
+            var matches = JSON.parse(localStorage.getItem("leaguePastMatches"));
+
+            var resultFromRemove = this.removeMatchFromLS(matches);
+
+            foundMatch = resultFromRemove.foundMatch;
+
+            if ( ! foundMatch){
+            
+                var matches = JSON.parse(localStorage.getItem("leagueFutureMatches"));
+                resultFromRemove = this.removeMatchFromLS(matches);
+                matches = resultFromRemove.matches;
+                localStorage.setItem("leagueFutureMatches", JSON.stringify(matches));
+
+            } else {
+
+                matches = resultFromRemove.matches;
+                localStorage.setItem("leaguePastMatches", JSON.stringify(matches));
+
+            }
+        },
+        removeMatchFromLS(matches){
+            var foundMatch = false;
+            var index, idx = 0;
+            matches.map((match) => {
+                if ( match.matchID == this.deleteMatchID ){
+                    foundMatch = true;
+                    index = idx;
+                }
+                idx++;
+            });
+            if ( index > -1 ) {
+                matches.splice(index, 1);
+            }
+            return { foundMatch : foundMatch, matches : matches };
         }
     },
-    mounted(){
+    mounted() {
         
         this.updateInterval = setInterval( this.updateMatches, 100 );
         console.log("UA - League management page Mounted");
@@ -92,12 +165,7 @@ export default {
         clearInterval(this.updateMatches);
         console.log("UA - League management page Destroyed");
 
-    },
-    onUpdated(){
-        
-
     }
-
 }
 
 </script>
@@ -112,10 +180,10 @@ export default {
     text-align: center;
 }
 
-#btn-add-new-match {
+#btn-add-new-match ,#delete-match-btn {
     margin: 10px;
     position: relative;
-    left: 50%;
+    left: 40%;
 }
 
 </style>

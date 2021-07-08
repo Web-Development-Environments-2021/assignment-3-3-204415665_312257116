@@ -13,6 +13,10 @@
             bordered
             outlined
             no-border-collapse
+            selectable
+            select-mode=single
+            ref="matchesTable"
+            @row-selected="onRowSelected"
             head-variant="light"
             table-variant="light"
             sort-icon-left
@@ -57,6 +61,17 @@
                 </b-button>
             </template>
 
+            <template #cell(selected)="{ rowSelected }">
+                <template v-if="rowSelected">
+                    <span aria-hidden="true">&check;</span>
+                    <span class="sr-only">Selected</span>
+                </template>
+                <template v-else>
+                    <span aria-hidden="true">&nbsp;</span>
+                    <span class="sr-only">Not selected</span>
+                </template>
+            </template>
+
             <template #row-details="item">
                 <b-card>
                     <referee-preview v-if="item.item._refereeShowing"
@@ -94,6 +109,9 @@
             :per-page="perPage"
             aria-controls="matches-table">
         </b-pagination>
+
+
+
     </div>
 </template>
 
@@ -109,7 +127,7 @@ import Loading from '../loading.vue';
 export default {
     name: "MatchesTable",
 
-    components:{
+    components: {
         RefereePreview,
         EventsLogPreview,
         AddMatchResult,
@@ -118,6 +136,7 @@ export default {
     data(){
         return{
             fields: [
+                { key: 'selected'},
                 { key : "matchID", sortable: true },
                 { key : "matchDate", sortable: true },
                 { key : "localTeamName", sortable: true },
@@ -145,10 +164,14 @@ export default {
         isBusy: {
             type: Boolean,
             require: true
+        },
+        matchToDelete: {
+            type: Number,
+            require: true
         }
     },
     computed: {
-        matches(){
+        matches() {
 
             var mergedMatches = [];
 
@@ -191,11 +214,11 @@ export default {
             return mergedMatches;
 
         },
-        rows(){
+        rows() {
             return this.futureMatches.length + this.pastMatches.length;
         }
     },
-    methods:{
+    methods: {
         toggleRowDetails(row, refereeOrEventsOrMatchResult) {
 
             // Not Showing Row
@@ -273,15 +296,18 @@ export default {
                 }
             }
         },
-        checkAddMatchResult(row){
+        checkAddMatchResult(row) {
 
-            if ( !row.item.localTeamScore && ! row.item.visitorTeamScore ){
+            if ( row.item.localTeamScore==null && row.item.visitorTeamScore==null ){
 
                 if( Date.parse(row.item.matchDate) < Date.parse(new Date()) ){
                     return false;   
                 }
             }
             return true;
+        },
+        onRowSelected(matchRow) {
+            this.$emit('update-match-delete',matchRow[0]?.matchID);
         }
     }
 }
@@ -292,10 +318,10 @@ export default {
 <style scoped >
 
 .matches-table {
-  margin: 50px;
-  width: 95%;
-  text-align: center;
-  align-items: center;
+    margin: 50px;
+    width: 95%;
+    text-align: center;
+    align-items: center;
 }
 
 .matches-pagination {

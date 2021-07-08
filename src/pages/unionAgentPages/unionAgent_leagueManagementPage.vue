@@ -4,8 +4,13 @@
     <matches-table 
         :futureMatches="displayFutureMatches" 
         :pastMatches="displayPastMatches"
-        :isBusy="isBusy">
+        :isBusy="isBusy"
+        :matchToDelete="deleteMatchID">
     </matches-table>
+
+    <b-button :disabled="!deleteMatchID" variant="danger" size="lg" id="delete-match-btn" >
+        Delete Match
+    </b-button>
 
     <b-button :disabled="addMatchDisabled" @click="moveToAddMatch()"  variant="primary" size="lg" id="btn-add-new-match">
         Add New Match
@@ -25,7 +30,7 @@ export default {
     components: {
         MatchesTable,
     },
-    data(){
+    data() {
         return {
 
             futureMatches: [],
@@ -36,7 +41,8 @@ export default {
 
             displayFutureMatches: [],
             displayPastMatches: [],
-            isBusy: true
+            isBusy: true,
+            deleteMatchID: undefined
         }
     },
     methods: {
@@ -79,9 +85,10 @@ export default {
             } else {
                 this.addMatchDisabled = true;
             }
-        }
+        },
+        // matchDelete
     },
-    mounted(){
+    mounted() {
         
         this.updateInterval = setInterval( this.updateMatches, 100 );
         console.log("UA - League management page Mounted");
@@ -92,12 +99,7 @@ export default {
         clearInterval(this.updateMatches);
         console.log("UA - League management page Destroyed");
 
-    },
-    onUpdated(){
-        
-
     }
-
 }
 
 </script>
@@ -112,10 +114,10 @@ export default {
     text-align: center;
 }
 
-#btn-add-new-match {
+#btn-add-new-match ,#delete-match-btn {
     margin: 10px;
     position: relative;
-    left: 50%;
+    left: 40%;
 }
 
 </style>

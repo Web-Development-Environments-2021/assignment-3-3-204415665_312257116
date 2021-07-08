@@ -156,7 +156,7 @@ export default {
         
         await this.$root.store.initDataForUser();
         // console.log(localStorage.getItem("UserFavoriteMatches"));
-        if ( this.$route.path != "/" ) {
+        if ( this.$route.path == "/Login" ) {
           this.$router.push("/");
         }
         

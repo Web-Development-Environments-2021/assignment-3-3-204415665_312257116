@@ -62,14 +62,7 @@ export default {
     RefereeInformation,
     // Loading
   },
-  props:{
-    favoriteMatches:{
-      type: Object,
-      require:true
-    }
-  },
   
-
   data() {
     return {
       currentStageMatches:[],

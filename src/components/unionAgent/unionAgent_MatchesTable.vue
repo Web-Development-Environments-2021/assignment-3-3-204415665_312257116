@@ -181,7 +181,7 @@ export default {
 
                     mergedMatches.push( {                
                         matchID : pastMatch.matchID,
-                        matchDate : pastMatch.matchDateAndTime,
+                        matchDate : pastMatch.matchDate,
                         localTeamName : pastMatch.localTeamName,
                         visitorTeamName : pastMatch.visitorTeamName,
                         venueName : pastMatch.venueName,

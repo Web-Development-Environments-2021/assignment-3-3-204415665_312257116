@@ -62,9 +62,7 @@ export default {
     RefereeInformation,
     // Loading
   },
-
   
-
   data() {
     return {
       currentStageMatches:[],

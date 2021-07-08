@@ -38,6 +38,7 @@ import {
   FormRatingPlugin,
   FormCheckboxPlugin,
   OverlayPlugin,
+  ModalPlugin
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -62,7 +63,8 @@ import {
   FormTimepickerPlugin ,
   FormRatingPlugin,
   FormCheckboxPlugin,
-  OverlayPlugin
+  OverlayPlugin,
+  ModalPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

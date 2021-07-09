@@ -360,9 +360,10 @@ new Vue({
     // sessionStorage.enter=undefined;
   },
   mounted(){
-    if(this.username!=undefined){
-      this.$root.store.initDataForUser(); 
-    }
+    console.log(this.$root.store.username + " is login");
+    // if(this.$root.store.username==undefined){
+    //   this.$root.store.initDataForUser(); 
+    // }
     this.$root.store.getCurrentStageMatches();
 
   },

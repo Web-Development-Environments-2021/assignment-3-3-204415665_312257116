@@ -147,7 +147,7 @@ export default {
             if(Stage.matchID==g.matchID){
               Stage.myToggle=g.myToggle;
             }
-          }
+          }  
         );
 
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
@@ -197,9 +197,8 @@ export default {
             {
               this.FutureStageMatches?.map(fav => fav.myToggle=false);
               let UserFavoriteMatches =[];
-              if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+              if ((localStorage.getItem("UserFavoriteMatches"))!= 'undefined' ){
                 
-
                 UserFavoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
 
                 this.FutureStageMatches?.map(Stage =>

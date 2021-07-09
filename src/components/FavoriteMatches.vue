@@ -217,10 +217,13 @@ export default {
   },
   //**--------------------------------------------mounted------------------------------------ */
   mounted()  {
+    if(this.$root.store.username!=undefined){
+      this.updateFavoriteMatches(); 
+    }
+    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
 
   },
   created(){
-    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
   },
  //**--------------------------------------------beforeDestroy------------------------------------ */
   beforeDestroy(){

@@ -168,7 +168,8 @@ export default {
 
       var userFavorite = localStorage.getItem("UserFavoriteMatches");
 
-      if( userFavorite != undefined ) {
+
+      if( userFavorite != 'undefined' ) {
 
         if ( userFavorite.length!=0 ) {
 

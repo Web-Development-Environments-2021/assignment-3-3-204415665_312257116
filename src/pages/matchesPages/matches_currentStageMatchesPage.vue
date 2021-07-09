@@ -85,24 +85,21 @@ export default {
       try{
         let response;
         var favoriteMatches =[];
-        console.log(JSON.stringify(localStorage.getItem("UserFavoriteMatches")));
 
         if (localStorage.getItem("UserFavoriteMatches").length!=0){
             favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
         }
-        console.log(g);
-        g.myToggle = !g.myToggle;
+        g.myToggle =! g.myToggle;
         this.FutureStageMatches?.map(Stage =>{
             if(Stage.matchID==g.matchID){
               Stage.myToggle=g.myToggle;
             }
           }  
         );
-        console.log(g.myToggle);
+        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
         this.currentStageMatches=[];
         this.currentStageMatches=this.FutureStageMatches
         this.currentStageMatches=this.currentStageMatches.concat(this.pastStageMatches);
-        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
 
 
         if(g.myToggle==false){
@@ -113,15 +110,9 @@ export default {
           this.$root.toast("status", "The game was successfully removed from favorites", "success");
         }
         else if(g.myToggle==true){
-          
           response = await this.postFavoriteMatches(g.matchID);
-          if(response.statue >= 400){
-            throw response.statue;
-          }
-            favoriteMatches.push(g);
-            this.$root.toast("status", "The game was successfully added to favorites", "success");
-            console.log(response);
-          
+          favoriteMatches.push(g);
+          this.$root.toast("status", "The game was successfully added to favorites", "success");          
         }
         localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteMatches));
         console.log("done - Game update ");
@@ -173,17 +164,17 @@ export default {
     },
 
     updateFavoriteMatches(){
-      var neededUpdateFlag = false;
+      let neededUpdateFlag = false;
       if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.FutureStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             neededUpdateFlag=true;
             this.FutureStageMatches = [];
             this.FutureStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-            console.log((this.FutureStageMatches.myToggle!=undefined))
-            if(this.FutureStageMatches?.myToggle==undefined && this.$root.store?.username!=undefined){
-               this.FutureStageMatches?.map(fav => fav.myToggle=false);
-               localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
-            }
+            // console.log((this.FutureStageMatches.myToggle!=undefined))
+            // if(this.FutureStageMatches?.myToggle==undefined && this.$root.store?.username!=undefined){
+            //    this.FutureStageMatches?.map(fav => fav.myToggle=false);
+            //    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
+            // }
         }
       if ((localStorage.getItem("CurrentStageMatchesPastMatches")).length!=0 ){
         if (!(JSON.stringify(this.pastStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"))))) {

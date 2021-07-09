@@ -148,10 +148,10 @@ export default {
 
         this.$root.store.login(this.form.username);
 
-        let currentStageMatches =[];
-        currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-        currentStageMatches?.map(fav => fav.myToggle=false);
-        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+        let StageMatches =[];
+        StageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+        StageMatches?.map(fav => fav.myToggle=false);
+        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StageMatches));
 
         if ( this.form.username == "daniMoshe" ){
 
@@ -165,7 +165,10 @@ export default {
         
       } catch (err) {
         // console.log(response);
-        this.form.submitError = err?.response?.data.message;
+        console.log(err);
+
+        this.form.submitError = err?.response.data.message;
+
         this.$root.toast("Login", "Username or Password incorrect", "danger");
 
       }

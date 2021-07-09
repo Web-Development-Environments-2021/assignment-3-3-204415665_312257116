@@ -76,7 +76,6 @@
 
 import RefereeInformation from "./RefereeInformation";
 import Loading from "./loading";
-import currentStageMatches from "../pages/matchesPages/matches_currentStageMatchesPage"
 
 export default {
   name: "FavoriteMatches",
@@ -106,10 +105,10 @@ export default {
     async clickHandler(g){
       try{
           let response;
-          let currentStageMatches=[];
-          currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+          let StageMatchesHandler=[];
+          StageMatchesHandler.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
           g.myToggle = !g.myToggle;
-          currentStageMatches?.map(Stage =>{
+          StageMatchesHandler?.map(Stage =>{
             if(Stage.matchID==g.matchID){
               Stage.myToggle=g.myToggle;
             }
@@ -117,7 +116,7 @@ export default {
 
           if(g.myToggle==false){
             response = await this.DeleteFavoriteMatches(g.matchID);
-            if(response.status >= 400){
+            if(response.status < 400){
               this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
                 return value.matchID != g.matchID;
               });
@@ -125,7 +124,7 @@ export default {
           }
           console.log(response);
           localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
-          localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+          localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StageMatchesHandler));
           console.log("done - Game update ");
           this.$root.toast("status", "The game was successfully removed from favorites", "success");
 
@@ -179,9 +178,9 @@ export default {
     },
 
     updatedChanges(){ 
-      let currentStageMatches =[];
-      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-      currentStageMatches?.map(Stage =>
+      let StageMatchesHandler =[];
+      StageMatchesHandler.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      StageMatchesHandler?.map(Stage =>
         this.favoriteMatchesList?.map(fev =>
         {
           if(fev.matchID==Stage.matchID){
@@ -189,7 +188,7 @@ export default {
           }
         })
       );
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
+      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StageMatchesHandler));
     }
   },
   //**--------------------------------------------mounted------------------------------------ */

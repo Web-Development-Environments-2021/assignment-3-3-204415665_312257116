@@ -165,7 +165,7 @@ export default {
         
       } catch (err) {
         // console.log(response);
-        this.form.submitError = err?.response.data.message;
+        this.form.submitError = err?.response?.data.message;
         this.$root.toast("Login", "Username or Password incorrect", "danger");
 
       }

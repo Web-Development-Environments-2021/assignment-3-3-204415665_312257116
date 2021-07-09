@@ -117,7 +117,7 @@ export default {
 
           if(g.myToggle==false){
             response = await this.DeleteFavoriteMatches(g.matchID);
-            if(response != null){
+            if(response.status >= 400){
               this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
                 return value.matchID != g.matchID;
               });
@@ -156,7 +156,6 @@ export default {
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){  
-
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];

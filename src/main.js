@@ -229,12 +229,13 @@ const shared_data = {
   async getDataForSearch(){
     try{
       console.log("Start init search info");
-      if (localStorage.getItem("teamsInfo")?.length==0 && localStorage.getItem("playersInfo")?.length==0){
-          const searchResponse = await this.initSearchInfo();
-          localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
-          localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
-          console.log("Ends init search info");
-    }
+      const searchResponse = await this.initSearchInfo();
+      localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
+      localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
+      console.log(searchResponse.all_Info.Players);
+
+      console.log("Ends init search info");
+    
     } catch (error){
       // TODO: What to do We The Error ???
     }
@@ -350,7 +351,7 @@ new Vue({
       sessionStorage.enter=true;
     }
     if(sessionStorage.enter){
-      this.$root.store.onEnter();
+      // this.$root.store.onEnter();
       this.$root.store.getDataForSearch();
       sessionStorage.enter=false;
     }

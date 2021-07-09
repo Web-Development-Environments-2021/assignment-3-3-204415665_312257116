@@ -229,8 +229,9 @@ export default {
     }
   },
   mounted() {
-    this.PlayersInfoInit();
-    this.TeamsInfoInit();
+
+    this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
+    this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
     console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
     console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
     if (sessionStorage.getItem("lastSearchQuery") != null) {
@@ -243,7 +244,7 @@ export default {
   },
   methods: {
     loadingSearchInfo(){
-          if (localStorage.getItem("playersInfo") != null && localStorage.getItem("teamsInfo")!=null){
+          if (!localStorage.getItem("playersInfo") && !localStorage.getItem("teamsInfo")){
             return true;
           }
           return false;
@@ -251,6 +252,8 @@ export default {
     PlayersInfoInit()
     {
       this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
+      console.log("sessionStorage is : playersInfo");
+
     },
     
     TeamsInfoInit()
@@ -297,6 +300,7 @@ export default {
         // const response = SQL_searchByQuery(this.form.Search_Type,  this.form.Sort_Teams_Alphabetical,  this.form.Sort_Players,  this.form.Sort_Players_By,  this.form.Filter_Players);
         let currentSearchInfo;
         let response=[];
+        console.log(this.playersInfoList);
 
         if(this.form.searchType=="Players"){
            currentSearchInfo =this.playersInfoList;
@@ -306,9 +310,9 @@ export default {
         }
         currentSearchInfo.forEach(element => {
           if(this.form.searchType=="Players"){
-            if(element.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.playerShortInfo.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
             {
-                response.push(element);
+                response.push(element.playerShortInfo);
             }
           }
           else{
@@ -333,12 +337,12 @@ export default {
         console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
       } catch (err) {
-        console.log(err.response);
+        console.log(err);
         this.form.submitError = err.response?.data.message;
       }
     },
     async onSearch() {
-      // console.log("login method called");
+
       this.results=[],
       this.form.submitError = undefined;
       this.$v.form.$touch();

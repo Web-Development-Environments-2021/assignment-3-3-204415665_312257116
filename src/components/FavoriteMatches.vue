@@ -117,7 +117,7 @@ export default {
 
           if(g.myToggle==false){
             response = await this.DeleteFavoriteMatches(g.matchID);
-            if(response.status >= 400){
+            if(response.status < 400){
               this.favoriteMatchesList = this.favoriteMatchesList?.filter(function(value){ 
                 return value.matchID != g.matchID;
               });

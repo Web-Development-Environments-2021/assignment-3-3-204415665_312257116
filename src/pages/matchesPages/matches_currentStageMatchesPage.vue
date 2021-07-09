@@ -132,26 +132,26 @@ export default {
       }
     },
 
-      async postFavoriteMatches(matchID){
-        try{
-            console.log("done - Game update ");
+    async postFavoriteMatches(matchID){
+      try{
+          console.log("done - Game update ");
 
-            this.axios.defaults.withCredentials = true;
-            const response = await this.axios.post(
-                this.$root.store.serverUrl + "users/favoriteMatches",
-                {
-                  matchId:matchID
-                }
-            );
-            this.axios.defaults.withCredentials = false;
-            console.log("POST done - Favorite Matches update ");
+          this.axios.defaults.withCredentials = true;
+          const response = await this.axios.post(
+              this.$root.store.serverUrl + "users/favoriteMatches",
+              {
+                matchId:matchID
+              }
+          );
+          this.axios.defaults.withCredentials = false;
+          console.log("POST done - Favorite Matches update ");
 
-            return response;
+          return response;
 
-        } catch (error){
-          // TODO: What to do We The Error ???
-        }
-    },
+      } catch (error){
+        // TODO: What to do We The Error ???
+      }
+  },
 
     async DeleteFavoriteMatches(matchID){
         try{

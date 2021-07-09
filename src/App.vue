@@ -36,7 +36,14 @@ export default {
       catch(error){
       }
     }
-  }
+  },
+  mounted(){
+
+  },
+  beforeDestroy() {
+    this.Logout();
+  },
+
 };
 </script>
 

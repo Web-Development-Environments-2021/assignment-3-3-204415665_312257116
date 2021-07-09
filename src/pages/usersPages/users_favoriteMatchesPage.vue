@@ -1,6 +1,7 @@
 <template>
   <div>
-    <future-match-preview
+    <favoriteMatches :display="'favorite'"/>
+    <!-- <future-match-preview
       v-for="g in MatchesTable"
       :matchID="g.matchID" 
       :matchDate="g.matchDate" 
@@ -9,7 +10,7 @@
       :venueName="g.venueName" 
       :refereeInformation="g.refereeInformation"
       :key="g.id">
-    </future-match-preview>
+    </future-match-preview> -->
   </div> 
 </template>
 
@@ -20,7 +21,8 @@ import FutureMatchPreview from "../../components/matches/matches_futureMatchPrev
   export default {
     name:"usersFavoriteMatchesPage",
     components:{
-      FutureMatchPreview
+      FavoriteMatches,
+      // FutureMatchPreview
     },
     data() {
       return {
@@ -42,12 +44,11 @@ import FutureMatchPreview from "../../components/matches/matches_futureMatchPrev
 </script>
 
 <style scoped>
-div, form,.title, .input-group {
+/* div, form,.title, .input-group {
   margin: auto;
   width: 100%;
   padding: 10px;
   text-align: center;
-  /* border: 3px solid #73AD21; */
 }
 div {
 margin: auto;
@@ -56,14 +57,7 @@ margin: auto;
 button {
   margin: 20px;
   width:100px; 
-}
+} */
 
-#search-input {
-  /* margin-left: 20px;  */
-  width: 700px; 
-}
- #input-group-filter_Players {
-  /* margin-left: 20px;  */
-  width: 300px; 
-}
+
 </style>

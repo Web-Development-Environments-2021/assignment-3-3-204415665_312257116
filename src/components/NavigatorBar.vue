@@ -53,12 +53,12 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>    <div class="upper"></div>
-    <Accessibility/>
+    <accessibility/>
   </div>
 </template>
 
 <script>
-import Accessibility from "./Accessibility.vue";
+import Accessibility from "./Accessibility";
 
 export default {
   name: "NavigatorBar",

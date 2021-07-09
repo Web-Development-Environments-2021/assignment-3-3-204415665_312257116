@@ -187,6 +187,7 @@ export default {
   margin: auto;
   left: -10px;
   position: absolute;
+  
 }
 // .login-box {
 //     width: 100%;

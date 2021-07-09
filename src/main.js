@@ -38,7 +38,8 @@ import {
   FormRatingPlugin,
   FormCheckboxPlugin,
   OverlayPlugin,
-  ModalPlugin
+  ModalPlugin,
+  BootstrapVueIcons 
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -64,7 +65,8 @@ import {
   FormRatingPlugin,
   FormCheckboxPlugin,
   OverlayPlugin,
-  ModalPlugin
+  ModalPlugin,
+  BootstrapVueIcons 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -129,7 +131,9 @@ const shared_data = {
 
   //* ------------------------------ UnionAgent ------------------------------ *//
   onLogOut(){
-    localStorage.setItem("UserFavoriteMatches", []);
+    // localStorage.setItem("UserFavoriteMatches", []);
+    localStorage.removeItem("UserFavoriteMatches");
+
     let currentStageMatches=[];
     currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
     currentStageMatches?.map(fav => delete fav.myToggle);
@@ -143,9 +147,11 @@ const shared_data = {
     localStorage.removeItem("CurrentStageMatchesPastMatches");
   },
   onEnter(){
-    localStorage.setItem("UserFavoriteMatches", []);
-    localStorage.setItem("CurrentStageMatchesFutureMatches", []);
-    localStorage.setItem("CurrentStageMatchesPastMatches", []);
+    // localStorage.setItem("teamsInfo", []);
+    // localStorage.setItem("playersInfo", []);
+    // localStorage.setItem("UserFavoriteMatches", []);
+    // localStorage.setItem("CurrentStageMatchesFutureMatches", []);
+    // localStorage.setItem("CurrentStageMatchesPastMatches", []);
   },
   cleanUnionAgentData(){
 
@@ -249,12 +255,10 @@ const shared_data = {
 
   async initDataForSearch(){
     try{
-
       const responseForNewMatch = await this.getDetailsForNewMatch();
       localStorage.setItem("teamsNames", JSON.stringify(responseForNewMatch.teamsNames));
       localStorage.setItem("venuesNames", JSON.stringify(responseForNewMatch.venuesName));
       localStorage.setItem("referees", JSON.stringify(responseForNewMatch.referees));
-
     } catch (error){
       // TODO: What to do We The Error ???
     }
@@ -283,9 +287,9 @@ const shared_data = {
         );
         axios.withCredentials = false;
         console.log(response);
-        // if(response.status==204){
-        //   return [];
-        // }
+        if(response.status==204){
+          return [];
+        }
         return response.data;
 
     } catch (error){
@@ -301,10 +305,11 @@ const shared_data = {
             this.serverUrl + "matches/currentStageMatches"
         );
         axios.withCredentials = false;
-        if(response.status==204){
-          response.data.futureMatches= [];
-          response.data.pastMatches=[];
-        }
+        // if(response.status==204){
+        //   response.data.futureMatches= [];
+        //   response.data.pastMatches=[];
+        // }
+        console.log(response.data.pastMatches);
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
         localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
         console.log("finises - getCurrentStageMatches")
@@ -339,17 +344,29 @@ new Vue({
     }
   },
   created(){
+    if(sessionStorage.enter==undefined){
+      sessionStorage.enter=true;
+    }
     this.$root.store.onEnter();
-    this.$root.store.getDataForSearch();
     this.$root.store.getCurrentStageMatches();
-    if(this.$root.store.username != undefined){
-      this.$root.store.initDataForUser();
+    if(sessionStorage.enter){
+      this.$root.store.getDataForSearch();
+      sessionStorage.enter=false;
     }
 
   },
-  // destroyed(){
-  //   this.$root.store.onExit();
-  // },
+  beforeDestroy(){
+    // sessionStorage.enter=undefined;
+  },
+  onMounted(){
+
+
+    this.$root.store.initDataForUser();
+
+    if(this.$root.store.username != undefined){
+    }
+ 
+  },
 
   render: (h) => h(App)
 }).$mount("#app");

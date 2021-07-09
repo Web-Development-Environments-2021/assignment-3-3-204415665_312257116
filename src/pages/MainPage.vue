@@ -8,7 +8,7 @@
             <div v-if="!$root.store.username">
               <login-page /> 
             </div>  
-            <favorite-matches v-else></favorite-matches>
+            <favorite-matches :display="'main'" v-else></favorite-matches>
             </b-form>  
             <league-info class="LInfo"></league-info>
             <!-- </div></section></div> -->

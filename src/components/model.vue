@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-button @click="modalShow = !modalShow">Open Modal</b-button>
+    <b-button id="" @click="modalShow = !modalShow">{{buttonName}}</b-button>
 
-    <b-modal model-class="my-class" v-model="modalShow">
-      <div class="my">
-      Hello From Modal!
+    <b-modal id="modal-xl" size="xl"  model-class="my-class" v-model="modalShow">
+      <div class="modal-css">
+      {{body}}
       </div>
       </b-modal>
   </div>
@@ -15,24 +15,30 @@ export default {
     name:"ModelView",
     data() {
       return {
-        modalShow: false
+        modalShow:false
       };
     },
     props:{
         body:{
-            type: Object,
-            // require:true
-        }
+            type: Number,
+            require:true
+        },        
+        buttonName:{
+            type: Number,
+            require:true
+        },
     }
+
 }
 </script>
 
 <style lang="scss" scoped>
 
-  /deep/ .my-class {
+  /deep/ .modal-css {
   margin:auto!important;
   // padding-top: 200px;
   background: rgb(255, 255, 255);
   min-height: 500px;
   }
+
 </style>

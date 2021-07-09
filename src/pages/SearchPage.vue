@@ -449,27 +449,13 @@ export default {
   background: #293241e0;
 
 }
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(190, 186, 186, 0.671);
-  border-radius: 10px;
-}
 .container {
     margin: auto;
 }
 .my-container-css {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   width: 1000px;
   background-color: #293241e0;
  

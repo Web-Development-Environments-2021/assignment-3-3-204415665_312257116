@@ -3,26 +3,24 @@
     <div class="container " style="padding-top: 15px;">
       <!------------------------ display ------------------------>
       <div class="row" v-if="loadingFlag">
+
       <!----------------------- no contact ---------------------->
         <div v-if="resultFlag" style="padding-top: 15px;">
-            <div class="match-card noContact card text-white card-has-bg click-col">
-              <div class="card-img-overlay d-flex flex-column">
+            <div class="match-card noContact card text-white">
                 <div class="card-body" >                         
-                  <h4 class="card-title mt-0">
                     <!-- <a class="text-white" herf="#"> -->
-                      <div style="text-align:center;">
-                          <a>You have no favorite games at the moment<br>To add, click here</a><br><br>
-                          <b-button @click="moveToCurrentMatch" variant="primary">Add matches</b-button>
-                      </div>
-                    </h4>
-                  </div>
+                    <div style="text-align:center;font-size: 18px!important;">
+                        <a>You have no favorite games at the moment<br>To add, click here</a><br><br>
+                        <b-button @click="moveToCurrentMatch" variant="primary">Add matches</b-button>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
 
       <!---------------------- have contact ---------------------->
         <div v-else v-for="(g,index) in favoriteMatchesList" v-bind:key="g.matchID"  style="padding-top: 15px;">
-            <div v-if="index < 3" class="col-sm-4">
+          <div :sync="displayMode()"></div>
+            <div v-if="index < limit" class="col-sm-4">
               <div class="match-card favoriteMatches card  text-white card-has-bg click-col">
                 <div class="card-img-overlay d-flex flex-column">
                   <div class="card-body">                         
@@ -41,14 +39,14 @@
                           <div class=match-info>
                             Venue: {{ g.venueName }}
                           </div>
-                          <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
+                          <!-- <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
                               <referee-information 
                                 :refereeID="g.refereeInformation.refereeID"
                                 :firstname="g.refereeInformation.firstname"
                                 :lastname="g.refereeInformation.lastname"
                                 :course="g.refereeInformation.course">
                               </referee-information>
-                            </div>
+                            </div> -->
                           </div>
                       </h4>
                     <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
@@ -78,20 +76,32 @@ import RefereeInformation from "./RefereeInformation";
 import Loading from "./loading";
 
 export default {
+
   name: "FavoriteMatches",
   components: {
-    RefereeInformation,
+    // RefereeInformation,
     Loading,
-    // currentStageMatches
+
+  },
+  props:{
+    display:{
+      type: String,
+      require: true
+    }
   },
   data() {
+
     return {
+
       favoriteMatchesList:[],
       updateInterval: undefined,
       loadingFlag:false,
-      resultFlag:false
+      resultFlag:false,
+      limit:3,
+
     };
   },
+
   methods: {
     hasRefereeInfo(element){
       if(element?.refereeInformation==undefined){
@@ -154,25 +164,29 @@ export default {
     },
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
-    updateFavoriteMatches(){  
-      if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
-        if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
-            this.favoriteMatchesList = [];
-            this.loadingFlag=true;
-            this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-            this.updatedChanges();
+    updateFavoriteMatches(){ 
+
+      const x =localStorage.getItem("UserFavoriteMatches");
+
+      if(x!="undefined" || x!=undefined) {
+
+        if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+
+          if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+
+              this.favoriteMatchesList = [];
+              this.loadingFlag=true;
+              this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+              this.updatedChanges();
+          }
+        }     
+        if(this.favoriteMatchesList.length==0){
+          this.loadingFlag=true;
+          this.resultFlag=true;
         }
-      }     
-      if(this.favoriteMatchesList.length==0){
-        this.loadingFlag=true;
-        this.resultFlag=true;
-      }else{
-        this.loadingFlag=true;
-        this.resultFlag=false;
       }
-
-
     },
+
     moveToCurrentMatch() {
         this.$router.push("/matches/currentStageMatches");
     },
@@ -189,12 +203,23 @@ export default {
         })
       );
       localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StageMatchesHandler));
+    },
+
+    displayMode(){
+      if(this.display=="main"){
+        this.limit = 3;
+      }
+      else{
+        this.limit = this.favoriteMatchesList.length;
+      }
     }
   },
   //**--------------------------------------------mounted------------------------------------ */
   mounted()  {
+
+  },
+  created(){
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
-    console.log("favorite games mounted");
   },
  //**--------------------------------------------beforeDestroy------------------------------------ */
   beforeDestroy(){
@@ -209,9 +234,11 @@ export default {
 <style lang="scss" scoped>
   .match-card.noContact.card{
       min-height: 200px !important;
-      min-width: 500px !important;
-      font-size: 17px;
+      min-width: 200px !important;
+      font-size: 13px!important;
       left: 20px;
+      background-color: #293241a4;
+
   }
   .container{
       left: 0px!important;
@@ -219,8 +246,8 @@ export default {
   }
   
   .match-card.favoriteMatches.card{
-      min-height: 250px !important;
-      min-width: 330px !important;
+      min-height: 150px !important;
+      min-width: 290px !important;
       background-image:url('../assets/AdobeStock_203017792.jpeg');
       // background-size: cover;
       font-size: 17px;
@@ -231,7 +258,7 @@ export default {
     text-align: center;
     position: absolute;
     top:30px;
-    left: 100px;
+    left: 75px;
     margin: auto;
     color: rgb(32, 32, 32);
   }
@@ -255,7 +282,8 @@ export default {
   }
   small{
     position: absolute;
-    top: 210px;
+    top: 120px;
+    left: 15px;
   }
   
 </style> 

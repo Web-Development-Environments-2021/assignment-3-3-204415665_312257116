@@ -42,7 +42,7 @@ export default {
 
 <style>
 .match-card.league-card{
-    min-height: 100% !important;
+    min-height: 93.5vh !important;
     border-radius: 0px;
     font-size: 17px;
     background: #293241e0;

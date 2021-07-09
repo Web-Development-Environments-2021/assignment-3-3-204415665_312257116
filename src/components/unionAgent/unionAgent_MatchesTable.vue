@@ -52,11 +52,11 @@
                 </b-button>
             </template>
 
-            <template #cell(eventsLog)="{ item, value: eventsLog }">
-                <b-button v-if="eventsLog.length" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
+            <template #cell(eventsLog)="{ item}">
+                <b-button v-if="checkEventLog(item)==1" @click="toggleRowDetails(item,'events')" variant="info" size="sm" >
                     {{ item._eventsShowing ? 'Hide' : 'Show'}} Details
                 </b-button>
-                <b-button v-else variant="primary" size="sm" @click="toggleRowDetails(item,'events')" > 
+                <b-button v-else-if="checkEventLog(item)==0" variant="primary" size="sm" @click="toggleRowDetails(item,'events')" > 
                     {{ item._eventsShowing ? 'Cancel' : 'Add'}} Event Log
                 </b-button>
             </template>
@@ -305,6 +305,17 @@ export default {
                 }
             }
             return true;
+        },
+        checkEventLog(row){
+            if ( row?.eventsLog == undefined ){
+                return undefined
+            }
+            else if ( row.eventsLog.length == 0 ){
+                return 0
+            }
+            else if ( row.eventsLog.length >0  ){
+                return 1
+            }
         },
         onRowSelected(matchRow) {
             this.$emit('update-match-delete',matchRow[0]?.matchID);

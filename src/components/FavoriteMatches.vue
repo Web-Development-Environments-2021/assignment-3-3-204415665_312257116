@@ -166,21 +166,21 @@ export default {
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){ 
 
-      const x =localStorage.getItem("UserFavoriteMatches");
+      var userFavorite = localStorage.getItem("UserFavoriteMatches");
 
-      if(x!="undefined" || x!=undefined) {
+      if( userFavorite != undefined ) {
 
-        if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+        if ( userFavorite.length!=0 ) {
 
-          if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+          if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse( userFavorite )))) {
 
-              this.favoriteMatchesList = [];
-              this.loadingFlag=true;
-              this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-              this.updatedChanges();
+            this.favoriteMatchesList = [];
+            this.loadingFlag=true;
+            this.favoriteMatchesList.push(...JSON.parse( userFavorite ));
+            this.updatedChanges();
           }
         }     
-        if(this.favoriteMatchesList.length==0){
+        if(this.favoriteMatchesList.length == 0) {
           this.loadingFlag=true;
           this.resultFlag=true;
         }

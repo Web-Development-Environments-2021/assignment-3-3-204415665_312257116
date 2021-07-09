@@ -9,7 +9,6 @@
             :current-page="currentPage"
             :busy="isBusy"
             hover
-            fixed
             bordered
             outlined
             no-border-collapse

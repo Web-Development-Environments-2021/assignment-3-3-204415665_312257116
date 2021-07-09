@@ -282,9 +282,10 @@ const shared_data = {
             this.serverUrl + "users/favoriteMatches"
         );
         axios.withCredentials = false;
-        if(response.status==204){
-          return [];
-        }
+        console.log(response);
+        // if(response.status==204){
+        //   return [];
+        // }
         return response.data;
 
     } catch (error){
@@ -301,7 +302,8 @@ const shared_data = {
         );
         axios.withCredentials = false;
         if(response.status==204){
-          response.data= [];
+          response.data.futureMatches= [];
+          response.data.pastMatches=[];
         }
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
         localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));

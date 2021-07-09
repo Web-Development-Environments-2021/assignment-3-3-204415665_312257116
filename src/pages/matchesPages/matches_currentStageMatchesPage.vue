@@ -8,6 +8,8 @@
         </div>
         <div v-for="g in FutureStageMatches" v-bind:key="g.matchID" style="padding-top: 15px;padding-bottom: 15px;">
           <div class="col-sm-4">
+          
+                
            <div class="match-card card text-white card-has-bg click-col">
               <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">                         
@@ -32,9 +34,7 @@
                     </h4>
                   <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
                 </div>
-                <div>
-                  <div class='form-check form-switch'>
-                  </div>
+                <div class="like-div">
                   <b-button v-if="myToggleCheck(g)" style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
                 </div>
               </div>
@@ -83,12 +83,16 @@
               <div>
                 <b-button id="like-button" v-if="myToggleCheck(g)" style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
               </div>
+              <div class="model-div">
+                <model-view :body="g.matchID" :buttonName="'show eventLog'"/>
+              </div>
           </div>
             </div>
            </div>
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -96,10 +100,11 @@
 
 import RefereeInformation from "../../components/RefereeInformation";
 import Loading from "../../components/loading";
-
+import ModelView from "../../components/model"
 export default {
   name: "CurrentStageMatches",
   components: {
+    ModelView
 
     // RefereeInformation,
     // Loading
@@ -112,6 +117,7 @@ export default {
       FutureStageMatches:[],
       updateInterval: undefined,
       loadingFlag:false,
+      modalShow:false
 
     };
   },
@@ -314,9 +320,9 @@ export default {
 
   .match-info{
     position: relative;
-    top: 14px;
+    top: -10px;
     font-size: 12px!important;
-    text-align: center;
+    text-align: left;
     padding: 3px;
   }
   small{
@@ -339,11 +345,16 @@ export default {
       min-height: 93.4vh;
 
   }
-//   #like-button{
-//       position:relative;
-//       top: 10000px;
-//       left: 50000px;
-// }
+  .model-div{
+      position:relative;
+      top: 10px;
+      left: 170px;
+  }
+    .like-div{
+      position:relative;
+      top: 10px;
+      left: 170px;
+  }
 
 </style> 
 

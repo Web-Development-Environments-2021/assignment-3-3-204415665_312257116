@@ -165,13 +165,15 @@ export default {
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){ 
-      // if(localStorage.getItem("UserFavoriteMatches")=="undefined") {
-      //     console.log(localStorage.getItem("UserFavoriteMatches"));
-      // }
+
       const x =localStorage.getItem("UserFavoriteMatches");
-      if(x!="undefined" || x!=undefined) {   
+
+      if(x!="undefined" || x!=undefined) {
+
         if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+
           if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
+
               this.favoriteMatchesList = [];
               this.loadingFlag=true;
               this.favoriteMatchesList.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));

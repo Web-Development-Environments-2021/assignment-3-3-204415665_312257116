@@ -348,7 +348,6 @@ new Vue({
       sessionStorage.enter=true;
     }
     this.$root.store.onEnter();
-    this.$root.store.getCurrentStageMatches();
     if(sessionStorage.enter){
       this.$root.store.getDataForSearch();
       sessionStorage.enter=false;
@@ -359,13 +358,9 @@ new Vue({
     // sessionStorage.enter=undefined;
   },
   onMounted(){
+    this.$root.store.initDataForUser(); 
+    this.$root.store.getCurrentStageMatches();
 
-
-    this.$root.store.initDataForUser();
-
-    if(this.$root.store.username != undefined){
-    }
- 
   },
 
   render: (h) => h(App)

@@ -163,20 +163,33 @@ export default {
         return g?.myToggle!=undefined;
     },
 
-    updateFavoriteMatches(){
+    updateCurrentStage(){
       let neededUpdateFlag = false;
       if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 ){
         if (!(JSON.stringify(this.FutureStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"))))) {
             neededUpdateFlag=true;
             this.FutureStageMatches = [];
             this.FutureStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-            // console.log((this.FutureStageMatches.myToggle!=undefined))
-            // if(this.FutureStageMatches?.myToggle==undefined && this.$root.store?.username!=undefined){
-            //    this.FutureStageMatches?.map(fav => fav.myToggle=false);
-            //    localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
-            // }
+            if(this.$root.store?.username!=undefined){
+              let UserFavoriteMatches =[];
+              if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+                UserFavoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+              }
+              if(this.FutureStageMatches[0]?.myToggle==undefined){
+                  this.FutureStageMatches?.map(fav => fav.myToggle=false);
+              }
+              this.FutureStageMatches?.map(Stage =>
+                UserFavoriteMatches?.map(fev =>
+                {
+                  if(fev.matchID==Stage.matchID){
+                    Stage.myToggle=true;
+                  }
+                })
+              );
+            }
+
         }
-      if ((localStorage.getItem("CurrentStageMatchesPastMatches")).length!=0 ){
+      if ((localStorage.getItem("CurrentStageMatchesPastMatches")) == undefined){
         if (!(JSON.stringify(this.pastStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"))))) {
             neededUpdateFlag=true;
             this.pastStageMatches = [];
@@ -186,29 +199,16 @@ export default {
       if(neededUpdateFlag){
         this.loadingFlag=true;
         this.currentStageMatches=[];
-        this.currentStageMatches=this.FutureStageMatches.concat(this.pastStageMatches);
+        this.currentStageMatches=this.FutureStageMatches;
+        this.currentStageMatches=this.currentStageMatches.concat(this.pastStageMatches);
       }
+  
     }
-    },
-
-    updatedChanges(){ 
-      let currentStageMatches =[];
-      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-      currentStageMatches?.map(Stage =>
-        this.favoriteMatchesList?.map(fev =>
-        {
-          if(fev.matchID==Stage.matchID){
-            Stage.myToggle=true;
-          }
-        })
-      );
-      localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(currentStageMatches));
     }
 
   },
   mounted()  {
-    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
-    console.log("favorite games mounted");
+    this.updateInterval = setInterval( this.updateCurrentStage(), 100 );  
   },
 
   beforeDestroy(){

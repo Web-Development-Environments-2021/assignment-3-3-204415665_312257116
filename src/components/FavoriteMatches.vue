@@ -155,6 +155,7 @@ export default {
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){  
+      console.log(localStorage.getItem("UserFavoriteMatches").length!=0)
       if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
         if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse(localStorage.getItem("UserFavoriteMatches"))))) {
             this.favoriteMatchesList = [];
@@ -193,8 +194,10 @@ export default {
   },
   //**--------------------------------------------mounted------------------------------------ */
   mounted()  {
+
+  },
+  created(){
     this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
-    console.log("favorite games mounted");
   },
  //**--------------------------------------------beforeDestroy------------------------------------ */
   beforeDestroy(){

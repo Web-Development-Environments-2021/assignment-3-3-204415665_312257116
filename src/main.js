@@ -342,7 +342,9 @@ new Vue({
     this.$root.store.onEnter();
     this.$root.store.getDataForSearch();
     this.$root.store.getCurrentStageMatches();
-    localStorage.setItem("UserFavoriteMatches", []);
+    if(this.$root.store.username != undefined){
+      this.$root.store.initDataForUser();
+    }
 
   },
   // destroyed(){

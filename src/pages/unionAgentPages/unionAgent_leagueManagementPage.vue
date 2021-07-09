@@ -51,8 +51,6 @@ export default {
 
                 if (  !( JSON.stringify( this.pastMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leaguePastMatches"))))){
 
-                    console.log("Updated Past");
-
                     this.isBusy = true;
                     this.pastMatches = [];
                     this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
@@ -63,7 +61,6 @@ export default {
                 }
                 if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
                      
-                    console.log("Updated Future");
                     this.isBusy = true;
                     this.futureMatches = [];
                     this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
@@ -155,16 +152,10 @@ export default {
         }
     },
     mounted() {
-        
         this.updateInterval = setInterval( this.updateMatches, 100 );
-        console.log("UA - League management page Mounted");
-
     },
     beforeDestroy(){
-
         clearInterval(this.updateMatches);
-        console.log("UA - League management page Destroyed");
-
     }
 }
 

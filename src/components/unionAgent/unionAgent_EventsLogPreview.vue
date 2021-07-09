@@ -335,9 +335,6 @@ export default {
             }
         }
     },
-    mounted(){
-        console.log("Events Log Mounted");
-    }
 }
 
 </script>

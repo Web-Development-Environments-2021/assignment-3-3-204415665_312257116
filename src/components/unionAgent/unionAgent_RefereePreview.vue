@@ -291,9 +291,6 @@ export default {
             }
         }
     },
-    mounted(){
-        console.log("Referee Preview Mounted");
-    }
 }
 
 </script>

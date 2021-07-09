@@ -147,7 +147,7 @@ export default {
             if(Stage.matchID==g.matchID){
               Stage.myToggle=g.myToggle;
             }
-          }  
+          }
         );
 
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));

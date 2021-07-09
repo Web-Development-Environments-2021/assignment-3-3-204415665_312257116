@@ -128,6 +128,18 @@
                     </b-button>
                 </b-form>
 
+                <!----------  Submit Error Alert  ---------->
+
+                <b-alert
+                    class="mt-2"
+                    v-if="form.submitError"
+                    variant="warning"
+                    dismissible
+                    @dismissed="rebootError"
+                    show >
+                    Add New Match Failed: {{ form.submitError }}
+                </b-alert>
+
                 <!----------  Cancel Button  ---------->
 
                 <b-button variant="info" id="cancel-add-event" @click="cancelBtn()" >
@@ -166,7 +178,8 @@ export default {
             form: {
                 minuteInMatch: "",
                 eventType: "",
-                eventDescription: ""
+                eventDescription: "",
+                submitError: undefined
             },
             eventTypes: ['Goal', 'Red card', 'Yellow card', 'Injury', 'Subsitute']
         }
@@ -209,7 +222,8 @@ export default {
                 this.loadingState = false;
                 
             } catch (err) {
-                // this.form.submitError = err.response.data;
+                this.loadingState = false;
+                this.form.submitError = err.response.data;
             }     
         },
         updateStorageAfterDelete(){
@@ -269,14 +283,16 @@ export default {
                 }
                 
             } catch (err) {
-                // this.form.submitError = err.response.data;
+                this.loadingState = false;
+                this.form.submitError = err.response.data;
             }   
         },
         onReset() {
             this.form = {
                 minuteInMatch: "",
                 eventType: "",
-                eventDescription: ""
+                eventDescription: "",
+                submitError: undefined
             };
             this.$nextTick(() => {
                 this.$v.$reset();
@@ -294,6 +310,9 @@ export default {
                 this.onReset();
                 this.addEventBtn();
             }
+        },
+        rebootError(){
+            this.form.submitError = undefined;
         }
     },
     computed: {

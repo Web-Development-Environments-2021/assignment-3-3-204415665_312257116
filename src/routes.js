@@ -68,8 +68,8 @@ const routes = [
     component: () => import("./pages/teamsPages/teams_teamFullDetailsByIDPage")
   },
   {
-    path: "/teams/teamFullDetailsByName/:teamName",
-    name: "teamFullDetailsByName",
+    path: "/teams/teamDetails/:teamName",
+    name: "teamDetails",
     component: () => import("./pages/teamsPages/teams_teamFullDetailsByNamePage")
   },
 

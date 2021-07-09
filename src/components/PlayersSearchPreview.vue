@@ -19,7 +19,6 @@
         class="mb-2 my-card"
       >
       <b-card-text>
-
           team name:<b>{{this.player.team_name}}</b>
            <br> 
           position:<b>{{this.player.position}}</b>
@@ -30,17 +29,19 @@
 </template>
 
 <script>
-export default {
-    name: "PlayersInformation",
 
-props: {
-        player: {
-            type: Object,
-            required: true
-        }
-        
-    }
-    } 
+export default {
+
+  name: "PlayersInformation",
+
+  props: {
+    player: {
+      type: Object,
+      required: true
+    }       
+  }
+} 
+
 </script>
 
 <style scoped>

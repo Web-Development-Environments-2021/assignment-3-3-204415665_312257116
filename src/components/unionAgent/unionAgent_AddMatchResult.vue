@@ -70,6 +70,18 @@
 
             </b-form>
 
+            <!----------  Submit Error Alert  ---------->
+
+            <b-alert
+                class="mt-2"
+                v-if="form.submitError"
+                variant="warning"
+                dismissible
+                @dismissed="rebootError"
+                show >
+                Add New Match Failed: {{ form.submitError }}
+            </b-alert>
+
             <!----------  Loading  ---------->
 
             <template #overlay>
@@ -103,7 +115,8 @@ export default {
         return {
             form: {
                 localTeamScore: "",
-                visitorTeamScore: ""
+                visitorTeamScore: "",
+                submitError: undefined
             },
             loadingState: false
         }
@@ -158,14 +171,15 @@ export default {
                 this.loadingState = false;
                 
             } catch (err) {
-                console.log(err);
+                this.loadingState = false;
                 this.form.submitError = err.response.data;
             }
         },
         onReset() {
             this.form = {
                 localTeamScore: "",
-                visitorTeamScore: ""
+                visitorTeamScore: "",
+                submitError: undefined
             };
             this.$nextTick(() => {
                 this.$v.$reset();
@@ -184,6 +198,9 @@ export default {
 
             localStorage.setItem("leaguePastMatches", JSON.stringify(matches));
 
+        },
+        rebootError(){
+            this.form.submitError = undefined;
         }
     },
     computed:{

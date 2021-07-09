@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="match-headline"> Future Matches </h2>
+    <h1 class="match-headline"> League Matches </h1>
     <matches-table
         v-on:update-match-delete="updateMatchDelete"
         :futureMatches="displayFutureMatches" 
@@ -178,6 +178,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    color: rgb(255, 238, 208);
+    font-weight: bold;
+    font-style: oblique;
+    text-decoration: underline;
 }
 
 #btn-add-new-match ,#delete-match-btn {

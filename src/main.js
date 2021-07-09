@@ -39,6 +39,7 @@ import {
   FormCheckboxPlugin,
   OverlayPlugin,
   ModalPlugin,
+  ImagePlugin,
   BootstrapVueIcons 
 } from "bootstrap-vue";
 [
@@ -66,6 +67,7 @@ import {
   FormCheckboxPlugin,
   OverlayPlugin,
   ModalPlugin,
+  ImagePlugin,
   BootstrapVueIcons 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);

@@ -133,9 +133,7 @@ const shared_data = {
 
   //* ------------------------------ UnionAgent ------------------------------ *//
   onLogOut(){
-    // localStorage.setItem("UserFavoriteMatches", []);
-    localStorage.removeItem("UserFavoriteMatches");
-
+    localStorage.setItem("UserFavoriteMatches", undefined);
     let currentStageMatches=[];
     currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
     currentStageMatches?.map(fav => delete fav.myToggle);
@@ -149,11 +147,11 @@ const shared_data = {
     localStorage.removeItem("CurrentStageMatchesPastMatches");
   },
   onEnter(){
-    // localStorage.setItem("teamsInfo", []);
-    // localStorage.setItem("playersInfo", []);
-    // localStorage.setItem("UserFavoriteMatches", []);
-    // localStorage.setItem("CurrentStageMatchesFutureMatches", []);
-    // localStorage.setItem("CurrentStageMatchesPastMatches", []);
+    localStorage.setItem("teamsInfo", undefined);
+    localStorage.setItem("playersInfo", undefined);
+    localStorage.setItem("UserFavoriteMatches", undefined);
+    localStorage.setItem("CurrentStageMatchesFutureMatches", undefined);
+    localStorage.setItem("CurrentStageMatchesPastMatches", undefined);
   },
   cleanUnionAgentData(){
 
@@ -272,6 +270,8 @@ const shared_data = {
 
   async initDataForUser(){
     try{
+      console.log("Start init User info");
+
       var favoriteResponse = await this.getUserFavoriteMatches();
       favoriteResponse?.map(fav => fav.myToggle=true);
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
@@ -349,8 +349,8 @@ new Vue({
     if(sessionStorage.enter==undefined){
       sessionStorage.enter=true;
     }
-    this.$root.store.onEnter();
     if(sessionStorage.enter){
+      this.$root.store.onEnter();
       this.$root.store.getDataForSearch();
       sessionStorage.enter=false;
     }
@@ -359,8 +359,10 @@ new Vue({
   beforeDestroy(){
     // sessionStorage.enter=undefined;
   },
-  onMounted(){
-    this.$root.store.initDataForUser(); 
+  mounted(){
+    if(this.username!=undefined){
+      this.$root.store.initDataForUser(); 
+    }
     this.$root.store.getCurrentStageMatches();
 
   },

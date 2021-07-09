@@ -340,7 +340,7 @@ new Vue({
     this.$root.store.onEnter();
     this.$root.store.getDataForSearch();
     this.$root.store.getCurrentStageMatches();
-    localStorage.setItem("UserFavoriteMatches", JSON.stringify([]));
+    localStorage.setItem("UserFavoriteMatches", []);
 
   },
   // destroyed(){

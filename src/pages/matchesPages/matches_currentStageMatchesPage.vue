@@ -84,10 +84,10 @@ export default {
     async clickHandler(g){
       try{
         let response;
-        let favoriteMatches =[];
+        var favoriteMatches =[];
         console.log(JSON.stringify(localStorage.getItem("UserFavoriteMatches")));
 
-        if (JSON.stringify(localStorage.getItem("UserFavoriteMatches"))!="[]"){
+        if (localStorage.getItem("UserFavoriteMatches").length!=0){
             favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
         }
         console.log(g);
@@ -99,6 +99,9 @@ export default {
           }
         );
         console.log(g.myToggle);
+        this.currentStageMatches=[];
+        this.currentStageMatches=this.FutureStageMatches
+        this.currentStageMatches=this.currentStageMatches.concat(this.pastStageMatches);
         localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
 
 
@@ -110,10 +113,15 @@ export default {
           this.$root.toast("status", "The game was successfully removed from favorites", "success");
         }
         else if(g.myToggle==true){
-          favoriteMatches.push(g);
+          
           response = await this.postFavoriteMatches(g.matchID);
-          this.$root.toast("status", "The game was successfully added to favorites", "success");
-          console.log(response);
+          if(response.statue >= 400){
+            throw response.statue;
+          }
+            favoriteMatches.push(g);
+            this.$root.toast("status", "The game was successfully added to favorites", "success");
+            console.log(response);
+          
         }
         localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteMatches));
         console.log("done - Game update ");
@@ -172,7 +180,7 @@ export default {
             this.FutureStageMatches = [];
             this.FutureStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
             console.log((this.FutureStageMatches.myToggle!=undefined))
-            if(this.FutureStageMatches?.myToggle!=undefined && this.$root.store?.username!=undefined){
+            if(this.FutureStageMatches?.myToggle==undefined && this.$root.store?.username!=undefined){
                this.FutureStageMatches?.map(fav => fav.myToggle=false);
                localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(this.FutureStageMatches));
             }

@@ -29,6 +29,18 @@
                 </b-row>                   
             </template>
 
+            <template #cell(localTeamName)="{ value : localTeamName }" >
+               <router-link :to="`/teams/teamDetails/${ localTeamName }`" class="teams-names" >
+                    {{ localTeamName }}
+                </router-link>
+            </template>
+
+            <template #cell(visitorTeamName)="{ value : visitorTeamName }" >
+               <router-link :to="`/teams/teamDetails/${ visitorTeamName }`" class="teams-names" >
+                    {{ visitorTeamName }}
+                </router-link>
+            </template>
+
             <template #cell(matchScore)="row" >
                 <b-row>
                     <b-col v-if="checkAddMatchResult(row)" >
@@ -132,7 +144,7 @@ export default {
         AddMatchResult,
         Loading,
     },
-    data(){
+    data() {
         return{
             fields: [
                 { key: 'selected'},
@@ -341,6 +353,14 @@ export default {
 
 .btn-info,  .btn-primary {
     width: 70%;
+}
+
+.teams-names {
+    color: black;
+}
+
+.teams-names:hover {
+    color: blue;
 }
 
 </style>

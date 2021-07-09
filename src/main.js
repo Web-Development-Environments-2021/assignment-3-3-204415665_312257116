@@ -38,7 +38,8 @@ import {
   FormRatingPlugin,
   FormCheckboxPlugin,
   OverlayPlugin,
-  ModalPlugin
+  ModalPlugin,
+  ImagePlugin 
 } from "bootstrap-vue";
 [
   AvatarPlugin,
@@ -64,7 +65,8 @@ import {
   FormRatingPlugin,
   FormCheckboxPlugin,
   OverlayPlugin,
-  ModalPlugin
+  ModalPlugin,
+  ImagePlugin 
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -143,6 +145,8 @@ const shared_data = {
     localStorage.removeItem("CurrentStageMatchesPastMatches");
   },
   onEnter(){
+    // localStorage.setItem("teamsInfo", []);
+    // localStorage.setItem("playersInfo", []);
     localStorage.setItem("UserFavoriteMatches", []);
     localStorage.setItem("CurrentStageMatchesFutureMatches", []);
     localStorage.setItem("CurrentStageMatchesPastMatches", []);

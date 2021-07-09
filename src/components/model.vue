@@ -24,7 +24,7 @@ export default {
             require:true
         },        
         buttonName:{
-            type: Number,
+            type: String,
             require:true
         },
     }

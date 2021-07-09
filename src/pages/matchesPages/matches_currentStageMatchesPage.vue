@@ -201,8 +201,6 @@ export default {
                 
 
                 UserFavoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
-                console.log(UserFavoriteMatches);
-                console.log(this.FutureStageMatches);
 
                 this.FutureStageMatches?.map(Stage =>
                   UserFavoriteMatches?.map(fev =>
@@ -353,7 +351,7 @@ export default {
     .like-div{
       position:relative;
       top: 10px;
-      left: 170px;
+      left: 13px;
   }
 
 </style> 

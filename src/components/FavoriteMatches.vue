@@ -168,7 +168,7 @@ export default {
 
       const x =localStorage.getItem("UserFavoriteMatches");
 
-      if(x!="undefined" || x!=undefined) {
+      if(localStorage.getItem("UserFavoriteMatches")!=undefined) {
 
         if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
 

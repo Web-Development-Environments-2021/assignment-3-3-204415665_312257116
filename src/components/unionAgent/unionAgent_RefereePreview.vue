@@ -63,6 +63,18 @@
                     Update Referee
                 </b-button>
 
+                <!----------  Submit Error Alert  ---------->
+
+                <b-alert
+                    class="mt-2"
+                    v-if="form.submitError"
+                    variant="warning"
+                    dismissible
+                    @dismissed="rebootError"
+                    show >
+                    Add New Match Failed: {{ form.submitError }}
+                </b-alert>
+
                 <!----------  Overlay Loading  ---------->
 
                 <template #overlay>
@@ -97,7 +109,8 @@ export default {
                 refereeID: undefined,
                 firstname: undefined,
                 lastname: undefined,
-                course: undefined
+                course: undefined,
+                submitError: undefined
             },
             refereeFields: ['selected', "refereeID", "firstName", "lastName", "course"],
             updateRefereeState: false,
@@ -166,7 +179,7 @@ export default {
                 this.loadingState = false;
 
             } catch (err) {
-                console.log(err);
+                this.loadingState = false;
                 this.form.submitError = err.response.data;
             }
         },
@@ -191,7 +204,7 @@ export default {
                 this.loadingState = false;
                 
             } catch (err) {
-                console.log(err);
+                this.loadingState = false;
                 this.form.submitError = err.response.data;
             }
         },
@@ -223,6 +236,9 @@ export default {
             } else {
                 localStorage.setItem("leagueFutureMatches", JSON.stringify(matches));
             }
+        },
+        rebootError(){
+            this.form.submitError = undefined;
         }
     },
     computed:{

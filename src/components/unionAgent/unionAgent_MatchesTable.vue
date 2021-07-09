@@ -325,7 +325,8 @@ export default {
 }
 
 .matches-pagination {
-    margin-left: 50%; 
+    margin-left: 45%; 
+    margin-right: 45%;
 }
 
 .btn-info,  .btn-primary {

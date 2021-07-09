@@ -152,6 +152,8 @@
                 </b-button>
             </b-form>
 
+            <!----------  Submit Error Alert  ---------->
+
             <b-alert
                 class="mt-2"
                 v-if="form.submitError"
@@ -230,6 +232,7 @@ export default {
                 visitorTeamName: "",
                 venueName: "",
                 refereeID: undefined,
+                submitError: undefined
 
             };
             this.$refs.refereeTable.clearSelected();
@@ -269,7 +272,7 @@ export default {
                 this.onReset();
                 
             } catch (err) {
-                console.log(err);
+                this.axios.defaults.withCredentials = false;
                 this.form.submitError = err.response.data;
             }
         },

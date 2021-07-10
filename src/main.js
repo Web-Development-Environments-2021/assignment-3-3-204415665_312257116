@@ -125,7 +125,6 @@ const shared_data = {
 
     if ( this.username == "daniMoshe" ){
       this.cleanUnionAgentData();
-
     }
     this.username = undefined;
   },

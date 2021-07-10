@@ -342,9 +342,10 @@ export default {
       return $dirty ? !$error : null;
     },
     async Register() {
+      let response;
       try {
         this.axios.defaults.withCredentials = true;
-        const response = await this.axios.post(
+         response = await this.axios.post(
           this.$root.store.serverUrl + "Register",
           {
             username: this.form.username,
@@ -361,6 +362,8 @@ export default {
         this.$router.push("/Login");
       } catch (err) {
         this.form.submitError = err.response.data.message;
+        this.$root.toast("Error", "That username is already taken", "failure");
+
       }
     },
     onRegister() {

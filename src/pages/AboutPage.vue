@@ -55,13 +55,13 @@
       <div>
         <br>
         <h4 class="titles">Previous works</h4>
-        <p> 
-          https://web-development-environments-2021.github.io/204415665/#<br>
-          https://web-development-environments-2021.github.io/Assignment2_204415665_312257116/<br>
 
-          https://app.swaggerhub.com/apis/Daniel-And-Moshe/Web-Ass-3/1.0.0<br>
+          <a href="https://web-development-environments-2021.github.io/204415665/#"> Web-Ass-1</a><br>
+          <a href="https://web-development-environments-2021.github.io/Assignment2_204415665_312257116/"> PAC-MAN - Web-Ass-2</a><br>
+          <a href="https://app.swaggerhub.com/apis/Daniel-And-Moshe/Web-Ass-3/1.0.0">swaggerhub API Web-Ass-3.1</a><br>
+          <a href="https://web-development-environments-2021.github.io/Assignment2_204415665_312257116/">Web-Ass-3.2</a><br>
 
-        </p>
+
       </div>
     </div>
 </template>

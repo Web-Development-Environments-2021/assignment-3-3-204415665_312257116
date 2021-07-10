@@ -278,6 +278,8 @@ export default {
 
     async Search() {
       try {
+        this.noResult=false;
+
         // let params ={};
         // params.Search_Type= this.form.searchType;
 
@@ -331,7 +333,6 @@ export default {
           }
         });
 
-        console.log(response);
         if(response.length==0){
               this.noResult=true;
         }

@@ -123,7 +123,6 @@ export default {
             this.localTeamLogo = team.teamLogo;
         }
         if ( team.teamName == this.match.visitorTeamName) {
-                            console.log(this.match.visitorTeamName);
 
             this.visitorTeamLogo = team.teamLogo;
         }

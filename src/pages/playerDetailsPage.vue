@@ -19,10 +19,10 @@
                         striped
                         outlined
                         no-border-collapse
-                        :items="this.data"
+                        :items="playerDate"
                         >
                     </b-table>
-                    <ol>
+                    <!-- <ol>
                         <li> {{ playerID }} </li>
                         <li> {{ name }} </li>
                         <li> {{ playerID }} </li>
@@ -33,7 +33,7 @@
                         <li> {{ birthCountry }} </li>
                         <li> {{ height }} </li>
                         <li> {{ weight }} </li>
-                    </ol>
+                    </ol> -->
                 </b-col>
             </b-row>
 
@@ -86,16 +86,29 @@ export default {
     methods: {
         extractPlayerInfo(player) {
 
-            this.name = player.playerShortInfo.name;
-            this.image= player.playerShortInfo.image;
-            this.position = player.playerShortInfo.position;
-            this.team_name = player.playerShortInfo.team_name;
-            this.commonName = player.commonName;
-            this.nationality = player.nationality;
-            this.birthDate = player.birthDate;
-            this.birthCountry = player.birthCountry;
-            this.height = player.height;
-            this.weight = player.weight;
+            this.playerDate = [{
+                name : player.playerShortInfo.name,
+                image: player.playerShortInfo.image,
+                position : player.playerShortInfo.position,
+                team_name : player.playerShortInfo.team_name,
+                commonName : player.commonName,
+                nationality : player.nationality,
+                birthDate : player.birthDate,
+                birthCountry : player.birthCountry,
+                height : player.height,
+                weight : player.weight,
+            }];
+
+            // this.name = player.playerShortInfo.name;
+            // this.image= player.playerShortInfo.image;
+            // this.position = player.playerShortInfo.position;
+            // this.team_name = player.playerShortInfo.team_name;
+            // this.commonName = player.commonName;
+            // this.nationality = player.nationality;
+            // this.birthDate = player.birthDate;
+            // this.birthCountry = player.birthCountry;
+            // this.height = player.height;
+            // this.weight = player.weight;
 
         }
     },

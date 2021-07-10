@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button id="" @click="modalShow = !modalShow">
+    <b-button pill  size="sm" variant="success" d="" @click="modalShow = !modalShow">
       {{buttonName}}
     </b-button>
 

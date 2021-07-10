@@ -1,18 +1,46 @@
 <template>
     <div id="player-page">
-        <h1 class="player-headline"> League Matches </h1>
-        <ol>
-            <li> {{ playerID }} </li>
-            <li> {{ name }} </li>
-            <li> {{ playerID }} </li>
-            <li> {{ team_name }} </li>
-            <li> {{ commonName }} </li>
-            <li> {{ nationality }} </li>
-            <li> {{ birthDate }} </li>
-            <li> {{ birthCountry }} </li>
-            <li> {{ height }} </li>
-            <li> {{ weight }} </li>
-        </ol>
+        <b-container fluid class="p-4 bg-dark">
+            <b-row>
+                <div class="profile-pic">
+                    <b-img thumbnail fluid :src="image" alt="Center image"></b-img>
+                </div>
+                    <h1 thumbnail fluid class="team-page-title" > {{name}} </h1>
+            </b-row>
+            <hr>
+            <b-row>
+                <b-col id="my-player-row" class="p-5 ">
+                    <b-table id="events-table"
+                        table-variant="light"
+                        head-variant="light"
+                        responsive="sm"
+                        hover
+                        bordered
+                        striped
+                        outlined
+                        no-border-collapse
+                        :items="this.data"
+                        >
+                    </b-table>
+                    <ol>
+                        <li> {{ playerID }} </li>
+                        <li> {{ name }} </li>
+                        <li> {{ playerID }} </li>
+                        <li> {{ team_name }} </li>
+                        <li> {{ commonName }} </li>
+                        <li> {{ nationality }} </li>
+                        <li> {{ birthDate }} </li>
+                        <li> {{ birthCountry }} </li>
+                        <li> {{ height }} </li>
+                        <li> {{ weight }} </li>
+                    </ol>
+                </b-col>
+            </b-row>
+
+
+        </b-container>
+        <!-- <h1 class="player-headline"> League Matches </h1> -->
+
     </div>
 </template>
 
@@ -37,7 +65,21 @@ export default {
             birthDate: "",
             birthCountry: "",
             height: "",
-            weight: ""
+            weight: "",
+            info:[
+                {playerID: ""},
+                {name: ""},
+                {image: ""},
+                {position: ""},
+                {team_name: ""},
+                {commonName: ""},
+                {nationality: ""},
+                {birthDate: ""},
+                {birthCountry: ""},
+                {height: ""},
+                {weight: ""},
+            ]
+        
         }
     },
 
@@ -82,9 +124,10 @@ export default {
 
 #player-page {
     margin: auto;
-    background-color: #293241e0;
-    border-radius: 10px;
-    max-width: 98%;
+    background-color: #353941;
+    /* border-radius: 10px; */
+    max-width: 100%;
+    min-height: 93.5vmin;
 }
 
 .player-headline {
@@ -99,5 +142,20 @@ export default {
     text-decoration: underline;
 }
 
+
+#my-player-row{
+    background-color: #f5e8be;
+    border-radius:10px ;
+
+}
+h1{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 60px;
+    color: blanchedalmond;
+    padding: 40px;
+}
+.profile-pic{
+    padding-left: 40px;
+}
 
 </style>

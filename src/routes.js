@@ -55,22 +55,17 @@ const routes = [
   //* ------------------------------ Players ------------------------------ *//
 
   {
-    path: "/players/playerFullDetails/:playerID",
-    name: "playerFullDetails",
-    component: () => import("./pages/playersPages/players_playerFullDetailsPage")
+    path: "/players/playerDetails/:playerID",
+    name: "playerDetails",
+    component: () => import("./pages/playerDetailsPage.vue")
   },
 
   //* ------------------------------ Teams ------------------------------ *//
 
   {
-    path: "/teams/teamFullDetailsByID/:teamId",
-    name: "teamFullDetailsByID",
-    component: () => import("./pages/teamsPages/teams_teamFullDetailsByIDPage")
-  },
-  {
     path: "/teams/teamDetails/:teamName",
     name: "teamDetails",
-    component: () => import("./pages/teamsPages/teams_teamFullDetailsByNamePage")
+    component: () => import("./pages/teamDetailsPage")
   },
 
   //* ------------------------------ Matches ------------------------------ *//
@@ -80,7 +75,6 @@ const routes = [
     name: "currentStageMatches",
     component: () => import("./pages/matchesPages/matches_currentStageMatchesPage")
   },
-
 
   {
     path: "*",

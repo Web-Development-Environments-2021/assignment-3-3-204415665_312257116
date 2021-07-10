@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="league-management-page">
     <h1 class="match-headline"> League Matches </h1>
     <matches-table
         v-on:update-match-delete="updateMatchDelete"
@@ -162,6 +162,13 @@ export default {
 </script>
 
 <style>
+
+#league-management-page {
+    margin: auto;
+    background-color: #293241e0;
+    border-radius: 10px;
+    max-width: 98%;
+}
 
 .match-headline {
     margin-top: revert;

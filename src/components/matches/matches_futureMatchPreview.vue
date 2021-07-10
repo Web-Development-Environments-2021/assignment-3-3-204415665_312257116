@@ -98,9 +98,6 @@ export default {
     beforeDestroy(){
         clearInterval(this.updateInterval);
     }
-
-
-
 }
 
 </script>

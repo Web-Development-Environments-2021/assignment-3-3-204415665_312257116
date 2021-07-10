@@ -102,7 +102,6 @@ export default {
     mounted() {
         this.updateInformation()
     },
-
 }
 
 </script>

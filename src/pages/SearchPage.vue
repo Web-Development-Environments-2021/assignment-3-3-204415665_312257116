@@ -3,7 +3,7 @@
   <div>
       <div v-if="loadingSearchInfo">
         <div  class = "search">
-          <b-form @submit.prevent="onSearch" @reset.prevent="onReset" > 
+          <b-form @submit.prevent="onSearch" @reset.prevent="onReset" @select="playerSortOn" @input="playerSortOn"> 
               <h1 class="title">Search Page</h1>
               <b-input-group 
                 id="search-input"
@@ -25,7 +25,7 @@
                         :options="form.searchTypeOptions"
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"
-                        buttons
+                        buttons   
                     ></b-form-select>  
                   </b-form-group>
               </b-input-group>
@@ -50,15 +50,17 @@
               
             <div class="row ">
               <div>
-                <b-input-group  prepend=" Sort Players By:" style="width: 300px; " @click="sortOn()">
+                <b-input-group  prepend=" Sort Players By:" style="width: 300px;" v-on:click="playerSortOn()">
                     <b-form-select
                         :button-variant="buttonColor"
                         id="input-group-sortPlayersBy"
+                        
                         v-model="form.sortPlayersBy"
                         :options="form.sortPlayersByOptions"
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"
                         buttons
+                        
                     ></b-form-select>
                 </b-input-group>
               </div>
@@ -109,15 +111,15 @@
         </div>
 
           <div >
-            <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css">
-                <div class="row align-items-start my-row-css">
-                    <players-information v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
+            <div v-if="flag==true && noResult==false" class="container my-container-css my-row-css row align-items-start">
+                <div v-if="form.searchType == 'Players'" class="row align-items-start my-row-css">
+                    <players-information :v-if="form.searchType == 'Players'" v-for="res in this.results" :key="res.playerID" :player="res"/>
               </div>
             </div>
-            <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false">
-                    <div v-for="res in this.results" v-bind:key="res.teamName">
-                        <a>search Query:</a>
-                    </div>
+            <div  v-if="flag==true && noResult==false" class="container my-container-css row align-items-start my-row-css">
+              <div v-if="form.searchType == 'Teams'" class="row align-items-start my-row-css">
+                      <teams-Information :v-if="form.searchType == 'Teams'" v-for="res in this.results" :key="res.teamName" :team="res"/>
+              </div>
             </div>
             <div v-else-if="flag==false" class="container my-container-css">
                     <loading-icon/>
@@ -141,12 +143,14 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import PlayersInformation from "../components/PlayersSearchPreview"
+import TeamsInformation from "../components/TeamsSearchPreview"
 import LoadingIcon from "../components/loading"
 
 export default {
   
   components:{
     PlayersInformation,
+    TeamsInformation,
     LoadingIcon
     
   },
@@ -192,7 +196,7 @@ export default {
         {text: "AGF",value: "AGF"},
         {text: "Vejle",value: "Vejle"}
         ],
-        filterPlayersByPosition:""
+        filterPlayersByPosition:0
         },
         results: [],
         submitError: undefined,
@@ -229,10 +233,11 @@ export default {
     }
   },
   mounted() {
-    this.PlayersInfoInit();
-    this.TeamsInfoInit();
-    console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
-    console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
+
+    this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
+    this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
+    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
+    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
     if (sessionStorage.getItem("lastSearchQuery") != null) {
       console.log("got inside the load previous search");
       this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
@@ -242,28 +247,38 @@ export default {
 
   },
   methods: {
+
     loadingSearchInfo(){
-          if (localStorage.getItem("playersInfo") != null && localStorage.getItem("teamsInfo")!=null){
+          if (!localStorage.getItem("playersInfo") && !localStorage.getItem("teamsInfo")){
             return true;
           }
           return false;
     },
+    
     PlayersInfoInit()
     {
       this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
+      console.log("sessionStorage is : playersInfo");
+
     },
     
     TeamsInfoInit()
     {
       this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
     },
-    sortOn(){
+
+    playerSortOn(){
       this.form.sortPlayers='yes';
+      console.log("playerSortOn")
+      this.onSort();
+      this.onFilter();
     },
+
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
+
     async Search() {
       try {
         // let params ={};
@@ -297,18 +312,19 @@ export default {
         // const response = SQL_searchByQuery(this.form.Search_Type,  this.form.Sort_Teams_Alphabetical,  this.form.Sort_Players,  this.form.Sort_Players_By,  this.form.Filter_Players);
         let currentSearchInfo;
         let response=[];
+        console.log(this.teamsInfoList);
 
         if(this.form.searchType=="Players"){
            currentSearchInfo =this.playersInfoList;
         }
         else{
-           currentSearchInfo =this.TeamsInfoInit;
+           currentSearchInfo =this.teamsInfoList;
         }
         currentSearchInfo.forEach(element => {
           if(this.form.searchType=="Players"){
-            if(element.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.playerShortInfo.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
             {
-                response.push(element);
+                response.push(element.playerShortInfo);
             }
           }
           else{
@@ -332,13 +348,16 @@ export default {
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
+        this.onSort();
+        this.onFilter();
+
       } catch (err) {
-        console.log(err.response);
+        console.log(err);
         this.form.submitError = err.response?.data.message;
       }
     },
     async onSearch() {
-      // console.log("login method called");
+
       this.results=[],
       this.form.submitError = undefined;
       this.$v.form.$touch();
@@ -366,63 +385,65 @@ export default {
 
       });
     },
-    async SQL_searchByQuery( Search_Type, Sort_Teams_Alphabetical, Sort_Players, Sort_Players_By, Filter_Players) {
-//-------------------------------------- Teams --------------------------------------//
-    let Qsearch;
-    if(Search_Type=="Teams" ){
-      Qsearch=this.teamsInfoList;    
-      if(Sort_Teams_Alphabetical=="yes"){
-        //Sort the teams in alphabetical order by teamName
-        Qsearch.sort((a, b) => 
-        (('' + a["teamName"]).localeCompare(b["teamName"])));
-      }
-      resultQ = Qsearch;    
-      return {teams: Qsearch};
-    }
-  //-------------------------------------- Players --------------------------------------//
-  
-    else if(Search_Type=="Players"){
-      Qsearch=this.playersInfoList;
-      if(Sort_Players=="yes"){
-  
-      // ------ Sort_Players_By players name ------ //
-  
-        if (Sort_Players_By=="own name"){
-          Qsearch.sort((a, b) => 
-          ((''+a["name"]).localeCompare(b["name"])));
-        }
-  
-      // ------ Sort_Players_By team name ------ //
-  
-        else if (Sort_Players_By=="team name"){
-          Qsearch.sort((a, b) => 
-          ((''+a["team_name"]).localeCompare(b["team_name"])));
-  
+    onSort(){
+      if(this.form.searchType=="Teams" ){
+        if(this.form.sortTeamsAlphabetical=="yes"){
+          //Sort the teams in alphabetical order by teamName
+          this.results.sort((a, b) => 
+          (('' + a["teamName"]).localeCompare(b["teamName"])));
         }
       }
-      // ------ Filter_Players ------ //
-      if (Filter_Players != undefined || Filter_Players > 0){
-  
+      if(this.form.searchType =="Players"){
+        if(this.form.sortPlayers=="yes"){
+
+    
+        // ------ Sort_Players_By players name ------ //
+    
+          if (this.form.sortPlayersBy=="player name"){
+             this.results.sort((a, b) => {
+                var textA = a.name.toUpperCase();
+                var textB = b.name.toUpperCase();
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+             }); 
+            console.log(this.results);
+          }
+    
+        // ------ Sort_Players_By team name ------ //
+    
+          else if (this.form.sortPlayersBy=="team name"){
+             this.results.sort((a, b) => 
+            ((''+a["team_name"]).localeCompare(b["team_name"])));
+    
+          }
+        }
+      }
+    },
+    onFilter(){
       // ------ Filter_Players - position ------ //
-  
-        if (!isNaN(Filter_Players)){
-          resultQ = Qsearch.filter(function (el) {return el.position == Filter_Players});
+        if (this.form.filterPlayersByPosition!=0)
+        {
+          console.log(this.form.filterPlayersByPosition );
+          console.log(this.results);
+          let res = [];
+          this.results.forEach(element =>{
+            if(element.position==this.form.filterPlayersByPosition){
+                res.push(element)
+            }
+          });
+          this.results=res;
         }
-  
       // ------ Filter_Players - teams name ------ //
-        else{
-          resultQ = Qsearch.filter(function (el) {return el.team_name.includes(Filter_Players)});
-        } 
-      }
-      else{
-        resultQ = Qsearch;
-      }
-      
-    }
-    return {players:resultQ};
-    }
+        if (this.form.filterPlayersByTeam != ""){
+          let res = [];
+          this.results.forEach(element =>{
+            if(element.team_name==this.form.filterPlayersByTeam){
+                res.push(element)
+            }
+          });
+          this.results=res;
+        }     
+    },
   },
-  
 }
 </script>
 
@@ -440,13 +461,13 @@ export default {
     
 }
 .search{
-  width: 1000px;
+  width: 1450px;
   height:fit-content;;
   text-align: center;
   border-radius: 30px;
   padding-top: 5px;
   margin-top: 5px;
-  background: #293241e0;
+  background: #293241c7;
 
 }
 
@@ -456,14 +477,12 @@ export default {
 .my-container-css {
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 1000px;
-  background-color: #293241e0;
- 
-  max-height:56.4vmin;
+  min-width: 1450px;
+  background-color: #293241c7;
+  max-height:56.4vh;
+;
 
 }
-
-
 div {
   margin: auto;
 }
@@ -516,7 +535,7 @@ div {
 
 #search-input {
   /* margin-left: 20px;  */
-  width: 710px; 
+  width: 730px; 
 }
 #input-group-filter_Players {
   /* margin-left:px;  */
@@ -527,7 +546,7 @@ div {
 }
 .my-div{
     margin: 0 auto;
-    padding-inline: 140px;
+    padding-inline: 340px;
     position: relative;
 }
 select{

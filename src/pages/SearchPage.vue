@@ -3,7 +3,7 @@
   <div>
       <div v-if="loadingSearchInfo">
         <div  class = "search">
-          <b-form @submit.prevent="onSearch" @reset.prevent="onReset"> 
+          <b-form @submit.prevent="onSearch" @reset.prevent="onReset" @select="playerSortOn" @input="playerSortOn"> 
               <h1 class="title">Search Page</h1>
               <b-input-group 
                 id="search-input"
@@ -25,8 +25,7 @@
                         :options="form.searchTypeOptions"
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"
-                        buttons
-                        
+                        buttons   
                     ></b-form-select>  
                   </b-form-group>
               </b-input-group>
@@ -51,10 +50,11 @@
               
             <div class="row ">
               <div>
-                <b-input-group  prepend=" Sort Players By:" style="width: 300px;" @click="playerSortOn()">
+                <b-input-group  prepend=" Sort Players By:" style="width: 300px;" v-on:click="playerSortOn()">
                     <b-form-select
                         :button-variant="buttonColor"
                         id="input-group-sortPlayersBy"
+                        
                         v-model="form.sortPlayersBy"
                         :options="form.sortPlayersByOptions"
                         :aria-describedby="ariaDescribedby"
@@ -111,14 +111,14 @@
         </div>
 
           <div >
-            <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css">
-                <div class="row align-items-start my-row-css">
-                    <players-information v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
+            <div v-if="flag==true && noResult==false" class="container my-container-css my-row-css row align-items-start">
+                <div v-if="form.searchType == 'Players'" class="row align-items-start my-row-css">
+                    <players-information :v-if="form.searchType == 'Players'" v-for="res in this.results" :key="res.playerID" :player="res"/>
               </div>
             </div>
-            <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false" class="container my-container-css">
-              <div class="row align-items-start my-row-css">
-                      <teams-Information v-for="res in this.results" v-bind:key="res.teamName" :team="res"/>
+            <div  v-if="flag==true && noResult==false" class="container my-container-css row align-items-start my-row-css">
+              <div v-if="form.searchType == 'Teams'" class="row align-items-start my-row-css">
+                      <teams-Information :v-if="form.searchType == 'Teams'" v-for="res in this.results" :key="res.teamName" :team="res"/>
               </div>
             </div>
             <div v-else-if="flag==false" class="container my-container-css">
@@ -144,7 +144,6 @@ import {
 } from "vuelidate/lib/validators";
 import PlayersInformation from "../components/PlayersSearchPreview"
 import TeamsInformation from "../components/TeamsSearchPreview"
-
 import LoadingIcon from "../components/loading"
 
 export default {
@@ -248,12 +247,14 @@ export default {
 
   },
   methods: {
+
     loadingSearchInfo(){
           if (!localStorage.getItem("playersInfo") && !localStorage.getItem("teamsInfo")){
             return true;
           }
           return false;
     },
+    
     PlayersInfoInit()
     {
       this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
@@ -265,16 +266,19 @@ export default {
     {
       this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
     },
+
     playerSortOn(){
       this.form.sortPlayers='yes';
       console.log("playerSortOn")
       this.onSort();
       this.onFilter();
     },
+
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
+
     async Search() {
       try {
         // let params ={};
@@ -395,9 +399,13 @@ export default {
     
         // ------ Sort_Players_By players name ------ //
     
-          if (this.form.sortPlayersBy=="own name"){
-             this.results.sort((a, b) => 
-            ((''+a["name"]).toUpperCase().localeCompare(b["name"]).toUpperCase()));
+          if (this.form.sortPlayersBy=="player name"){
+             this.results.sort((a, b) => {
+                var textA = a.name.toUpperCase();
+                var textB = b.name.toUpperCase();
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+             }); 
+            console.log(this.results);
           }
     
         // ------ Sort_Players_By team name ------ //
@@ -416,7 +424,6 @@ export default {
         {
           console.log(this.form.filterPlayersByPosition );
           console.log(this.results);
-
           let res = [];
           this.results.forEach(element =>{
             if(element.position==this.form.filterPlayersByPosition){
@@ -427,7 +434,6 @@ export default {
         }
       // ------ Filter_Players - teams name ------ //
         if (this.form.filterPlayersByTeam != ""){
-
           let res = [];
           this.results.forEach(element =>{
             if(element.team_name==this.form.filterPlayersByTeam){
@@ -435,13 +441,9 @@ export default {
             }
           });
           this.results=res;
-        } 
-      
+        }     
     },
-
-
   },
-  
 }
 </script>
 
@@ -459,13 +461,13 @@ export default {
     
 }
 .search{
-  width: 1000px;
+  width: 1450px;
   height:fit-content;;
   text-align: center;
   border-radius: 30px;
   padding-top: 5px;
   margin-top: 5px;
-  background: #293241e0;
+  background: #293241c7;
 
 }
 
@@ -475,15 +477,12 @@ export default {
 .my-container-css {
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 1000px;
-  background-color: #293241e0;
- 
+  min-width: 1450px;
+  background-color: #293241c7;
   max-height:56.4vh;
 ;
 
 }
-
-
 div {
   margin: auto;
 }
@@ -536,7 +535,7 @@ div {
 
 #search-input {
   /* margin-left: 20px;  */
-  width: 710px; 
+  width: 730px; 
 }
 #input-group-filter_Players {
   /* margin-left:px;  */
@@ -547,7 +546,7 @@ div {
 }
 .my-div{
     margin: 0 auto;
-    padding-inline: 140px;
+    padding-inline: 340px;
     position: relative;
 }
 select{

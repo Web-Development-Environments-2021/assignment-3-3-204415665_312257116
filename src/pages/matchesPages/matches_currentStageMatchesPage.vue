@@ -216,6 +216,10 @@ export default {
     border-radius: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
+    position: relative;
+    left: -150px;
+    min-height: 500px !important;
+    min-width: 1450px !important;
 
   }
 
@@ -246,26 +250,27 @@ export default {
     text-align: left;
     padding: 3px;
   }
-  small{
-    position: absolute;
-    top: 210px;
-  }
+
+
+
   h1{
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: 40px!important;
   }
+
   .Stage-title{
-    min-width: 1140px;
+    min-width: 1450px !important;
     padding-top: 10px;
   }
+
   .page{
     overflow-y: scroll;
     overflow-x: hidden;
     padding-top: 10px;
-      min-height: 93.4vh;
-
+    min-height: 93.4vh;
   }
+
   .model-div{
       position:relative;
       top: 10px;

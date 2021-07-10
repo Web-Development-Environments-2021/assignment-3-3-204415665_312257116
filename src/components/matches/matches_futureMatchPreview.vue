@@ -110,8 +110,8 @@ export default {
 }
 
 .card {
-    min-height: 120px !important;
-    min-width: 340px !important;
+    min-height: 140px !important;
+    min-width: 330px !important;
     background-image:url('../../assets/AdobeStock_203017792.jpeg');
     font-size: 17px;
 }
@@ -151,7 +151,7 @@ export default {
 }
 small {
     position: absolute;
-    top: 210px;
+    top: 100px;
 }
 
 h1 {

@@ -1,13 +1,5 @@
 <template>
   <div style="padding: 5px;">
-    <!-- blue - #293241
-         orang - #ee6c4d
-         e0fbfc
-         98c1d9
-         3d5a80
-     -->
-    <!-- <router-link :to="{name:player}">
-    </router-link> -->
     <b-card-group id="div-card" deck>
       <b-card 
         style=""
@@ -48,18 +40,18 @@ export default {
 
 
   .card{
-    width: 11rem!important;
+    width: 14rem!important;
     height: 13rem!important;
     font-size: 10.5px!important;
-    background-color: rgb(252, 151, 85)!important;
-    box-shadow: 4px 5px rgba(99, 36, 0, 0.856);
-    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.952)!important;
+    box-shadow: 4px 5px rgba(74, 168, 223, 0.856);
+    border-radius: 15px;
     padding: 5px;
   }
 
   .card-img-top {
     width: 55%;
-    height: 45%;
+    height: 60%;
     object-fit: cover;
     margin: auto;
     border-radius: 100px;

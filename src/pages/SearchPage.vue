@@ -3,7 +3,7 @@
   <div>
       <div v-if="loadingSearchInfo">
         <div  class = "search">
-          <b-form @submit.prevent="onSearch" @reset.prevent="onReset" > 
+          <b-form @submit.prevent="onSearch" @reset.prevent="onReset"> 
               <h1 class="title">Search Page</h1>
               <b-input-group 
                 id="search-input"
@@ -26,6 +26,7 @@
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"
                         buttons
+                        
                     ></b-form-select>  
                   </b-form-group>
               </b-input-group>
@@ -50,7 +51,7 @@
               
             <div class="row ">
               <div>
-                <b-input-group  prepend=" Sort Players By:" style="width: 300px; " @click="sortOn()">
+                <b-input-group  prepend=" Sort Players By:" style="width: 300px;" @click="playerSortOn()">
                     <b-form-select
                         :button-variant="buttonColor"
                         id="input-group-sortPlayersBy"
@@ -59,6 +60,7 @@
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"
                         buttons
+                        
                     ></b-form-select>
                 </b-input-group>
               </div>
@@ -114,10 +116,10 @@
                     <players-information v-for="res in this.results" v-bind:key="res.playerID" :player="res"/>
               </div>
             </div>
-            <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false">
-                    <div v-for="res in this.results" v-bind:key="res.teamName">
-                        <a>search Query:</a>
-                    </div>
+            <div  v-else-if="form.searchType == 'Teams' && flag==true && noResult==false" class="container my-container-css">
+              <div class="row align-items-start my-row-css">
+                      <teams-Information v-for="res in this.results" v-bind:key="res.teamName" :team="res"/>
+              </div>
             </div>
             <div v-else-if="flag==false" class="container my-container-css">
                     <loading-icon/>
@@ -141,12 +143,15 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import PlayersInformation from "../components/PlayersSearchPreview"
+import TeamsInformation from "../components/TeamsSearchPreview"
+
 import LoadingIcon from "../components/loading"
 
 export default {
   
   components:{
     PlayersInformation,
+    TeamsInformation,
     LoadingIcon
     
   },
@@ -192,7 +197,7 @@ export default {
         {text: "AGF",value: "AGF"},
         {text: "Vejle",value: "Vejle"}
         ],
-        filterPlayersByPosition:""
+        filterPlayersByPosition:0
         },
         results: [],
         submitError: undefined,
@@ -232,8 +237,8 @@ export default {
 
     this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
     this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
-    console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
-    console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
+    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
+    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
     if (sessionStorage.getItem("lastSearchQuery") != null) {
       console.log("got inside the load previous search");
       this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
@@ -260,8 +265,11 @@ export default {
     {
       this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
     },
-    sortOn(){
+    playerSortOn(){
       this.form.sortPlayers='yes';
+      console.log("playerSortOn")
+      this.onSort();
+      this.onFilter();
     },
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
@@ -300,13 +308,13 @@ export default {
         // const response = SQL_searchByQuery(this.form.Search_Type,  this.form.Sort_Teams_Alphabetical,  this.form.Sort_Players,  this.form.Sort_Players_By,  this.form.Filter_Players);
         let currentSearchInfo;
         let response=[];
-        console.log(this.playersInfoList);
+        console.log(this.teamsInfoList);
 
         if(this.form.searchType=="Players"){
            currentSearchInfo =this.playersInfoList;
         }
         else{
-           currentSearchInfo =this.TeamsInfoInit;
+           currentSearchInfo =this.teamsInfoList;
         }
         currentSearchInfo.forEach(element => {
           if(this.form.searchType=="Players"){
@@ -336,6 +344,9 @@ export default {
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
         console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
+        this.onSort();
+        this.onFilter();
+
       } catch (err) {
         console.log(err);
         this.form.submitError = err.response?.data.message;
@@ -370,61 +381,65 @@ export default {
 
       });
     },
-    async SQL_searchByQuery( Search_Type, Sort_Teams_Alphabetical, Sort_Players, Sort_Players_By, Filter_Players) {
-//-------------------------------------- Teams --------------------------------------//
-    let Qsearch;
-    if(Search_Type=="Teams" ){
-      Qsearch=this.teamsInfoList;    
-      if(Sort_Teams_Alphabetical=="yes"){
-        //Sort the teams in alphabetical order by teamName
-        Qsearch.sort((a, b) => 
-        (('' + a["teamName"]).localeCompare(b["teamName"])));
-      }
-      resultQ = Qsearch;    
-      return {teams: Qsearch};
-    }
-  //-------------------------------------- Players --------------------------------------//
-  
-    else if(Search_Type=="Players"){
-      Qsearch=this.playersInfoList;
-      if(Sort_Players=="yes"){
-  
-      // ------ Sort_Players_By players name ------ //
-  
-        if (Sort_Players_By=="own name"){
-          Qsearch.sort((a, b) => 
-          ((''+a["name"]).localeCompare(b["name"])));
-        }
-  
-      // ------ Sort_Players_By team name ------ //
-  
-        else if (Sort_Players_By=="team name"){
-          Qsearch.sort((a, b) => 
-          ((''+a["team_name"]).localeCompare(b["team_name"])));
-  
+    onSort(){
+      if(this.form.searchType=="Teams" ){
+        if(this.form.sortTeamsAlphabetical=="yes"){
+          //Sort the teams in alphabetical order by teamName
+          this.results.sort((a, b) => 
+          (('' + a["teamName"]).localeCompare(b["teamName"])));
         }
       }
-      // ------ Filter_Players ------ //
-      if (Filter_Players != undefined || Filter_Players > 0){
-  
+      if(this.form.searchType =="Players"){
+        if(this.form.sortPlayers=="yes"){
+
+    
+        // ------ Sort_Players_By players name ------ //
+    
+          if (this.form.sortPlayersBy=="own name"){
+             this.results.sort((a, b) => 
+            ((''+a["name"]).toUpperCase().localeCompare(b["name"]).toUpperCase()));
+          }
+    
+        // ------ Sort_Players_By team name ------ //
+    
+          else if (this.form.sortPlayersBy=="team name"){
+             this.results.sort((a, b) => 
+            ((''+a["team_name"]).localeCompare(b["team_name"])));
+    
+          }
+        }
+      }
+    },
+    onFilter(){
       // ------ Filter_Players - position ------ //
-  
-        if (!isNaN(Filter_Players)){
-          resultQ = Qsearch.filter(function (el) {return el.position == Filter_Players});
+        if (this.form.filterPlayersByPosition!=0)
+        {
+          console.log(this.form.filterPlayersByPosition );
+          console.log(this.results);
+
+          let res = [];
+          this.results.forEach(element =>{
+            if(element.position==this.form.filterPlayersByPosition){
+                res.push(element)
+            }
+          });
+          this.results=res;
         }
-  
       // ------ Filter_Players - teams name ------ //
-        else{
-          resultQ = Qsearch.filter(function (el) {return el.team_name.includes(Filter_Players)});
+        if (this.form.filterPlayersByTeam != ""){
+
+          let res = [];
+          this.results.forEach(element =>{
+            if(element.team_name==this.form.filterPlayersByTeam){
+                res.push(element)
+            }
+          });
+          this.results=res;
         } 
-      }
-      else{
-        resultQ = Qsearch;
-      }
       
-    }
-    return {players:resultQ};
-    }
+    },
+
+
   },
   
 }
@@ -463,7 +478,8 @@ export default {
   width: 1000px;
   background-color: #293241e0;
  
-  max-height:56.4vmin;
+  max-height:56.4vh;
+;
 
 }
 

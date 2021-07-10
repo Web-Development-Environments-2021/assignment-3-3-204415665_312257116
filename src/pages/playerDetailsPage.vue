@@ -6,7 +6,7 @@
                     <b-img thumbnail fluid :src="image" alt="Center image"></b-img>
                 </div>
                     <h1 thumbnail fluid class="team-page-title" > {{name}} </h1>
-                <div class="profile-pic">
+                <div class="team-logo-pic">
                     <b-img thumbnail fluid :src="teamLogo" alt="Center image"></b-img>
                 </div>
             </b-row>
@@ -21,20 +21,20 @@
                         striped
                         outlined
                         stacked
-                         caption-top
+                        caption-top
                         no-border-collapse
                         :items="playerDate"
                         >
+
+                        <template #cell(team_name)="{ value : teamName }" >
+                            <router-link :to="`/teams/teamDetails/${ teamName }`" class="teams-names" >
+                                {{ teamName }}
+                            </router-link>
+                        </template>
                     </b-table>
-
                 </b-col>
-
             </b-row>
-
-
         </b-container>
-        <!-- <h1 class="player-headline"> League Matches </h1> -->
-
     </div>
 </template>
 
@@ -46,16 +46,12 @@ export default {
 
     data() {
         return {
-
             playerDate: undefined,
 
             playerID: "",
             name: "",
             image: "",
             teamLogo: "",
-            
-
-        
         }
     },
 
@@ -65,8 +61,7 @@ export default {
             this.image= player.playerShortInfo.image;
             this.team_name= player.playerShortInfo.team_name;
             this.playerDate = [{
-                // name : player.playerShortInfo.name,
-                // image: player.playerShortInfo.image,
+
                 position : player.playerShortInfo.position,
                 team_name : player.playerShortInfo.team_name,
                 commonName : player.commonName,
@@ -76,20 +71,6 @@ export default {
                 height : player.height,
                 weight : player.weight,
             }];
-
-
-
-            // this.name = player.playerShortInfo.name;
-            // this.image= player.playerShortInfo.image;
-            // this.position = player.playerShortInfo.position;
-            // this.team_name = player.playerShortInfo.team_name;
-            // this.commonName = player.commonName;
-            // this.nationality = player.nationality;
-            // this.birthDate = player.birthDate;
-            // this.birthCountry = player.birthCountry;
-            // this.height = player.height;
-            // this.weight = player.weight;
-
         }
     },
 
@@ -124,39 +105,54 @@ export default {
 #player-page {
     margin: auto;
     background-color: #353941;
-    /* border-radius: 10px; */
     max-width: 100%;
     min-height: 93.1vmin;
     overflow: hidden;
 }
 
 .player-headline {
-    /* margin-top: revert;
+    margin-top: revert;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
-    color: rgb(255, 238, 208);
-    font-weight: bold;
-    font-style: oblique;
-    text-decoration: underline; */
 }
 
-
 #my-player-con{
-    /* background-color: #f5e8be; */
     border-radius:10px ;
 
 }
-h1{
+
+h1 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 60px;
     color: blanchedalmond;
     padding: 40px;
 }
+
+.team-page-title {
+    position: relative;
+    margin-top: 10px;
+    margin: auto;
+}
+
 .profile-pic{
-    padding-left: 50px;
-    padding-top: 10px;
+    position: absolute;
+    left: 35px;
+    margin-top: 10px;
+}
+
+.team-logo-pic {
+    position: absolute;
+    right: 35px;
+    margin-top: 10px;
+}
+
+.teams-names {
+    color: white;
+}
+
+.teams-names:hover {
+    color: blue;
 }
 
 </style>

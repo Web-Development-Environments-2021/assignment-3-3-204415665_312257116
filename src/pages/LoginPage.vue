@@ -140,7 +140,7 @@ export default {
 
         );
         // this.axios.defaults.withCredentials = false;
-        // console.log(response);
+
 
         this.$root.store.login(this.form.username);
 
@@ -151,26 +151,22 @@ export default {
           this.$root.store.initDataForUnionAgent();
         }
         await this.$root.store.initDataForUser();
-        // console.log(localStorage.getItem("UserFavoriteMatches"));
         if ( this.$route.path == "/Login" ) {
           this.$router.push("/");
         }
         
       } catch (err) {
-        // console.log(response);
         this.form.submitError = err?.response.data.message;
         this.$root.toast("Login", "Username or Password incorrect", "danger");
 
       }
     },
     async onLogin() {
-      // console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("login method go");
 
       await this.Login();
     }

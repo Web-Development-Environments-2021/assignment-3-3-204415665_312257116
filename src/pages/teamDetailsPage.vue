@@ -171,7 +171,7 @@ export default {
         }
     },
     methods: {
-        extractPlayersInfo(){
+        extractPlayersInfo() {
 
             var players = JSON.parse(localStorage.getItem("playersInfo"));
             players.map( (player) => {
@@ -180,7 +180,10 @@ export default {
                 }
             });
         },
-        refereeFullName(refereeInformation){
+        refereeFullName(refereeInformation) {
+            if ( Object.keys(refereeInformation).length==0 ){
+                return "  -  ";
+            }
             return refereeInformation.firstname + " " + refereeInformation.lastname;
             
         },

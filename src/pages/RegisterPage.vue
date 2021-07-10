@@ -334,9 +334,7 @@ export default {
     }
   },
   mounted() {
-    // console.log("mounted");
     this.countries.push(...countries);
-    // console.log($v);
   },
   methods: {
     validateState(param) {
@@ -360,21 +358,16 @@ export default {
           }
         );
         this.axios.defaults.withCredentials = false;
-        console.log(response);
         this.$router.push("/login");
-        // console.log(response);
       } catch (err) {
-        console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
     onRegister() {
-      // console.log("register method called");
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
       this.Register();
     },
     onReset() {

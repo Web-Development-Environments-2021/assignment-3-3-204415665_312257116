@@ -12,19 +12,31 @@
                     <div class="future-match-content">                                           
                     <div class="row" >
                         <div class="teamsName">
+ 
                             <div class="left"><b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/></div>
-                            <div class="vs"> {{ this.localTeamName }} VS {{ this.visitorTeamName }}</div>
+                            <div class="vs">
+                                <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
+                                    {{ this.localTeamName }}
+                                </router-link>
+                                VS
+                                 <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
+                                    {{ this.visitorTeamName }}
+                                </router-link>
+                            </div>
                             <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
                         </div><br><hr>
                     </div>
                     <div class=match-info>
                          Venue: {{ this.venueName }}
                     </div>
-                    <div class=match-info v-if="Object.keys(this.refereeInformation).length">
-                        Referee Full Name : {{ this.refereeFullName }}
+                    <div class=match-info >
+                        Referee Name : {{ this.refereeFullName }}
                     </div>
                     <div class=match-info v-if="this.checkScore"> Match Score :
                             {{ this.localTeamScore }}  :  {{this.visitorTeamScore}}
+                    </div>
+                    <div class=match-info v-if="!this.checkScore"> Match Score :
+                            -
                     </div>
                 </div>
                 </h4>
@@ -33,7 +45,7 @@
                     </small>
                 </div>
                 <div class="model-div">
-                    <model-view v-if="this.eventsLog.length" :body="this.eventsLog" :buttonName="'show eventLog'"/>
+                    <model-view :body="this.eventsLog" :buttonName="'show eventLog'"/>
                 </div>
             </div>
         </div>
@@ -64,7 +76,7 @@ export default {
             refereeInformation: "",
             localTeamScore: "",
             visitorTeamScore: "",
-            eventsLog: "",
+            eventsLog: [],
             localTeamLogo : "",
             visitorTeamLogo : "",
         }
@@ -94,7 +106,7 @@ export default {
             if ( Object.keys(this.refereeInformation).length ) {
                 return this.refereeInformation.firstname + " " + this.refereeInformation.lastname;
             }
-            return "";
+            return "  -  ";
         },
         checkScore() {
             if ( this.localTeamScore==undefined || this.visitorTeamScore==undefined ){
@@ -223,6 +235,12 @@ h1 {
     left: 13px;
 }
 
-    
+.teams-names {
+    color: white;
+}
+
+.teams-names:hover {
+    color: blue;
+}
 
 </style>

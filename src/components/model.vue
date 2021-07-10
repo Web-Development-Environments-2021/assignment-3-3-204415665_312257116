@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button pill  size="sm" variant="success" d="" @click="modalShow = !modalShow">
+    <b-button :disabled="this.body.length==0" pill  size="sm" variant="success" d="" @click="modalShow = !modalShow">
       {{buttonName}}
     </b-button>
 

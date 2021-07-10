@@ -83,10 +83,6 @@ export default {
                 time_elapsed = 10-(timeNow - this.start_time) / 1000;
             }
 
-            if ( time_elapsed <= 0 ){
-                console.log( "What To Do... Timer Finished ???" ); //TODO: Remove
-            }
-
             if ( ! this.gotLeagueDetails ||  time_elapsed <= 0 ) {
                 this.stopInterval();
             }

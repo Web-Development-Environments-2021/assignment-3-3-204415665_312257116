@@ -111,13 +111,13 @@
         </div>
 
           <div >
-            <div v-if="flag==true && noResult==false" class="container my-container-css my-row-css row align-items-start">
-                <div v-if="form.searchType == 'Players'" class="row align-items-start my-row-css">
+            <div v-if="form.searchType == 'Players' && flag==true && noResult==false" class="container my-container-css my-row-css row align-items-start">
+                <div class="row align-items-start my-row-css">
                     <players-information :v-if="form.searchType == 'Players'" v-for="res in this.results" :key="res.playerID" :player="res"/>
               </div>
             </div>
-            <div  v-if="flag==true && noResult==false" class="container my-container-css row align-items-start my-row-css">
-              <div v-if="form.searchType == 'Teams'" class="row align-items-start my-row-css">
+            <div  v-if="form.searchType == 'Teams' && flag==true && noResult==false" class="container my-container-css row align-items-start my-row-css">
+              <div class="row align-items-start my-row-css">
                       <teams-Information :v-if="form.searchType == 'Teams'" v-for="res in this.results" :key="res.teamName" :team="res"/>
               </div>
             </div>
@@ -236,8 +236,7 @@ export default {
 
     this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
     this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
-    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
-    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
+
     if (sessionStorage.getItem("lastSearchQuery") != null) {
       console.log("got inside the load previous search");
       this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
@@ -336,7 +335,7 @@ export default {
         });
 
         console.log(response);
-        if(response==[]){
+        if(response.length==0){
               this.noResult=true;
         }
         else {
@@ -477,7 +476,7 @@ export default {
 .my-container-css {
   overflow-y: scroll;
   overflow-x: hidden;
-  min-width: 1450px;
+  max-width: 1450px;
   background-color: #293241c7;
   max-height:56.4vh;
 ;

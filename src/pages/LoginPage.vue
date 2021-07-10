@@ -52,9 +52,8 @@
                               </div>
 
                             <!--------------- Password --------------->
-                              <div class="group"> 
-                                <input id="check" type="checkbox" class="check" checked>
-                                 <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
+                              <div class="hr"></div>
+
                               <div class="group">
                                 <b-button
                                   type="submit"
@@ -64,12 +63,9 @@
                                   value="Sign In"
                                   >Sign In</b-button>
                               </div>
-                              <div class="hr"></div>
-
-                              <div class="foot"> <a href="#">Forgot Password?</a> </div>
                               <div class="mt-2 foot" style="color: white">
                                   Do not have an account yet?
-                                  <router-link to="register"> Register in here</router-link>
+                                  <router-link to="register"> <br>Register in here</router-link>
                               </div>
                               <b-alert
                                 class="mt-2"
@@ -187,34 +183,24 @@ export default {
   margin: auto;
   left: -10px;
   position: absolute;
+      height: 500px;
+
   
 }
-// .login-box {
-//     width: 100%;
-//     height: 100%;
-//     border-radius: 30px;
-//     position: absolute;
-//     // background: url(https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1268&q=80) no-repeat center;
-// }
+.login-box {
+    height: 500px;
+    height: 500px;
+    border-radius: 30px;
+}
 
-// .login-snip {
-//     width:100%;
-//     height: 100%;
-//     position: absolute;
-//     border-radius: 30px;
-//     padding: 30px 80px 0px 80px;
-//     background: #293241e0;
-//     margin: auto;
-// }
+.login-snip {
+    height: 500px;
+    position: absolute;
+    border-radius: 30px;
+    padding: 30px 80px 0px 80px;
+    background: #293241e0;
+    margin: auto;
+}
 
-// .login-card {
-//     width: 1000px;
-//     min-height:600px;
-//     left: 300px;
-//     top:10px;
-//     border-radius: 20%;
-//     position: absolute;
-//     margin: auto;
-// }
 
 </style>

@@ -128,22 +128,24 @@ export default {
 <style>
 
 .match-card.league-card {
-    min-height: 93.4vh !important;
+    min-height: 95vh !important;
     width: 420px;
     border-radius: 0px;
     font-size: 17px;
     background: #293241e0;
+    left:-1150px;
 }
 
 .league-preview {
     display: inline-block;
     width: 420px;
-    position: relative;
+    position: absolute;
     margin: 10px 10px;
     /* border-style: solid; */
     /* border-radius: 10px; */
     border-width: 5px;
-    left:-1110px;
+    
+
 }
 
 .league-preview .league-title {
@@ -151,6 +153,7 @@ export default {
     text-transform: uppercase;
     color:  rgb(111, 155, 197);
     font-size: 100px;
+    left:-1150px;
 
 }
 

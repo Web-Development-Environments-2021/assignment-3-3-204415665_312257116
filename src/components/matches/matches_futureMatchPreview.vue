@@ -27,7 +27,7 @@
                 <small class="card-meta" style="float:right;">match date: {{this.matchDate.slice(0,10)}} , {{ this.matchDate.slice(11,16)}}</small>
             </div>
             <div class="like-div">
-                <b-button v-if="this.myToggleCheck" style="float:right;" @click="handleClick()" :pressed="this.myToggle" variant="outline-warning"> ⭐ </b-button>
+                <b-button class="bg-outline-warning"  v-if="this.myToggleCheck" style="float:right;" @click="handleClick()" :pressed="this.myToggle" variant="outline-warning"><b-icon icon="star-fill" class="rounded-circle" /></b-button>
             </div>
             </div>
         </div>
@@ -110,7 +110,7 @@ export default {
 }
 
 .card {
-    min-height: 140px !important;
+    min-height: 170px !important;
     min-width: 330px !important;
     background-image:url('../../assets/AdobeStock_203017792.jpeg');
     font-size: 17px;
@@ -131,7 +131,7 @@ export default {
     top:10px;
     left: 100px;
     margin: auto;
-    color: rgb(32, 32, 32);
+    color: rgb(212, 181, 0);
 }
 
 .teamsName {

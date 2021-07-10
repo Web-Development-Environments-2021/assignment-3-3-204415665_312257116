@@ -55,7 +55,7 @@
                     <div>
                       <div class='form-check form-switch'>
                       </div>
-                      <b-button style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                      <b-button pill style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
                       <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                     </div>
                 </div>

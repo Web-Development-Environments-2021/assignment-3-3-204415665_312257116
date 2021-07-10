@@ -46,8 +46,8 @@
 
           </template>
           <div class="div-dropdown">
-            <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><em><b-icon class="nav-icon" icon="hand-thumbs-up" aria-hidden="true"></b-icon>Favorites Matches</em></b-dropdown-item>
-            <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><em><b-icon class="nav-icon" icon="power" aria-hidden="true"></b-icon>Log Out</em></b-dropdown-item>
+            <b-dropdown-item class="nav-dropdown-item" href="#" :to="{ name:'favoriteMatches'}"><em><b-icon class="nav-icon"  variant="warning" icon="star-fill" aria-hidden="true"></b-icon>Favorites Matches</em></b-dropdown-item>
+            <b-dropdown-item class="nav-dropdown-item" href="#" @click="Logout()"><em><b-icon class="nav-icon" icon="power" variant="danger" aria-hidden="true"></b-icon>Log Out</em></b-dropdown-item>
           </div>
         </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -88,8 +88,8 @@ export default {
 
   em {
     font-weight: bold;
-    padding: 7.5px;
-    color: #E0FBFC;
+    // padding: 7.5px;
+    // color: #E0FBFC;
   }
   .navbar.navbar-dark.bg-dark{
       background-color: #293241!important;
@@ -106,17 +106,11 @@ export default {
   }
   .nav-dropdown-item{
     text-align: center!important;
-    width: 200px;
-    background-color: #293241!important;
-    font-weight: bold!important;
-    padding: 10px;
+    width: 250px;
   }
   .nav-dropdown-item:hover{
     text-align: center!important;
-    width: 200px;
-    background-color: #293241!important;
     font-weight: bold!important;
-    padding: 10px;
   }
 
   .nav-icon{

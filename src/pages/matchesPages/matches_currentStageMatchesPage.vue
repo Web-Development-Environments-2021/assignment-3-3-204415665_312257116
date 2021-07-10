@@ -206,10 +206,10 @@ export default {
 
 <style lang="scss" scoped>
   .card{
-      min-height: 120px !important;
-      min-width: 340px !important;
-      background-image:url('../../assets/AdobeStock_203017792.jpeg');
-      font-size: 17px;
+    min-height: 120px !important;
+    min-width: 340px !important;
+    background-image:url('../../assets/AdobeStock_203017792.jpeg');
+    font-size: 17px;
   }
   .my-row{
     background-color: #293241e0;
@@ -218,7 +218,7 @@ export default {
     overflow-x: hidden;
     position: relative;
     left: -150px;
-    min-height: 500px !important;
+    // min-height: 000px !important;
     min-width: 1450px !important;
 
   }
@@ -251,8 +251,6 @@ export default {
     padding: 3px;
   }
 
-
-
   h1{
     color: rgb(255, 255, 255);
     text-align: center;
@@ -274,7 +272,7 @@ export default {
   .model-div{
       position:relative;
       top: 10px;
-      left: 170px;
+      left: 140px;
   }
     .like-div{
       position:relative;

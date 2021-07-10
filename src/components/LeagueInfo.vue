@@ -70,6 +70,11 @@ export default {
             var timeNow;
 
             var leagueDetails = JSON.parse(localStorage.getItem("leagueDetails"));
+            var teamInfo = JSON.parse(localStorage.getItem("teamsInfo"));
+
+            if (teamInfo==undefined) {
+                return;
+            }
 
             if ( leagueDetails != null ) {
                 
@@ -105,7 +110,7 @@ export default {
                 return false;
             }
             return true;
-        }
+        },
     },
     mounted() {
         this.start_time = new Date();

@@ -206,6 +206,11 @@ export default {
 
 <style lang="scss" scoped>
 
+  .container {
+    max-width: 75%;
+
+  }
+
   .card{
     min-height: 120px !important;
     min-width: 340px !important;
@@ -219,7 +224,6 @@ export default {
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
-    left: -150px;
     // min-height: 000px !important;
     min-width: 1450px !important;
 

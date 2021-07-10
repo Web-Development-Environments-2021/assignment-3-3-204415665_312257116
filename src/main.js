@@ -367,8 +367,8 @@ new Vue({
 
     }
     if( JSON.parse(sessionStorage.getItem("enter"))==true ){
-      this.$root.store.getLeagueDetails();
       this.$root.store.getDataForSearch();
+      this.$root.store.getLeagueDetails();
       this.$root.store.getCurrentStageMatches();
       sessionStorage.setItem("enter", JSON.stringify(false));
     }

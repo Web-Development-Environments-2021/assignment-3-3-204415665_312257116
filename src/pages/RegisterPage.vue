@@ -358,7 +358,7 @@ export default {
           }
         );
         this.axios.defaults.withCredentials = false;
-        this.$router.push("/login");
+        this.$router.push("/Login");
       } catch (err) {
         this.form.submitError = err.response.data.message;
       }

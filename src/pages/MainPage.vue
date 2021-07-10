@@ -54,7 +54,7 @@ export default {
 .favorite{
   position: absolute;
   left: 500px;
-  min-width: 800px;
+  min-width: 1000px;
 }
 
 .LInfo{

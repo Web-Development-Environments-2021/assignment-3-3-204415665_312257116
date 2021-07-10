@@ -56,7 +56,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #000000;
   min-height: 100vh;
-  background-image: url("./assets/AdobeStock_68164130.jpeg");
+  background-image: url("./assets/AdobeStock_108965993.jpeg");
+  // background-image: url("./assets/AdobeStock_128646274.jpeg");
+  // background-image: url("./assets/AdobeStock_265172747.jpeg");
   background-size: cover;
   background-color: #ffffff;
   overflow: hidden;

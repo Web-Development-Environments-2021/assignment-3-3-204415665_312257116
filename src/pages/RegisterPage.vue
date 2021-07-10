@@ -398,13 +398,16 @@ export default {
 <style lang="scss" scoped>
 
 .register-css{
-  max-width: 2000px;
+  height: 80vh;
+
   margin: auto;
   color: white;
 }
 
 .login-snip {
-  height: 93.5%;
+  height: 100vh;
+  width:2000vh;
+
   top:46px;
   left:0px;
   padding: 30px 0px 0px 80px;

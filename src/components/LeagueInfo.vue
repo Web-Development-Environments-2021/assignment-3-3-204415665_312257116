@@ -1,73 +1,163 @@
 <template>
     <div class="league-preview">
-      <div class="match-card league-card  text-white">
-      <!-- img-alt="Image"
-      tag="article"
-      style="max-width: 20rem;"
-      class="mb-2"
-    > -->
-    <div class="card-img-overlay d-flex flex-column">
-      <div class="card-body" >                         
+        <div class="match-card league-card  text-white">
+        <div class="card-img-overlay d-flex flex-column">
+        <div class="card-body" >                         
         <h4 class="card-title mt-0">
-          <!-- <a class="text-white" herf="#"> -->
             <div>
-              <b-card-title>{{leagueName}}</b-card-title>
-              <b-card-text>
-                Season: {{ season }}
-                <br/>
-                Stage: {{ stage }}
-              </b-card-text>
+                <b-card-title id="league-name">
+                    {{ leagueName }}
+                </b-card-title>
+                <b-card-text >
+                    <span>
+                        <a id="row-title"> 
+                            Season   :  
+                        <a id="row-ans">
+                            {{ season }}
+                        </a> 
+                        </a> 
+                    </span>
+                </b-card-text>
+                <b-card-text>
+                    <span>
+                        <a id="row-title"> 
+                            Stage   :  
+                        <a id="row-ans">
+                            {{ stageText }}
+                        </a> 
+                        </a> 
+                    </span>
+                </b-card-text>
             </div>
-          </h4>
+            <br/>
+            <a id="row-title">  Next match : </a>
+        </h4>
         </div>
-      </div>
-
-    </div>
+        </div>
+        </div>
   </div>
 </template>
 
+
 <script>
+
+import FutureMatchPreview from './matches/matches_futureMatchPreview.vue';
+
 export default {
-  name: "LeagueInfo",
-  
-  data() {
-      return {
-        leagueName:"superliga", 
-        season:"season", 
-        stage:"stage"
-      };
+
+    name: "LeagueInfo",
+
+    components: {
+        // FutureMatchPreview,
     },
+  
+    data() {
+        return {
+
+            leagueName : "", 
+            season : "", 
+            stage : "",
+            nextMatch : undefined,
+
+            gotLeagueDetails : false,
+            start_time : undefined,
+            updateInterval : undefined,
+        }
+    },
+    methods: {
+        extractLeagueDetails(){
+
+            var time_elapsed = 100;
+            var timeNow;
+
+            var leagueDetails = JSON.parse(localStorage.getItem("leagueDetails"));
+
+            if ( leagueDetails != null ) {
+                
+                this.gotLeagueDetails = true;
+                this.leagueName = leagueDetails.league_name;
+                this.season = leagueDetails.current_season_name;
+                this.stage = leagueDetails.current_stage_name;
+                this.nextMatch = leagueDetails.first_next_match;
+            } else {
+                timeNow = new Date();
+                time_elapsed = 10-(timeNow - this.start_time) / 1000;
+            }
+
+            if ( time_elapsed <= 0 ){
+                console.log( "What To Do... Timer Finished ???" ); //TODO: Remove
+            }
+
+            if ( ! this.gotLeagueDetails ||  time_elapsed <= 0 ) {
+                this.stopInterval();
+            }
+
+        },
+        stopInterval(){
+            clearInterval(this.updateInterval);
+            this.updateInterval = undefined;
+        }
+    },
+    computed: {
+        stageText(){
+            if ( this.stage == "null" ){
+                return "There is no current stage at this time ";
+            }
+            return this.stage;
+        }
+    },
+    mounted() {
+        this.start_time = new Date();
+        this.updateInterval = setInterval( this.extractLeagueDetails, 100 );
+    },
+    beforeDestroy(){
+        if ( this.updateInterval != undefined ) {
+            clearInterval(this.updateInterval);
+        }
+    }
 }
+
 </script>
 
+
 <style>
-.match-card.league-card{
+
+.match-card.league-card {
     min-height: 93.5vh !important;
     border-radius: 0px;
     font-size: 17px;
     background: #293241e0;
-
 }
+
 .league-preview {
-  display: inline-block;
-  width: 300px;
-  height: 673px;
-  position: relative;
-  margin: 10px 10px;
-  /* border-style: solid; */
-  /* border-radius: 10px; */
-  border-width: 5px;
+    display: inline-block;
+    width: 33%;
+    height: 673px;
+    position: relative;
+    margin: 10px 10px;
+    /* border-style: solid; */
+    /* border-radius: 10px; */
+    border-width: 5px;
 }
 
 .league-preview .league-title {
-  text-align: center;
-  text-transform: uppercase;
-  color:  rgb(111, 155, 197);
+    text-align: center;
+    text-transform: uppercase;
+    color:  rgb(111, 155, 197);
 }
 
 .league-preview .league-content {
-  width: 100%;
-  overflow: hidden;
+    width: 100%;
+    overflow: hidden;
+}
+
+#league-name {
+    text-align: center;
+    font-weight: bold;
+    font-style: oblique;
+    text-decoration: underline;
+    font-size: 35px;
+    color:  rgb(129, 170, 209);
 }
 
 </style>

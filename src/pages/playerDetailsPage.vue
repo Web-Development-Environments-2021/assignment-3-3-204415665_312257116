@@ -25,6 +25,8 @@ export default {
     data() {
         return {
 
+            playerDate: undefined,
+
             playerID: "",
             name: "",
             image: "",
@@ -40,7 +42,7 @@ export default {
     },
 
     methods: {
-        extractPlayerInfo(player){
+        extractPlayerInfo(player) {
 
             this.name = player.playerShortInfo.name;
             this.image= player.playerShortInfo.image;

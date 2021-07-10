@@ -228,6 +228,23 @@ const shared_data = {
       // TODO: What to do We The Error ???
     }
   },
+
+// -------------------------------Get League Details --------------------------------
+
+async getLeagueDetails(){
+  try {
+    axios.withCredentials = true;
+    axios.get( this.serverUrl + "league/getDetails" )
+    .then( (response) => {
+      axios.withCredentials = false;
+      localStorage.setItem("leagueDetails", JSON.stringify(response.data.leagueDetails) );
+    })
+    .catch( (err) => { console.log(err); } );
+    
+  } catch (error){
+    console.log(error);
+  }
+},  
   
 // -------------------------------getSearchInfo--------------------------------
 
@@ -349,7 +366,6 @@ new Vue({
           this.$root.store.logout();
           this.axios.defaults.withCredentials = true;
           this.axios.post(this.$root.store.serverUrl + "Logout").then( ( res ) => {
-            
             this.axios.defaults.withCredentials = false;
           });
       }
@@ -357,6 +373,7 @@ new Vue({
 
     }
     if( JSON.parse(sessionStorage.getItem("enter"))==true ){
+      this.$root.store.getLeagueDetails();
       this.$root.store.getDataForSearch();
       this.$root.store.getCurrentStageMatches();
       sessionStorage.setItem("enter", JSON.stringify(false));

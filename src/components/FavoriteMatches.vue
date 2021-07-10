@@ -247,8 +247,8 @@ export default {
   }
   
   .match-card.favoriteMatches.card{
-      min-height: 150px !important;
-      min-width: 290px !important;
+      min-height: 210px !important;
+      min-width: 330px !important;
       background-image:url('../assets/AdobeStock_203017792.jpeg');
       // background-size: cover;
       font-size: 17px;

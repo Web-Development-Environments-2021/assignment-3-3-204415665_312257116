@@ -148,7 +148,7 @@ export default {
     left: 60px; 
 }
 .card {
-    min-height: 190px !important;
+    min-height: 210px !important;
     min-width: 330px !important;
     background-image:url('../../assets/AdobeStock_203017792.jpeg');
     font-size: 17px;
@@ -182,7 +182,7 @@ export default {
 
 .match-info {
     position: relative;
-    top: -10px;
+    top: -70px;
     font-size: 12px!important;
     text-align: left;
     padding: 3px;
@@ -213,7 +213,7 @@ h1 {
 
 .model-div {
     position:relative;
-    top: -25px;
+    top: 13px;
     left: 180px;
 }
 

@@ -13,13 +13,19 @@
                     <div class="future-match-content">                                           
                     <div class="row" >     
                     <div class="teamsName">
-                        <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
-                            {{ this.localTeamName }}
-                        </router-link>
-                        VS
-                        <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
-                            {{ this.visitorTeamName }}
-                        </router-link>
+
+                        <div class="left"><b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/></div>
+                        <div class="vs"> 
+                            <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
+                                {{ this.localTeamName }}
+                            </router-link>
+                            VS
+                            <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
+                                {{ this.visitorTeamName }}
+                            </router-link>
+                        </div>
+                        <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
+                    
                     </div><br><hr>
                     </div>
                     <div class=match-info>
@@ -33,7 +39,7 @@
                 <small class="card-meta" style="float:right;">match date: {{this.matchDate.slice(0,10)}} , {{ this.matchDate.slice(11,16)}}</small>
             </div>
             <div class="like-div">
-                <b-button class="bg-outline-warning"  v-if="this.myToggleCheck" style="float:right;" @click="handleClick()" :pressed="this.myToggle" variant="outline-warning"><b-icon icon="star-fill" class="rounded-circle" /></b-button>
+                <b-button pill class="bg-outline-warning"  v-if="this.myToggleCheck" style="float:right;" @click="handleClick()" :pressed="this.myToggle" variant="outline-warning"><b-icon icon="star-fill" class="rounded-circle" /></b-button>
             </div>
             </div>
         </div>
@@ -57,7 +63,8 @@ export default {
             venueName: "",
             refereeInformation: "",
             myToggle: undefined,
-
+            localTeamLogo : "",
+            visitorTeamLogo : "",
             updateInterval: undefined,
             checkMatchInfo: {},
         }
@@ -100,6 +107,17 @@ export default {
     },
     mounted() {
         this.updateInterval = setInterval( this.updateInformation, 100 );
+        var teamInfo = JSON.parse(localStorage.getItem("teamsInfo"));
+        teamInfo.map( (team) => {
+            if ( team.teamName == this.match.localTeamName ) {
+                this.localTeamLogo = team.teamLogo;
+            }
+            if ( team.teamName == this.match.visitorTeamName) {
+                                console.log(this.match.visitorTeamName);
+
+                this.visitorTeamLogo = team.teamLogo;
+            }
+        });
     },
     beforeDestroy(){
         clearInterval(this.updateInterval);
@@ -114,7 +132,25 @@ export default {
     padding-top: 15px;
     padding-bottom: 15px;
 }
-
+.right{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-97px;
+    right: -215px;
+}
+.left{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-29px;
+    left: 10px;
+}
+.vs{
+    position: relative;
+    top:-20px;
+    left: 60px; 
+}
 .card {
     min-height: 190px !important;
     min-width: 330px !important;
@@ -150,7 +186,7 @@ export default {
 
 .match-info {
     position: relative;
-    top: -10px;
+    top: -70px;
     font-size: 12px!important;
     text-align: left;
     padding: 3px;

@@ -331,7 +331,8 @@ export default {
           }
         });
 
-        if(response==[]){
+        console.log(response);
+        if(response.length==0){
               this.noResult=true;
         }
         else {
@@ -467,7 +468,7 @@ export default {
 .my-container-css {
   overflow-y: scroll;
   overflow-x: hidden;
-  min-width: 1450px;
+  max-width: 1450px;
   background-color: #293241c7;
   max-height:56.4vh;
 ;

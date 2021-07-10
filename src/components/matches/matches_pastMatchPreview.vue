@@ -12,13 +12,18 @@
                     <div class="future-match-content">                                           
                     <div class="row" >
                         <div class="teamsName">
-                            <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
-                                {{ this.localTeamName }}
-                            </router-link>
-                            VS
-                            <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
-                                {{ this.visitorTeamName }}
-                            </router-link>
+ 
+                            <div class="left"><b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/></div>
+                            <div class="vs">
+                                <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
+                                    {{ this.localTeamName }}
+                                </router-link>
+                                VS
+                                 <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
+                                    {{ this.visitorTeamName }}
+                                </router-link>
+                            </div>
+                            <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
                         </div><br><hr>
                     </div>
                     <div class=match-info>
@@ -72,6 +77,8 @@ export default {
             localTeamScore: "",
             visitorTeamScore: "",
             eventsLog: [],
+            localTeamLogo : "",
+            visitorTeamLogo : "",
         }
     },
     props: {
@@ -109,7 +116,18 @@ export default {
         }
     },
     mounted() {
-        this.updateInformation()
+        this.updateInformation();
+        var teamInfo = JSON.parse(localStorage.getItem("teamsInfo"));
+        teamInfo.map( (team) => {
+        if ( team.teamName == this.match.localTeamName ) {
+            this.localTeamLogo = team.teamLogo;
+        }
+        if ( team.teamName == this.match.visitorTeamName) {
+                            console.log(this.match.visitorTeamName);
+
+            this.visitorTeamLogo = team.teamLogo;
+        }
+    });
     },
 }
 
@@ -123,6 +141,25 @@ export default {
     padding-bottom: 15px;
 }
 
+.right{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-97px;
+    right: -215px;
+}
+.left{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-29px;
+    left: 10px;
+}
+.vs{
+    position: relative;
+    top:-20px;
+    left: 60px; 
+}
 .card {
     min-height: 190px !important;
     min-width: 330px !important;

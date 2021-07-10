@@ -48,35 +48,25 @@ export default {
 
 <style scoped>
 
-.card{
-  width: 11rem!important;
-  height: 13rem!important;
-  font-size: 10.5px!important;
-  background-color: rgb(252, 151, 85)!important;
-  box-shadow: 4px 5px rgba(99, 36, 0, 0.856);
-  border-radius: 30px;
-  padding: 5px;
-}
+
 
 .card{
-  width: 14rem!important;
-  height: 16rem!important;
-  font-size: 10.5px!important;
+  width: 13rem!important;
+  height: 17rem!important;
+  font-size: 12.5px!important;
   background-color: rgba(255, 255, 255, 0.952)!important;
   box-shadow: 4px 5px rgba(74, 168, 223, 0.856);
   border-radius: 15px;
-  padding: 5px;
+  padding: 4px;
 }
 
 .card-img-top {
-  width: 60%;
-  height: 55%;
+  width: 50%;
+  height: 50%;
   object-fit: cover;
   margin: auto;
   border-radius: 100px;
-  border-color:rgb(161, 6, 6);
   background-color: rgb(255, 255, 255)!important;
-  
   border-width:200px ;
   box-shadow: 1px 1px 1px 1px rgba(2, 2, 2, 0.39);
 }

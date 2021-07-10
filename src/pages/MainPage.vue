@@ -6,7 +6,7 @@
         <div class="container" > -->
             <league-info class="LInfo"></league-info>
             <b-form>
-            <div class="" v-if="!$root.store.username">
+            <div class="login-div" v-if="!$root.store.username">
               <login-page /> 
             </div>  
             <div v-else class="favorite">
@@ -44,39 +44,24 @@ export default {
 
 }
 .main{
-  // margin: auto;
+  margin: auto;
   position: relative;
-  
+}
+.login-div{
+  position: relative;
+  right: 0px;
 }
 .favorite{
   position: absolute;
   left: 500px;
   min-width: 800px;
 }
-// .login-box {
-//     width: 100%;
-//     height: 100%;
-//     position: absolute;
-// }
 
-// .login-snip {
-//     width:100%;
-//     height: 100%;
-//     position: absolute;
-//     padding: 30px 80px 0px 80px;
-//     background: #293241e0;
-//     margin: auto;
-// }
-// .login-card {
-//     width: 400px;
-//     min-height:674px;
-//     left: 0px;
-//     position: absolute;
-// }
 .LInfo{
       position: absolute;
       top: 0px;
-      right:0px;
+      left:0px;
       margin: auto;
+      height: 80%;
 }
 </style>

@@ -59,6 +59,7 @@ export default {
   background-image: url("./assets/AdobeStock_68164130.jpeg");
   background-size: cover;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
 #nav {

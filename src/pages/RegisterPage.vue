@@ -7,7 +7,6 @@
 
       <!-- <div class="login-card">
         <div class="login-box"> -->
-          <div><div>
           <div class="login-snip"> 
                     <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
                       <label for="tab-1" class="tab">Register</label>
@@ -251,8 +250,7 @@
                           </div>
                       </div>
           </div>
-       </div>
-      </div>
+
       </b-form>
   </div>
     <!-- <b-card class="mt-3 md-3" header="Form Data Result">
@@ -419,12 +417,7 @@ export default {
   margin: auto;
 }
 
-// .login-card {
-//     width: 400px;
-//     min-height:674px;
-//     left: 0px;
-//     position: absolute;
-// }
+
 
 //   .login-box {
 //     width: 100%;

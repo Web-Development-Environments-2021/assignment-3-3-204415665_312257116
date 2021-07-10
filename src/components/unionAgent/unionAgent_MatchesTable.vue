@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="matches-div">
         <b-table class="matches-table"
             :fields="fields"
             :items="matches"
@@ -147,7 +147,7 @@ export default {
     data() {
         return{
             fields: [
-                { key: 'selected'},
+                { key : 'selected'},
                 { key : "matchID", sortable: true },
                 { key : "matchDate", sortable: true },
                 { key : "localTeamName", sortable: true },
@@ -339,9 +339,13 @@ export default {
 
 <style scoped >
 
+
+
 .matches-table {
-    margin: 50px;
-    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    max-width: 94%;
     text-align: center;
     align-items: center;
 }

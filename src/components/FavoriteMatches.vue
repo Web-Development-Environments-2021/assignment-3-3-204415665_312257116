@@ -166,18 +166,18 @@ export default {
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){ 
 
-      var userFavorite = localStorage.getItem("UserFavoriteMatches");
+      var userFavorite = JSON.parse(localStorage.getItem("UserFavoriteMatches"));
 
 
-      if( userFavorite != 'undefined' ) {
+      if( userFavorite != undefined ) {
 
         if ( userFavorite.length!=0 ) {
 
-          if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify(JSON.parse( userFavorite )))) {
+          if ( !(JSON.stringify(this.favoriteMatchesList) === JSON.stringify( userFavorite ))) {
 
             this.favoriteMatchesList = [];
             this.loadingFlag=true;
-            this.favoriteMatchesList.push(...JSON.parse( userFavorite ));
+            this.favoriteMatchesList.push(... userFavorite );
             this.updatedChanges();
           }
         }     
@@ -216,18 +216,15 @@ export default {
     }
   },
   //**--------------------------------------------mounted------------------------------------ */
-  mounted()  {
-    if(this.$root.store.username!=undefined){
-      this.updateFavoriteMatches(); 
-    }
-    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
 
+  mounted()  {
+    this.updateInterval = setInterval( this.updateFavoriteMatches, 100 );
   },
-  created(){
-  },
+
  //**--------------------------------------------beforeDestroy------------------------------------ */
+
   beforeDestroy(){
-    clearInterval(this.updateMatches);
+    clearInterval(this.updateInterval);
   },
 
 

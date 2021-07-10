@@ -133,11 +133,17 @@ const shared_data = {
 
   //* ------------------------------ UnionAgent ------------------------------ *//
   onLogOut(){
-    localStorage.setItem("UserFavoriteMatches", undefined);
-    let currentStageMatches=[];
-    currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
-    currentStageMatches?.map(fav => delete fav.myToggle);
-    localStorage.setItem("CurrentStageMatchesFutureMatches",JSON.stringify(currentStageMatches));
+
+    localStorage.removeItem("UserFavoriteMatches");
+
+    if ( JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")) != undefined ) {
+
+      let currentStageMatches=[];
+      currentStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")));
+      currentStageMatches.map(fav => delete fav?.myToggle);
+      localStorage.setItem("CurrentStageMatchesFutureMatches",JSON.stringify(currentStageMatches));
+    }
+
   },
   onExit(){
     localStorage.removeItem("UserFavoriteMatches");
@@ -171,7 +177,6 @@ const shared_data = {
       const responseFromLeagueMatches = await this.getLeagueMatches();
       localStorage.setItem("leagueFutureMatches", JSON.stringify(responseFromLeagueMatches.featureMatches));
       localStorage.setItem("leaguePastMatches", JSON.stringify(responseFromLeagueMatches.pastMatches));
-      console.log("done - Init Data From Union Agent");
 
     }catch ( error ){
       // TODO: What to do We The Error ???
@@ -229,13 +234,13 @@ const shared_data = {
   async getDataForSearch(){
     try{
       console.log("Start init search info");
-      const searchResponse = await this.initSearchInfo();
-      localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
-      localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
-      console.log(searchResponse.all_Info.Players);
+      // const searchResponse = await this.initSearchInfo();
+      this.initSearchInfo().then( ( searchResponse ) => {
+        localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
+        localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
+        console.log("Ends init search info");
+      });
 
-      console.log("Ends init search info");
-    
     } catch (error){
       // TODO: What to do We The Error ???
     }
@@ -265,8 +270,6 @@ const shared_data = {
     }
   },
 
-
-
 // -------------------------------Data For User--------------------------------
 
   async initDataForUser(){
@@ -289,7 +292,6 @@ const shared_data = {
             this.serverUrl + "users/favoriteMatches"
         );
         axios.withCredentials = false;
-        console.log(response);
         if(response.status==204){
           return [];
         }
@@ -304,28 +306,19 @@ const shared_data = {
     try{
         console.log("starts - getCurrentStageMatches")
         axios.withCredentials = true;
-        const response = await axios.get(
-            this.serverUrl + "matches/currentStageMatches"
+        axios.get(  this.serverUrl + "matches/currentStageMatches" ).then( ( response ) => {
+            axios.withCredentials = false;
+            localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
+            localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
+            console.log("finises - getCurrentStageMatches")
+          }
         );
-        axios.withCredentials = false;
-        // if(response.status==204){
-        //   response.data.futureMatches= [];
-        //   response.data.pastMatches=[];
-        // }
-        console.log(response.data.pastMatches);
-        localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
-        localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
-        console.log("finises - getCurrentStageMatches")
-
       } catch (error){
         // TODO: What to do We The Error ???
       }
   },
 
 }
-console.log(shared_data);
-
-// Vue.prototype.$root.store = shared_data;
 
 new Vue({
   router,
@@ -347,25 +340,27 @@ new Vue({
     }
   },
   created(){
-    if(sessionStorage.enter==undefined){
-      sessionStorage.enter=true;
-    }
-    if(sessionStorage.enter){
-      // this.$root.store.onEnter();
-      this.$root.store.getDataForSearch();
-      sessionStorage.enter=false;
-    }
 
-  },
-  beforeDestroy(){
-    // sessionStorage.enter=undefined;
-  },
-  mounted(){
-    console.log(this.$root.store.username + " is login");
-    // if(this.$root.store.username==undefined){
-    //   this.$root.store.initDataForUser(); 
-    // }
-    this.$root.store.getCurrentStageMatches();
+    if(sessionStorage.enter==undefined){
+
+      sessionStorage.setItem("enter", JSON.stringify(true));
+
+      if ( localStorage.username ){
+          this.$root.store.logout();
+          this.axios.defaults.withCredentials = true;
+          this.axios.post(this.$root.store.serverUrl + "Logout").then( ( res ) => {
+            
+            this.axios.defaults.withCredentials = false;
+          });
+      }
+      this.$root.store.onExit();
+
+    }
+    if( JSON.parse(sessionStorage.getItem("enter"))==true ){
+      this.$root.store.getDataForSearch();
+      this.$root.store.getCurrentStageMatches();
+      sessionStorage.setItem("enter", JSON.stringify(false));
+    }
 
   },
 

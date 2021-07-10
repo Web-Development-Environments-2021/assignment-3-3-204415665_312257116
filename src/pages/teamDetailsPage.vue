@@ -9,8 +9,9 @@
 
         <!----------  Team's Squad  ---------->
 
-        <h2 class="team-page-title" id="squad-head"> Team's Squad : </h2>
-        <div  class="container my-container-css">
+        <div  class="container my-container-css" id="squad-div">
+
+            <h2 class="team-page-title" id="squad-head"> Team's Squad : </h2>
             <div class="row align-items-start my-row-css">
                 <player-information 
                     v-for="player in this.squadInformation" :key="player.playerID" :player="player">
@@ -22,9 +23,10 @@
         <!----------  Team's Future Matches  ---------->
 
             <!----------  Future Table  ---------->
+        
+        <div  class="container my-container-css" id="future-matches-div">
+            <h2 class="team-page-title" id="future-match-head"> Team's Future Matches : </h2>
 
-        <h2 class="team-page-title" id="future-match-head"> Team's Future Matches : </h2>
-        <div id="future-matches-div">
             <b-table id="future-matches-table" v-if="rows_Future"
                 :items="teamFutureMatches"
                 hover
@@ -56,9 +58,9 @@
             <!---------- No Matches Message  ---------->
 
             <div class="container my-container-css" v-if="rows_Future==0" >
-                <h5 style="text-align:center;" >
+                <h3 style="text-align:center;" >
                     There Are No Future Matches
-                </h5>
+                </h3>
             </div>
         </div>
 
@@ -67,10 +69,13 @@
 
             <!----------  Past Table  ---------->
 
-        <h2 class="team-page-title" id="past-match-head"> Team's Past Matches : </h2>
-        <div id="past-matches-div">
+        
+        <div  class="container my-container-css" id="past-matches-div">
+            <h2 class="team-page-title" id="past-match-head"> Team's Past Matches : </h2>
+
             <b-table id="past-matches-table" v-if="rows_Past"
                 :items="teamPastMatches"
+                :fields="fields"
                 hover
                 bordered
                 outlined
@@ -81,6 +86,10 @@
 
                 <template #head(refereeInformation)>
                     Referee Full Name
+                </template>
+
+                <template #cell(matchScore)="row" >
+                    <b>{{ row.item.localTeamScore }}</b>  :  <b>{{ row.item.visitorTeamScore }}</b>
                 </template>
 
                 <template #cell(refereeInformation)="{ value: refereeInformation }">
@@ -119,9 +128,9 @@
             <!---------- No Matches Message  ---------->
 
             <div class="container my-container-css" v-if="rows_Past==0" >
-                <h5 style="text-align:center;" >
+                <h3 style="text-align:center;" >
                     There Are No Past Matches
-                </h5>
+                </h3>
             </div>
         </div>
 
@@ -131,11 +140,11 @@
 
 <script>
 
-import PlayerInformation from '../../components/PlayersSearchPreview.vue';
-import EventsLogPreview from '../../components/matches/match_eventsLogPreview.vue';
+import PlayerInformation from '../components/PlayersSearchPreview.vue';
+import EventsLogPreview from '../components/matches/match_eventsLogPreview.vue';
 
 export default {
-    name: "TeamFullDetailsByName",
+    name: "TeamDetails",
 
     components: {
         PlayerInformation,
@@ -151,6 +160,9 @@ export default {
             squadInformation: [],
             teamFutureMatches: [],
             teamPastMatches: [],
+            fields: [ 
+                "matchID", "matchDate", "localTeamName", "visitorTeamName", "venueName", "matchScore", "refereeInformation", "eventsLog"
+            ],
 
             perPage : 5,
             currentPage_Future : 1,
@@ -203,11 +215,20 @@ export default {
         var curStageFutureMatches = [];
         var curStagePastMatches = [];
         if ( localStorage.getItem("CurrentStageMatchesFutureMatches") ){
-            curStageFutureMatches = JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"));
+            var futureMatches = JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"));
+            futureMatches.map(( match ) => {
+                curStageFutureMatches.push({
+                    matchID: match.matchID,
+                    matchDate: match.matchDate,
+                    localTeamName: match.localTeamName,
+                    visitorTeamName: match.visitorTeamName,
+                    venueName: match.venueName,
+                    refereeInformation: match.refereeInformation
+                })
+            })
         }
         if ( localStorage.getItem("CurrentStageMatchesPastMatches") ){
             curStagePastMatches = JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"));
-            console.log(curStagePastMatches);
         }
         
         var futureMatchesToAdd = [];
@@ -237,8 +258,8 @@ export default {
 
 /* --------  Page Div  -------- */
 
-#team-page {
-    margin-bottom: 50px;
+#team-page-div {
+    padding-bottom: 50px;
 }
 
 /* --------  Page Header  -------- */
@@ -264,9 +285,14 @@ export default {
 
 /* --------  Squad Div  -------- */
 
+#squad-div {
+    margin-top: 105px ;
+}
+
 #squad-head {
-    margin-top: 80px;
-    margin-bottom: 40px;
+    margin-top: 0px;
+    padding-top: 15px;
+    padding-bottom: 5px;
 }
 
 .container {
@@ -292,11 +318,22 @@ export default {
 #future-matches-div, #past-matches-div {
     margin: auto;
     width: 90%;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+#past-match-head, #future-match-head {
+    margin-top: 0px;
+    padding-bottom: 5px;
 }
 
 #future-matches-table, #past-matches-table {
     text-align: center;
     align-items: center;
+}
+
+h3 {
+    color: white;
 }
 
 /* -------- Pagination  -------- */

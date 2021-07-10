@@ -386,10 +386,8 @@ export default {
             }
         }
     },
-    mounted() {
-        console.log("Add New Match Page Mounted ");
-    }
 }
+
 </script>
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="league-management-page">
     <h1 class="match-headline"> League Matches </h1>
     <matches-table
         v-on:update-match-delete="updateMatchDelete"
@@ -51,8 +51,6 @@ export default {
 
                 if (  !( JSON.stringify( this.pastMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leaguePastMatches"))))){
 
-                    console.log("Updated Past");
-
                     this.isBusy = true;
                     this.pastMatches = [];
                     this.pastMatches.push(...JSON.parse(localStorage.getItem("leaguePastMatches")));
@@ -63,7 +61,6 @@ export default {
                 }
                 if ( ! (JSON.stringify(this.futureMatches) === JSON.stringify(JSON.parse(localStorage.getItem("leagueFutureMatches"))))){
                      
-                    console.log("Updated Future");
                     this.isBusy = true;
                     this.futureMatches = [];
                     this.futureMatches.push(...JSON.parse(localStorage.getItem("leagueFutureMatches")));
@@ -155,22 +152,23 @@ export default {
         }
     },
     mounted() {
-        
         this.updateInterval = setInterval( this.updateMatches, 100 );
-        console.log("UA - League management page Mounted");
-
     },
     beforeDestroy(){
-
-        clearInterval(this.updateMatches);
-        console.log("UA - League management page Destroyed");
-
+        clearInterval(this.updateInterval);
     }
 }
 
 </script>
 
 <style>
+
+#league-management-page {
+    margin: auto;
+    background-color: #293241e0;
+    border-radius: 10px;
+    max-width: 98%;
+}
 
 .match-headline {
     margin-top: revert;

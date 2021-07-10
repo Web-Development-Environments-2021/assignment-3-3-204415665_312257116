@@ -1,17 +1,14 @@
 
 <template>
-      <div>
-        <h4>About Our Website</h4>
-        <modelView/>
+      <div class="container">
+
     </div>
 </template>
 
 <script>
-import modelView from "../components/model"
 export default {
   name: "About",
   components:{
-      modelView
   }
     
 }

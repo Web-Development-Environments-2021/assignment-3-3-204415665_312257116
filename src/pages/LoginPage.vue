@@ -177,15 +177,13 @@ export default {
 
 .log-css{
   margin: auto;
-  left: -10px;
+  // left: -10px;
   position: absolute;
-      height: 500px;
+  
 
   
 }
 .login-box {
-    height: 500px;
-    height: 500px;
     border-radius: 30px;
 }
 
@@ -193,7 +191,7 @@ export default {
     height: 500px;
     position: absolute;
     border-radius: 30px;
-    padding: 30px 80px 0px 80px;
+    padding: 30px 80px 0px ;
     background: #293241e0;
     margin: auto;
 }

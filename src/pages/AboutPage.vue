@@ -79,14 +79,13 @@ export default {
 
 .About {
     min-width:215vh;
-    min-height: 94.8vh;
+    min-height: 96vh;
     background: #a1a2a5e0;
     margin: auto;
-    // left: 1150px;
-    padding: 10px;
     text-align: center;
     
 }
+
 h1{
   padding-top: 10px;
   color: aliceblue;
@@ -105,10 +104,6 @@ p{
   position: relative;
   top: 00px;
   left: 400px;
-}
-.container{
-    left: 0px!important;
-    position: absolute!important;
 }
 
 .match-card.favoriteMatches.card{

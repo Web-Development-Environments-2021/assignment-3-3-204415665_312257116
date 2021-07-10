@@ -46,7 +46,6 @@ export default {
     FutureMatchPreview,
     PastMatchPreview,
     // Loading
-
   },
   
   data() {

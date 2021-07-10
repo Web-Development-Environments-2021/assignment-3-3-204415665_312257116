@@ -31,8 +31,8 @@
                     </small>
                 </div>
                 <div class="model-div">
-                    <model-view v-if="this.match" :body="this.matchID" :buttonName="'show eventLog'"/>
-            </div>
+                    <model-view v-if="this.eventsLog.length" :body="this.eventsLog" :buttonName="'show eventLog'"/>
+                </div>
             </div>
         </div>
         </div>
@@ -54,7 +54,7 @@ export default {
 
     data() {
         return {
-            matchID: undefined,
+            matchID: "",
             matchDate: "",
             localTeamName: "",
             visitorTeamName: "",

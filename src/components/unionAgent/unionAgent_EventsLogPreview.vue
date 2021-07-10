@@ -17,9 +17,11 @@
                         select-mode=single
                         ref="eventsTable"
                         @row-selected="onRowSelected"
+                        :per-page="perPage"
+                        :current-page="currentPage"
                         :items="eventsLog"
-                        :fields="eventsFields"
-                        >
+                        :fields="eventsFields" >
+                        
                         <template #cell(selected)="{ rowSelected }">
                             <template v-if="rowSelected">
                                 <span aria-hidden="true">&check;</span>
@@ -31,6 +33,15 @@
                             </template>
                         </template>
                     </b-table>
+
+                    <!----------  Pagination  ---------->
+
+                    <b-pagination class="events-pagination" v-if="rows > 4"
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        aria-controls="events-table" >
+                    </b-pagination>
 
                     <!----------  Delete Button  ---------->
 
@@ -168,12 +179,18 @@ export default {
         Loading
     },
 
-    data(){
-        return{
+    data() {
+        return {
+
+            /*----  Events Log ---->*/
+
             eventsFields: ['selected', "eventID", "eventTimeAndDate", "minuteInMatch", "eventType", "eventDescription"],
             eventID: undefined,
             eventToDelete: undefined,
             loadingState: false,
+
+            /*----  Add Event ---->*/
+
             addEventState: false,
             form: {
                 minuteInMatch: "",
@@ -181,7 +198,12 @@ export default {
                 eventDescription: "",
                 submitError: undefined
             },
-            eventTypes: ['Goal', 'Red card', 'Yellow card', 'Injury', 'Subsitute']
+            eventTypes: ['Goal', 'Red card', 'Yellow card', 'Injury', 'Subsitute'],
+
+            /*----  Pagination ---->*/
+
+            currentPage: 1,
+            perPage : 4,
         }
     },
     props: {
@@ -275,12 +297,11 @@ export default {
                 );
                 
                 if ( response.status == 200 ){
-                    this.$root.store.initDataForUnionAgent().then(() => {
-                        this.$root.toast("Add Event", "Event added successfully", "success");
-                        this.axios.defaults.withCredentials = false;
-                        this.loadingState = false;
-                    });
+                    await this.$root.store.initDataForUnionAgent();
+                    this.$root.toast("Add Event", "Event added successfully", "success");
+                    this.axios.defaults.withCredentials = false;
                 }
+                this.loadingState = false;
                 
             } catch (err) {
                 this.loadingState = false;
@@ -322,6 +343,9 @@ export default {
             }
             return false;
         },
+        rows(){
+            return this.eventsLog.length;
+        }
     },
     validations: {
         form: {
@@ -351,6 +375,11 @@ export default {
 
 #delete-event-btn, #add-event-btn {
     margin: 10px;
+}
+
+.events-pagination {
+    margin-left: 45%; 
+    margin-right: 45%;
 }
 
 </style>

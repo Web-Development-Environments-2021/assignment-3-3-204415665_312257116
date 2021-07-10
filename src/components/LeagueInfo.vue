@@ -10,27 +10,26 @@
                 </b-card-title>
                 <b-card-text >
                     <span>
-                        <a id="row-title"> 
-                            Season   :  
-                        <a id="row-ans">
-                            {{ season }}
-                        </a> 
-                        </a> 
+                        <a id="row-title">  Season</a>
+                        <a id="row-ans"> :  {{ season }} </a> 
                     </span>
                 </b-card-text>
                 <b-card-text>
                     <span>
-                        <a id="row-title"> 
-                            Stage   :  
-                        <a id="row-ans">
-                            {{ stageText }}
-                        </a> 
-                        </a> 
+                        <a id="row-title">  Stage</a> :
+                        <a id="row-ans" v-if="stage==null"> {{stageText}} </a>
+                        <a id="a-massage" v-if="stage!=null" > <br/> {{stageText}} </a>
                     </span>
                 </b-card-text>
             </div>
             <br/>
-            <a id="row-title">  Next match : </a>
+            <a id="row-title">  Next Match</a> :
+            <future-match-preview 
+                v-if="hasNextMatch"
+                :match="nextMatch"
+                >
+            </future-match-preview>
+            <a id="a-massage" v-if="!hasNextMatch" > <br/>There isn't next match at this time </a>
         </h4>
         </div>
         </div>
@@ -48,7 +47,7 @@ export default {
     name: "LeagueInfo",
 
     components: {
-        // FutureMatchPreview,
+        FutureMatchPreview,
     },
   
     data() {
@@ -65,7 +64,7 @@ export default {
         }
     },
     methods: {
-        extractLeagueDetails(){
+        extractLeagueDetails() {
 
             var time_elapsed = 100;
             var timeNow;
@@ -93,17 +92,23 @@ export default {
             }
 
         },
-        stopInterval(){
+        stopInterval() {
             clearInterval(this.updateInterval);
             this.updateInterval = undefined;
         }
     },
     computed: {
-        stageText(){
+        stageText() {
             if ( this.stage == "null" ){
-                return "There is no current stage at this time ";
+                return "There is no current stage at this time";
             }
             return this.stage;
+        },
+        hasNextMatch() {
+            if ( this.nextMatch == undefined || Object.keys(this.nextMatch).length == 0 ){
+                return false;
+            }
+            return true;
         }
     },
     mounted() {
@@ -158,6 +163,14 @@ export default {
     text-decoration: underline;
     font-size: 35px;
     color:  rgb(129, 170, 209);
+}
+
+#row-title {
+    text-decoration: underline;
+}
+
+#a-massage {
+    font-size: 20px;
 }
 
 </style>

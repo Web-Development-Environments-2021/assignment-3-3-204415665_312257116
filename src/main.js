@@ -231,20 +231,20 @@ const shared_data = {
 
 // -------------------------------Get League Details --------------------------------
 
-async getLeagueDetails(){
-  try {
-    axios.withCredentials = true;
-    axios.get( this.serverUrl + "league/getDetails" )
-    .then( (response) => {
-      axios.withCredentials = false;
-      localStorage.setItem("leagueDetails", JSON.stringify(response.data.leagueDetails) );
-    })
-    .catch( (err) => { console.log(err); } );
-    
-  } catch (error){
-    console.log(error);
-  }
-},  
+  async getLeagueDetails(){
+    try {
+      axios.withCredentials = true;
+      axios.get( this.serverUrl + "league/getDetails" )
+      .then( (response) => {
+        axios.withCredentials = false;
+        localStorage.setItem("leagueDetails", JSON.stringify(response.data.leagueDetails) );
+      })
+      .catch( (err) => { console.log(err); } );
+      
+    } catch (error){
+      console.log(error);
+    }
+  },  
   
 // -------------------------------getSearchInfo--------------------------------
 

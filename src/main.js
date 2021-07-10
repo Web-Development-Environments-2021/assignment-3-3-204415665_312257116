@@ -135,6 +135,8 @@ const shared_data = {
   onLogOut(){
 
     localStorage.removeItem("UserFavoriteMatches");
+    sessionStorage.removeItem("lastSearchQuery");
+    sessionStorage.removeItem("lastSearchResults");
 
     if ( JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")) != undefined ) {
 

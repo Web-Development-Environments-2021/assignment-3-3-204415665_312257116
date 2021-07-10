@@ -13,14 +13,20 @@
                     <div class="future-match-content">                                           
                     <div class="row" >     
                     <div class="teamsName">
-                        {{ this.localTeamName }} VS {{ this.visitorTeamName }}
+                        <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
+                            {{ this.localTeamName }}
+                        </router-link>
+                        VS
+                        <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`" class="teams-names" >
+                            {{ this.visitorTeamName }}
+                        </router-link>
                     </div><br><hr>
                     </div>
                     <div class=match-info>
                         Venue: {{ this.venueName }}
                     </div>
-                    <div class=match-info v-if="Object.keys(this.refereeInformation).length">
-                        Referee Full Name : {{ this.refereeFullName }}
+                    <div class=match-info >
+                        Referee Name : {{ this.refereeFullName }}
                     </div>
                 </div>
                 </h4>
@@ -89,7 +95,7 @@ export default {
             if ( Object.keys(this.refereeInformation).length ) {
                 return this.refereeInformation.firstname + " " + this.refereeInformation.lastname;
             }
-            return "";
+            return "  -  ";
         },
     },
     mounted() {
@@ -183,6 +189,14 @@ h1 {
     position:relative;
     top: 10px;
     left: 13px;
+}
+
+.teams-names {
+    color: white;
+}
+
+.teams-names:hover {
+    color: blue;
 }
 
 </style>

@@ -22,6 +22,7 @@
                         :button-variant="buttonColor"
                         id="input-group-searchType"
                         v-model="form.searchType"
+                        @change="results=[];"
                         :options="form.searchTypeOptions"
                         :aria-describedby="ariaDescribedby"
                         name="radios-btn-default"

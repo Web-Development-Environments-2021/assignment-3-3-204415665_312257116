@@ -4,13 +4,15 @@
      <!-- <div class="body">
       <section class="wrapper">
         <div class="container" > -->
+            <league-info class="LInfo"></league-info>
             <b-form>
-            <div v-if="!$root.store.username">
+            <div class="" v-if="!$root.store.username">
               <login-page /> 
             </div>  
-            <favorite-matches :display="'main'" v-else></favorite-matches>
+            <div v-else class="favorite">
+            <favorite-matches :display="'main'"></favorite-matches>
+            </div>
             </b-form>  
-            <league-info class="LInfo"></league-info>
             <!-- </div></section></div> -->
 
   </div>
@@ -42,10 +44,14 @@ export default {
 
 }
 .main{
-
-  margin: auto;
+  // margin: auto;
   position: relative;
   
+}
+.favorite{
+  position: absolute;
+  left: 500px;
+  min-width: 800px;
 }
 // .login-box {
 //     width: 100%;

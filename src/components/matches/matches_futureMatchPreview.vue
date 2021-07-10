@@ -14,9 +14,8 @@
                     <div class="row" >     
                     <div class="teamsName">
                         <div class="left"><b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/></div>
-                    <div class="vs"> {{ this.localTeamName }} VS {{ this.visitorTeamName }}</div>
-                   
-                    <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
+                        <div class="vs"> {{ this.localTeamName }} VS {{ this.visitorTeamName }}</div>
+                        <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
                     
                     </div><br><hr>
                     </div>

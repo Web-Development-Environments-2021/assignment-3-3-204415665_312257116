@@ -8,7 +8,6 @@
         <div v-if="resultFlag" style="padding-top: 15px;">
             <div class="match-card noContact card text-white">
                 <div class="card-body" >                         
-                    <!-- <a class="text-white" herf="#"> -->
                     <div style="text-align:center;font-size: 18px!important;">
                         <a>You have no favorite games at the moment<br>To add, click here</a><br><br>
                         <b-button @click="moveToCurrentMatch" variant="primary">Add matches</b-button>
@@ -25,20 +24,42 @@
                 <div class="card-img-overlay d-flex flex-column">
                   <div class="card-body">                         
                       <h4 class="card-title mt-0" >
-                        <!-- <a class="text-white" herf="#"> -->
                           <div :title="g.matchID" class="match-title">
                               <a>Match Id:{{ g.matchID }}</a> 
                           </div>
                           <div class="future-match-content">                                           
                             <div class="row" >     
                               <div class="teamsName">
-                                  <router-link :to="`/teams/teamDetails/${ g.localTeamName }`" class="teams-names" >
+
+
+                        <div class="left">
+                              <router-link :to="`/teams/teamDetails/${ g.localTeamName }`" class="teams-names" >
+                                <b-img  thumbnail fluid rounded="circle" :src="getLogo(g.localTeamName)" alt="Left image"/>
+                            </router-link>
+                        </div>
+                        <div class="vs"> 
+                              <router-link :to="`/teams/teamDetails/${ g.localTeamName }`" class="teams-names" >
+                                {{ g.localTeamName }}
+                            </router-link>
+                            VS
+                            <router-link :to="`/teams/teamDetails/${ g.visitorTeamName }`" class="teams-names" >
+                                {{ g.visitorTeamName }}
+                            </router-link>
+                        </div>
+                        <div class="right">
+                            <router-link :to="`/teams/teamDetails/${ g.visitorTeamName }`" class="teams-names" >
+                                <b-img  thumbnail fluid rounded="circle" :src="getLogo(g.visitorTeamName)" alt="Right image"/>
+                            </router-link>
+                        </div>
+
+                        
+                                  <!-- <router-link :to="`/teams/teamDetails/${ g.localTeamName }`" class="teams-names" >
                                       {{ g.localTeamName }}
                                   </router-link>
                                   VS
                                   <router-link :to="`/teams/teamDetails/${ g.visitorTeamName }`" class="teams-names" >
                                       {{ g.visitorTeamName }}
-                                  </router-link>
+                                  </router-link> -->
                               </div>
                               <br><hr>
                           </div>
@@ -97,6 +118,8 @@ export default {
       loadingFlag:false,
       resultFlag:false,
       limit:3,
+      gotLogo: false,
+      teamInfo: undefined
 
     };
   },
@@ -169,9 +192,15 @@ export default {
   },
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
-    updateFavoriteMatches(){ 
+    updateFavoriteMatches() { 
+
+      if ( ! this.gotLogo ) {
+        this.tryGetLogosPath()
+      }
 
       var userFavorite = JSON.parse(localStorage.getItem("UserFavoriteMatches"));
+
+      
 
 
       if( userFavorite != undefined ) {
@@ -191,6 +220,26 @@ export default {
           this.resultFlag=true;
         }
       }
+    },
+    tryGetLogosPath(){
+      var teamsInfo = JSON.parse(localStorage.getItem("teamsInfo"));
+
+      if (teamsInfo!=undefined) {
+        this.teamInfo = teamsInfo;
+        this.gotLogo = true;
+      }
+    },
+    getLogo(teamName){
+
+      var pathToReturn = "";
+
+      this.teamInfo.map((team)=> {
+        if ( team.teamName == teamName ) {
+          pathToReturn = team.teamLogo;
+        }
+      })
+
+      return pathToReturn;
     },
 
     moveToCurrentMatch() {
@@ -238,6 +287,26 @@ export default {
 
 <style lang="scss" scoped>
 
+.right{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-97px;
+    right: -215px;
+}
+.left{
+    position: relative;
+    width:50px;
+    height: 50px;
+    top:-29px;
+    left: 10px;
+}
+.vs{
+    position: relative;
+    top:-20px;
+    left: 60px; 
+}
+
 .match-card.noContact.card{
     min-height: 200px !important;
     min-width: 200px !important;
@@ -258,38 +327,35 @@ export default {
     // background-size: cover;
     font-size: 17px;
 }
-.match-title{
-  font-size: 25px!important;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  text-align: center;
-  position: absolute;
-  top:30px;
-  left: 75px;
-  margin: auto;
-  color: rgb(32, 32, 32);
+.match-title {
+    font-size: 25px!important;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+    position: absolute;
+    top:10px;
+    left: 100px;
+    margin: auto;
+    color: black;
 }
 
 .teamsName{
-  position: absolute;
-  top: 75px;
-  left: 20px;
-  text-align: center;
-  // width: 200px;
-  // word-wrap: break-word;
-  font-size: 15px!important;
+    position: relative;
+    top: 0px;
+    // width: 200px;
+    // word-wrap: break-word;
+    font-size: 15px!important;
 }
 
-.match-info{
-  position: relative;
-  top: 25px;
-  font-size: 12px!important;
-  text-align: left;
-  padding: 3px;
+.match-info {
+    position: relative;
+    top: -70px;
+    font-size: 12px!important;
+    text-align: left;
+    padding: 3px;
 }
 small{
   position: absolute;
     top: 150px;
-  left: 15px;
 }
 
 .teams-names {

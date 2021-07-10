@@ -13,7 +13,11 @@
                     <div class="row" >
                         <div class="teamsName">
  
-                            <div class="left"><b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/></div>
+                            <div class="left">
+                                <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
+                                    <b-img  thumbnail fluid rounded="circle" :src="localTeamLogo" alt="Left image"/>
+                                </router-link>
+                            </div>
                             <div class="vs">
                                 <router-link :to="`/teams/teamDetails/${ this.localTeamName }`" class="teams-names" >
                                     {{ this.localTeamName }}
@@ -23,7 +27,11 @@
                                     {{ this.visitorTeamName }}
                                 </router-link>
                             </div>
-                            <div class="right"><b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/></div>
+                            <div class="right">
+                                <router-link :to="`/teams/teamDetails/${ this.visitorTeamName }`">
+                                    <b-img  thumbnail fluid rounded="circle" :src="visitorTeamLogo" alt="Right image"/>
+                                </router-link>
+                            </div>
                         </div><br><hr>
                     </div>
                     <div class=match-info>

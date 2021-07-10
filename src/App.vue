@@ -39,10 +39,9 @@ export default {
   },
   mounted(){
 
+
   },
-  beforeDestroy() {
-    this.Logout();
-  },
+
 
 };
 </script>

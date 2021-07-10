@@ -6,7 +6,14 @@
         <div class="Stage-title">
           <h1 >Future Stage Matches</h1>
         </div>
-        <div v-for="g in FutureStageMatches" v-bind:key="g.matchID" style="padding-top: 15px;padding-bottom: 15px;">
+
+        <future-match-preview 
+            v-for="futureMatch in this.FutureStageMatches" :key="futureMatch.matchID"
+            :match="futureMatch"
+            v-on:click-handler="clickHandler"  >
+        </future-match-preview>
+        
+        <!-- <div v-for="g in this.FutureStageMatches" :key="g.matchID" style="padding-top: 15px;padding-bottom: 15px;">
           <div class="col-sm-4">
           
                 
@@ -22,25 +29,26 @@
                           <div class="teamsName"> {{ g.localTeamName }} VS {{ g.visitorTeamName }}</div><br><hr>
                         </div>
                           <div class=match-info> Venue: {{ g.venueName }}</div>
-                          <!-- <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
+                          <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
                             <referee-information 
                               :refereeID="g.refereeInformation.refereeID"
                               :firstname="g.refereeInformation.firstname"
                               :lastname="g.refereeInformation.lastname"
                               :course="g.refereeInformation.course">
                             </referee-information>
-                          </div> -->
+                          </div>
                         </div>
                     </h4>
                   <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
                 </div>
                 <div class="like-div">
-                  <b-button v-if="myToggleCheck(g)" style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
+                  <b-button v-if="myToggleCheck(g)" style="float:right;" @click="clickHandler(g)" :pressed="g.myToggle" variant="outline-warning"> {{g.myToggle}} ⭐ </b-button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+        
       </div>
     </div>
 
@@ -101,10 +109,14 @@
 import RefereeInformation from "../../components/RefereeInformation";
 import Loading from "../../components/loading";
 import ModelView from "../../components/model"
+
+import FutureMatchPreview from '../../components/matches/matches_futureMatchPreview.vue';
+
 export default {
   name: "CurrentStageMatches",
   components: {
-    ModelView
+    ModelView,
+    FutureMatchPreview,
 
     // RefereeInformation,
     // Loading
@@ -138,8 +150,14 @@ export default {
 
         var favoriteMatches =[];
 
-        if (localStorage.getItem("UserFavoriteMatches").length!=0){
-            favoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
+        var userFavorite = JSON.parse(localStorage.getItem("UserFavoriteMatches"));
+
+        if( userFavorite != undefined ) { 
+
+          if ( userFavorite.length!=0 ) {
+            favoriteMatches.push(...userFavorite);
+          }
+
         }
 
         g.myToggle =! g.myToggle;
@@ -179,14 +197,13 @@ export default {
 
     },
 
-    
     myToggleCheck(g){
         return g?.myToggle!=undefined;
     },
 
     updateCurrentStage(){
 
-      if ( (localStorage.getItem("CurrentStageMatchesFutureMatches")).length!=0 )
+      if ( JSON.parse((localStorage.getItem("CurrentStageMatchesFutureMatches"))) != null )
       {
         if (!(JSON.stringify(this.FutureStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")))))
         {
@@ -197,7 +214,7 @@ export default {
             {
               this.FutureStageMatches?.map(fav => fav.myToggle=false);
               let UserFavoriteMatches =[];
-              if ((localStorage.getItem("UserFavoriteMatches")).length!=0 ){
+              if (  JSON.parse(localStorage.getItem("UserFavoriteMatches"))!=undefined  && (localStorage.getItem("UserFavoriteMatches")).length!=0 ){
                 
 
                 UserFavoriteMatches.push(...JSON.parse(localStorage.getItem("UserFavoriteMatches")));
@@ -218,17 +235,17 @@ export default {
             }
 
         }
-
-        if ((localStorage.getItem("CurrentStageMatchesPastMatches")).length!=0)
+      }
+      if ( JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")) != null)
+      {
+        if (!(JSON.stringify(this.pastStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"))))) 
         {
-          if (!(JSON.stringify(this.pastStageMatches) === JSON.stringify(JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"))))) 
-          {
-              this.pastStageMatches = [];
-              this.pastStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
-              this.loadingFlag=true;
+            this.pastStageMatches = [];
+            this.pastStageMatches.push(...JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches")));
+            this.loadingFlag=true;
 
-          }
         }
+        
       }
     },
     async postFavoriteMatches(matchID){
@@ -266,17 +283,16 @@ export default {
           // TODO: What to do We The Error ???
         }
     },
-
   },
 
   mounted()  
   {
-    this.updateInterval = setInterval( this.updateCurrentStage(), 100 );  
+    this.updateInterval = setInterval( this.updateCurrentStage , 100 );  
   },
 
   beforeDestroy()
   {
-    clearInterval(this.updateMatches);
+    clearInterval(this.updateInterval);
   },
 };
 </script>

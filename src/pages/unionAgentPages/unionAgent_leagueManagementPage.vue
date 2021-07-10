@@ -155,7 +155,7 @@ export default {
         this.updateInterval = setInterval( this.updateMatches, 100 );
     },
     beforeDestroy(){
-        clearInterval(this.updateMatches);
+        clearInterval(this.updateInterval);
     }
 }
 

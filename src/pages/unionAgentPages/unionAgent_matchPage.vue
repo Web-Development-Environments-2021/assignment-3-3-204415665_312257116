@@ -264,6 +264,7 @@ export default {
 
                 if ( response.status == 201 ){
                     this.$root.store.initDataForUnionAgent().then();
+                    await this.$root.store.getCurrentStageMatches();
                     this.$root.toast("Add New Match", "Match Added successfully", "success");
                 }
 

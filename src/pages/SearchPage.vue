@@ -112,13 +112,13 @@
         </div>
 
           <div >
-            <div v-if="flag==true && noResult==false" class="container my-container-css my-row-css row align-items-start">
-                <div v-if="form.searchType == 'Players'" class="row align-items-start my-row-css">
+            <div v-if="flag==true && noResult==false && form.searchType == 'Players'" class="container my-container-css my-row-css row align-items-start">
+                <div class="row align-items-start my-row-css">
                     <players-information :v-if="form.searchType == 'Players'" v-for="res in this.results" :key="res.playerID" :player="res"/>
               </div>
             </div>
-            <div  v-if="flag==true && noResult==false" class="container my-container-css row align-items-start my-row-css">
-              <div v-if="form.searchType == 'Teams'" class="row align-items-start my-row-css">
+            <div  v-else-if="flag==true && noResult==false && form.searchType == 'Teams'" class="container my-container-css row align-items-start my-row-css">
+              <div class="row align-items-start my-row-css">
                       <teams-Information :v-if="form.searchType == 'Teams'" v-for="res in this.results" :key="res.teamName" :team="res"/>
               </div>
             </div>
@@ -237,12 +237,10 @@ export default {
 
     this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
     this.teamsInfoList.push(...JSON.parse(localStorage.getItem("teamsInfo")));
-    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchQuery"));
-    // console.log("sessionStorage is : ", localStorage.getItem("lastSearchResults"));
     if (sessionStorage.getItem("lastSearchQuery") != null) {
-      console.log("got inside the load previous search");
       this.form.searchQuery = sessionStorage.getItem("lastSearchQuery");
       this.results = JSON.parse(sessionStorage.getItem("lastSearchResults"));
+      this.form.searchType = JSON.parse(sessionStorage.getItem("lastSearchType"));
       this.flag=true;
     }
 
@@ -259,7 +257,6 @@ export default {
     PlayersInfoInit()
     {
       this.playersInfoList.push(...JSON.parse(localStorage.getItem("playersInfo")));
-      console.log("sessionStorage is : playersInfo");
 
     },
     
@@ -270,7 +267,6 @@ export default {
 
     playerSortOn(){
       this.form.sortPlayers='yes';
-      console.log("playerSortOn")
       this.onSort();
       this.onFilter();
     },
@@ -313,7 +309,6 @@ export default {
         // const response = SQL_searchByQuery(this.form.Search_Type,  this.form.Sort_Teams_Alphabetical,  this.form.Sort_Players,  this.form.Sort_Players_By,  this.form.Filter_Players);
         let currentSearchInfo;
         let response=[];
-        console.log(this.teamsInfoList);
 
         if(this.form.searchType=="Players"){
            currentSearchInfo =this.playersInfoList;
@@ -336,7 +331,6 @@ export default {
           }
         });
 
-        console.log(response);
         if(response==[]){
               this.noResult=true;
         }
@@ -345,10 +339,9 @@ export default {
         }
         this.flag=true;
 
-        console.log("save to lastSearchQuery");
         sessionStorage.setItem("lastSearchQuery", this.form.searchQuery);
-        console.log("save to lastSearchResults");
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
+        sessionStorage.setItem("lastSearchType", JSON.stringify(this.form.searchType));
         this.onSort();
         this.onFilter();
 
@@ -365,7 +358,6 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("login method go");
       this.flag=false;
       await this.Search();
     },
@@ -406,7 +398,6 @@ export default {
                 var textB = b.name.toUpperCase();
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
              }); 
-            console.log(this.results);
           }
     
         // ------ Sort_Players_By team name ------ //
@@ -423,8 +414,6 @@ export default {
       // ------ Filter_Players - position ------ //
         if (this.form.filterPlayersByPosition!=0)
         {
-          console.log(this.form.filterPlayersByPosition );
-          console.log(this.results);
           let res = [];
           this.results.forEach(element =>{
             if(element.position==this.form.filterPlayersByPosition){

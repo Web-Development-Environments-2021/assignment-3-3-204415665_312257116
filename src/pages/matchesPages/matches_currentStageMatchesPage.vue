@@ -205,12 +205,14 @@ export default {
 
 
 <style lang="scss" scoped>
+
   .card{
     min-height: 120px !important;
     min-width: 340px !important;
     background-image:url('../../assets/AdobeStock_203017792.jpeg');
     font-size: 17px;
   }
+  
   .my-row{
     background-color: #293241e0;
     border-radius: 10px;

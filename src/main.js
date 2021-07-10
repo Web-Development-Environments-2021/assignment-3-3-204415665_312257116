@@ -107,7 +107,6 @@ const shared_data = {
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
-    console.log("login", this.username);
 
     if ( username == "daniMoshe" ){
       localStorage.setItem("unionAgentLogged", JSON.stringify(true));
@@ -119,7 +118,6 @@ const shared_data = {
   },
 
   logout() {
-    console.log("logout");
     localStorage.removeItem("username");
     this.onLogOut();
 
@@ -136,6 +134,7 @@ const shared_data = {
     localStorage.removeItem("UserFavoriteMatches");
     sessionStorage.removeItem("lastSearchQuery");
     sessionStorage.removeItem("lastSearchResults");
+    sessionStorage.removeItem("lastSearchType");
 
     if ( JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches")) != undefined ) {
 
@@ -180,7 +179,7 @@ const shared_data = {
       localStorage.setItem("leaguePastMatches", JSON.stringify(responseFromLeagueMatches.pastMatches));
 
     }catch ( error ){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -197,7 +196,7 @@ const shared_data = {
         return response.data;
 
       } catch (error){
-        // TODO: What to do We The Error ???
+        console.log(error);
       }
   },
 
@@ -210,7 +209,7 @@ const shared_data = {
       localStorage.setItem("referees", JSON.stringify(responseForNewMatch.referees));
 
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -226,7 +225,7 @@ const shared_data = {
       return response.data;
 
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -251,16 +250,14 @@ const shared_data = {
 
   async getDataForSearch(){
     try{
-      console.log("Start init search info");
       // const searchResponse = await this.initSearchInfo();
       this.initSearchInfo().then( ( searchResponse ) => {
         localStorage.setItem("teamsInfo", JSON.stringify(searchResponse.all_Info.Teams));
         localStorage.setItem("playersInfo", JSON.stringify(searchResponse.all_Info.Players));
-        console.log("Ends init search info");
       });
 
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -273,7 +270,7 @@ const shared_data = {
       axios.withCredentials = false;
       return response.data;
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -284,7 +281,7 @@ const shared_data = {
       localStorage.setItem("venuesNames", JSON.stringify(responseForNewMatch.venuesName));
       localStorage.setItem("referees", JSON.stringify(responseForNewMatch.referees));
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
@@ -292,14 +289,12 @@ const shared_data = {
 
   async initDataForUser(){
     try{
-      console.log("Start init User info");
 
       var favoriteResponse = await this.getUserFavoriteMatches();
       favoriteResponse?.map(fav => fav.myToggle=true);
       localStorage.setItem("UserFavoriteMatches", JSON.stringify(favoriteResponse));
-      console.log("done - Init Data From User");
     }catch ( error ){
-      // TODO: What to do We The Error
+      console.log(error);
     }
   },
 
@@ -316,23 +311,21 @@ const shared_data = {
         return response.data;
 
     } catch (error){
-      // TODO: What to do We The Error ???
+      console.log(error);
     }
   },
 
   async getCurrentStageMatches(){
     try{
-        console.log("starts - getCurrentStageMatches")
         axios.withCredentials = true;
         axios.get(  this.serverUrl + "matches/currentStageMatches" ).then( ( response ) => {
             axios.withCredentials = false;
             localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
             localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
-            console.log("finises - getCurrentStageMatches")
           }
         );
       } catch (error){
-        // TODO: What to do We The Error ???
+        console.log(error);
       }
   },
 

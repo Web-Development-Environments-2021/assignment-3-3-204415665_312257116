@@ -25,7 +25,6 @@ export default {
       try{
         this.axios.defaults.withCredentials = true; //{ withCredentials: true }
         const res = await this.axios.post(this.$root.store.serverUrl + "Logout");
-        console.log(res);
         this.$root.store.logout();
         this.axios.defaults.withCredentials = false;
         this.$root.toast("Logout", "User logged out successfully", "success");

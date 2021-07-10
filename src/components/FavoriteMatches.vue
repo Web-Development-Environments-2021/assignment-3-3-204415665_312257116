@@ -32,21 +32,22 @@
                           <div class="future-match-content">                                           
                             <div class="row" >     
                               <div class="teamsName">
-                                {{ g.localTeamName }} VS {{ g.visitorTeamName }}
+                                  <router-link :to="`/teams/teamDetails/${ g.localTeamName }`" class="teams-names" >
+                                      {{ g.localTeamName }}
+                                  </router-link>
+                                  VS
+                                  <router-link :to="`/teams/teamDetails/${ g.visitorTeamName }`" class="teams-names" >
+                                      {{ g.visitorTeamName }}
+                                  </router-link>
                               </div>
                               <br><hr>
                           </div>
                           <div class=match-info>
                             Venue: {{ g.venueName }}
                           </div>
-                          <!-- <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
-                              <referee-information 
-                                :refereeID="g.refereeInformation.refereeID"
-                                :firstname="g.refereeInformation.firstname"
-                                :lastname="g.refereeInformation.lastname"
-                                :course="g.refereeInformation.course">
-                              </referee-information>
-                            </div> -->
+                          <div class=match-info  >
+                            Referee Name : {{ refereeFullName(g) }}
+                          </div>
                           </div>
                       </h4>
                     <small class="card-meta" style="float:right;">match date: {{g.matchDate.slice(0,10)}} , {{ g.matchDate.slice(11,16)}}</small>
@@ -56,7 +57,6 @@
                       <div class='form-check form-switch'>
                       </div>
                       <b-button pill style="float:right;" @click="clickHandler(g)" v-bind:pressed="g.myToggle" variant="outline-warning"> ⭐ </b-button>
-                      <!-- <p style="position: absolute; top:225px;left: 270px;"><strong>{{ g.myToggle }}</strong></p> -->
                     </div>
                 </div>
               </div>
@@ -72,14 +72,12 @@
 
 <script>
 
-import RefereeInformation from "./RefereeInformation";
 import Loading from "./loading";
 
 export default {
 
   name: "FavoriteMatches",
   components: {
-    // RefereeInformation,
     Loading,
 
   },
@@ -109,7 +107,16 @@ export default {
       }
       return Object.keys(element.refereeInformation).length;
     },
-
+    refereeFullName(match) {
+      var refereeInfo = match.refereeInformation;
+      if (refereeInfo == undefined) {
+        return "  -  "; 
+      }
+      if ( Object.keys(refereeInfo).length ) {
+          return refereeInfo.firstname + " " + refereeInfo.lastname;
+      }
+      return "  -  ";
+    },
 
 // ------------------------------------------clickHandler------------------------------------------
     async clickHandler(g){
@@ -132,10 +139,8 @@ export default {
               });
             }
           }
-          console.log(response);
           localStorage.setItem("UserFavoriteMatches", JSON.stringify(this.favoriteMatchesList));
           localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(StageMatchesHandler));
-          console.log("done - Game update ");
           this.$root.toast("status", "The game was successfully removed from favorites", "success");
 
       }catch
@@ -148,20 +153,19 @@ export default {
 /**
  * ------------------------------------------clickHandler------------------------------------------
  */
-    async DeleteFavoriteMatches(matchID){
-        try{
-            this.axios.defaults.withCredentials = true;
-            const response = await this.axios.delete(
-                this.$root.store.serverUrl + "users/favoriteMatches?matchID=" + matchID
-            );
-            this.axios.defaults.withCredentials = false;
-            console.log("delete done - Favorite Matches update");
-            return response;
-            
-        } catch (error){
-          // TODO: What to do We The Error ???
-        }
-    },
+  async DeleteFavoriteMatches(matchID){
+      try{
+          this.axios.defaults.withCredentials = true;
+          const response = await this.axios.delete(
+              this.$root.store.serverUrl + "users/favoriteMatches?matchID=" + matchID
+          );
+          this.axios.defaults.withCredentials = false;
+          return response;
+          
+      } catch (error){
+        // TODO: What to do We The Error ???
+      }
+  },
 
 //**------------------------------updateFavoriteMatches------------------------------------ */
     updateFavoriteMatches(){ 
@@ -227,65 +231,73 @@ export default {
     clearInterval(this.updateInterval);
   },
 
-
-
 };
+
 </script>
 
 <style lang="scss" scoped>
-  .match-card.noContact.card{
-      min-height: 200px !important;
-      min-width: 200px !important;
-      font-size: 13px!important;
-      left: 20px;
-      background-color: #293241a4;
 
-  }
-  .container{
-      left: 0px!important;
-      position: absolute!important;
-  }
-  
-  .match-card.favoriteMatches.card{
-      min-height: 150px !important;
-      min-width: 290px !important;
-      background-image:url('../assets/AdobeStock_203017792.jpeg');
-      // background-size: cover;
-      font-size: 17px;
-  }
-  .match-title{
-    font-size: 25px!important;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    text-align: center;
-    position: absolute;
-    top:30px;
-    left: 75px;
-    margin: auto;
-    color: rgb(32, 32, 32);
-  }
-
-  .teamsName{
-    position: absolute;
-    top: 75px;
+.match-card.noContact.card{
+    min-height: 200px !important;
+    min-width: 200px !important;
+    font-size: 13px!important;
     left: 20px;
-    text-align: center;
-    // width: 200px;
-    // word-wrap: break-word;
-    font-size: 15px!important;
-  }
+    background-color: #293241a4;
 
-  .match-info{
-    position: relative;
-    top: 25px;
-    font-size: 12px!important;
-    text-align: left;
-    padding: 3px;
-  }
-  small{
-    position: absolute;
-    top: 120px;
-    left: 15px;
-  }
+}
+.container{
+    left: 0px!important;
+    position: absolute!important;
+}
+
+.match-card.favoriteMatches.card{
+    min-height: 190px !important;
+    min-width: 330px !important;
+    background-image:url('../assets/AdobeStock_203017792.jpeg');
+    // background-size: cover;
+    font-size: 17px;
+}
+.match-title{
+  font-size: 25px!important;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  position: absolute;
+  top:30px;
+  left: 75px;
+  margin: auto;
+  color: rgb(32, 32, 32);
+}
+
+.teamsName{
+  position: absolute;
+  top: 75px;
+  left: 20px;
+  text-align: center;
+  // width: 200px;
+  // word-wrap: break-word;
+  font-size: 15px!important;
+}
+
+.match-info{
+  position: relative;
+  top: 25px;
+  font-size: 12px!important;
+  text-align: left;
+  padding: 3px;
+}
+small{
+  position: absolute;
+    top: 150px;
+  left: 15px;
+}
+
+.teams-names {
+  color: white;
+}
+
+.teams-names:hover {
+  color: blue;
+}
   
 </style> 
 

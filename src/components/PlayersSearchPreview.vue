@@ -3,12 +3,17 @@
     <b-card-group id="div-card" deck>
       <b-card 
         style=""
-        :img-src="this.player.image"
-        img-alt="Image"
-        img-top
         tag="article"
-        class="mb-2 my-card"
-      >
+        class="mb-2 my-card" >
+
+      <router-link :to="`/players/playerDetails/${ this.player.playerID }`" id="img-route" >
+          <b-card-img 
+              :src="this.player.image"
+              img-alt="Image"
+              img-top >
+          </b-card-img>
+      </router-link>
+
       <b-card-title>
         <router-link :to="`/players/playerDetails/${ this.player.playerID }`" class="player-link-text" >
             {{ this.player.name }}
@@ -23,6 +28,7 @@
     </b-card-group>
   </div>
 </template>
+
 
 <script>
 
@@ -70,7 +76,7 @@ export default {
   border-radius: 100px;
   border-color:rgb(161, 6, 6);
   background-color: rgb(255, 255, 255)!important;
-
+  
   border-width:200px ;
   box-shadow: 1px 1px 1px 1px rgba(2, 2, 2, 0.39);
 }
@@ -89,6 +95,11 @@ export default {
 
 .player-link-text:hover {
   color: blue;
+}
+
+#img-route {
+  text-align: center;
+  align-items: center;
 }
 
 </style>

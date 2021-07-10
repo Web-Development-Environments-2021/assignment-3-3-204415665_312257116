@@ -6,22 +6,23 @@
             <div class="card-body">                         
                 <h4 class="card-title mt-0" >
                     <div :title="this.matchID" class="match-title">
-                        <a style="color: #000;">Match Id:{{ this.matchID }}</a>
+                        <a style="color: #000;">
+                            Match Id:{{ this.matchID }}
+                        </a>
                     </div>
                     <div class="future-match-content">                                           
-                        <div class="row" >     
-                        <div class="teamsName"> {{ this.localTeamName }} VS {{ this.visitorTeamName }}</div><br><hr>
+                    <div class="row" >     
+                    <div class="teamsName">
+                        {{ this.localTeamName }} VS {{ this.visitorTeamName }}
+                    </div><br><hr>
                     </div>
-                        <div class=match-info> Venue: {{ this.venueName }}</div>
-                        <!-- <div class=match-info v-if="hasRefereeInfo(g)"> Referee Information:
-                        <referee-information 
-                            :refereeID="g.refereeInformation.refereeID"
-                            :firstname="g.refereeInformation.firstname"
-                            :lastname="g.refereeInformation.lastname"
-                            :course="g.refereeInformation.course">
-                        </referee-information>
-                        </div> -->
+                    <div class=match-info>
+                        Venue: {{ this.venueName }}
                     </div>
+                    <div class=match-info v-if="Object.keys(this.refereeInformation).length">
+                        Referee Full Name : {{ this.refereeFullName }}
+                    </div>
+                </div>
                 </h4>
                 <small class="card-meta" style="float:right;">match date: {{this.matchDate.slice(0,10)}} , {{ this.matchDate.slice(11,16)}}</small>
             </div>
@@ -38,6 +39,7 @@
 <script>
 
 export default {
+
     name: "FutureMatchPreview",
 
     data() {
@@ -47,6 +49,7 @@ export default {
             localTeamName: "",
             visitorTeamName: "",
             venueName: "",
+            refereeInformation: "",
             myToggle: undefined,
 
             updateInterval: undefined,
@@ -72,6 +75,7 @@ export default {
                 this.localTeamName = this.match.localTeamName;
                 this.visitorTeamName = this.match.visitorTeamName;
                 this.venueName = this.match.venueName;
+                this.refereeInformation = this.match.refereeInformation;
                 this.myToggle = this.match?.myToggle;
                 this.checkMatchInfo = JSON.stringify(this.match);
             }
@@ -80,6 +84,12 @@ export default {
     computed: {
         myToggleCheck() {
             return this.match?.myToggle!=undefined;
+        },
+        refereeFullName() {
+            if ( Object.keys(this.refereeInformation).length ) {
+                return this.refereeInformation.firstname + " " + this.refereeInformation.lastname;
+            }
+            return "";
         },
     },
     mounted() {

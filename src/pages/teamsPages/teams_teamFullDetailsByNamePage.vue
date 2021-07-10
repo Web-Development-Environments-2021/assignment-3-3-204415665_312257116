@@ -204,13 +204,9 @@ export default {
         var curStagePastMatches = [];
         if ( localStorage.getItem("CurrentStageMatchesFutureMatches") ){
             curStageFutureMatches = JSON.parse(localStorage.getItem("CurrentStageMatchesFutureMatches"));
-            console.log(curStageFutureMatches.length);
-            console.log(curStageFutureMatches);
         }
         if ( localStorage.getItem("CurrentStageMatchesPastMatches") ){
             curStagePastMatches = JSON.parse(localStorage.getItem("CurrentStageMatchesPastMatches"));
-            console.log(curStagePastMatches);
-            console.log(curStagePastMatches.length);
         }
         
         var futureMatchesToAdd = [];

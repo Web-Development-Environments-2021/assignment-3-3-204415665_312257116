@@ -177,7 +177,6 @@ const shared_data = {
       const responseFromLeagueMatches = await this.getLeagueMatches();
       localStorage.setItem("leagueFutureMatches", JSON.stringify(responseFromLeagueMatches.featureMatches));
       localStorage.setItem("leaguePastMatches", JSON.stringify(responseFromLeagueMatches.pastMatches));
-      console.log("done - Init Data From Union Agent");
 
     }catch ( error ){
       // TODO: What to do We The Error ???
@@ -293,7 +292,6 @@ const shared_data = {
             this.serverUrl + "users/favoriteMatches"
         );
         axios.withCredentials = false;
-        console.log(response);
         if(response.status==204){
           return [];
         }
@@ -310,7 +308,6 @@ const shared_data = {
         axios.withCredentials = true;
         axios.get(  this.serverUrl + "matches/currentStageMatches" ).then( ( response ) => {
             axios.withCredentials = false;
-            console.log(response.data.pastMatches);
             localStorage.setItem("CurrentStageMatchesFutureMatches", JSON.stringify(response.data?.futureMatches));
             localStorage.setItem("CurrentStageMatchesPastMatches", JSON.stringify(response.data?.pastMatches));
             console.log("finises - getCurrentStageMatches")
@@ -349,7 +346,6 @@ new Vue({
       sessionStorage.setItem("enter", JSON.stringify(true));
 
       if ( localStorage.username ){
-          console.log("Need LogOut");
           this.$root.store.logout();
           this.axios.defaults.withCredentials = true;
           this.axios.post(this.$root.store.serverUrl + "Logout").then( ( res ) => {

@@ -1,124 +1,196 @@
 <template>
-  <div class="past-match-preview">
-    <div :title="matchID" class="past-match-title">
-      <b>Match Id:</b> {{ matchID }}
+    <div id="past-match-div">
+        <div class="col-sm-4">
+        <div class="match-card card text-white card-has-bg click-col">
+            <div class="card-img-overlay d-flex flex-column">
+            <div class="card-body">                         
+                <h4 class="card-title mt-0" >
+
+                    <div :title="this.matchID" class="match-title">
+                        <a style="color: #000;">Match Id:{{ this.matchID }}</a>
+                    </div>
+                    <div class="future-match-content">                                           
+                    <div class="row" >
+                        <div class="teamsName">
+                            {{ this.localTeamName }} VS {{ this.visitorTeamName }}
+                        </div><br><hr>
+                    </div>
+                    <div class=match-info>
+                         Venue: {{ this.venueName }}
+                    </div>
+                    <div class=match-info v-if="Object.keys(this.refereeInformation).length">
+                        Referee Full Name : {{ this.refereeFullName }}
+                    </div>
+                    <div class=match-info v-if="this.checkScore"> Match Score :
+                            {{ this.localTeamScore }}  :  {{this.visitorTeamScore}}
+                    </div>
+                </div>
+                </h4>
+                    <small class="card-meta" style="float:right;">
+                        match date: {{ this.matchDate.slice(0,10) }} , {{ this.matchDate.slice(11,16) }}
+                    </small>
+                </div>
+                <div class="model-div">
+                    <model-view v-if="this.match" :body="this.matchID" :buttonName="'show eventLog'"/>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
-    <ul class="past-match-content">
-      <li> Match date: {{ matchDateAndTime }}</li>
-      <li> Local team: {{ localTeamName }}</li>
-      <li> Visitor team: {{ visitorTeamName }}</li>
-      <li> Venue: {{ venueName }}</li>
-      <li> Local team score: {{ localTeamScore }}</li>
-      <li> Visitor team score: {{ visitorTeamScore }}</li>
-      <li> Referee Information:
-        <referee-information v-if="hasRefereeInfo"
-          :refereeID="refereeInformation.refereeID"
-          :firstname="refereeInformation.firstname"
-          :lastname="refereeInformation.lastname"
-          :course="refereeInformation.course">
-        </referee-information>
-      </li>
-      <li> Events log: 
-        <event-log-preview
-          v-for="event in eventsLog"
-          :eventID="event.eventID" 
-          :eventTimeAndDate="event.eventTimeAndDate" 
-          :minuteInMatch="event.minuteInMatch" 
-          :eventType="event.eventType"
-          :eventDescription="event.eventDescription" 
-          :key="event.id">
-        </event-log-preview>
-      </li>
-    </ul>
-  </div>
 </template>
 
 
 <script>
 
-import RefereeInformation from "../RefereeInformation"
-import EventLogPreview from "../EventLogPreview"
+import ModelView from "../model.vue";
+
 
 export default {
     name: "PastMatchPreview",
 
     components: {
-      RefereeInformation,
-      EventLogPreview
+        ModelView,
     },
 
-    props: {
-      matchID: {
-        type: Number,
-        required: true
-      },
-      matchDateAndTime: {
-        type: String,  //TODO: Match change type to dateTime
-        required: true
-      },
-      localTeamName: {
-        type: String,
-        required: true
-      },
-      visitorTeamName: {
-        type: String,
-        required: true
-      },
-      venueName: {
-        type: String,
-        required: true
-      },
-      localTeamScore: {
-        type: Number
-      },
-      visitorTeamScore: {
-        type: Number
-      },
-      refereeInformation: {
-        type: Object,
-        required: true
-      },
-      eventsLog: {
-        type: Array,
-        required: true
-      }
-  },
-  computed: {
-    hasRefereeInfo(){
-      return Object.keys(this.refereeInformation).length
+    data() {
+        return {
+            matchID: undefined,
+            matchDate: "",
+            localTeamName: "",
+            visitorTeamName: "",
+            venueName: "",
+            refereeInformation: "",
+            localTeamScore: "",
+            visitorTeamScore: "",
+            eventsLog: "",
+        }
     },
-    hasEventsLog(){
-      return this.eventsLog.length
-    }
-  },
-  mounted(){
-    console.log("past match preview mounted")
-  } 
-};
+    props: {
+        match: {
+            type: Object,
+            require: true
+        },
+    },
+    methods: {
+        updateInformation() {
+
+            this.matchID = this.match.matchID;
+            this.matchDate = this.match.matchDate;
+            this.localTeamName = this.match.localTeamName;
+            this.visitorTeamName = this.match.visitorTeamName;
+            this.venueName = this.match.venueName;
+            this.refereeInformation = this.match.refereeInformation;
+            this.localTeamScore = this.match.localTeamScore;
+            this.visitorTeamScore = this.match.visitorTeamScore;
+            this.eventsLog = this.match.eventsLog;
+        }
+    },
+    computed: {
+        refereeFullName() {
+            if ( Object.keys(this.refereeInformation).length ) {
+                return this.refereeInformation.firstname + " " + this.refereeInformation.lastname;
+            }
+            return "";
+        },
+        checkScore() {
+            if ( this.localTeamScore==undefined || this.visitorTeamScore==undefined ){
+                return false;
+            }
+            return true;
+        }
+    },
+    mounted() {
+        this.updateInformation()
+    },
+
+}
+
 </script>
 
 
-<style>
-.past-match-preview {
-  display: inline-block;
-  /* width: 250px; */
-  /* height: 200px; */
-  position: relative;
-  margin: 10px 10px;
-  border-style: solid;
-  border-radius: 10px;
-  border-width: 5px;
-  border-color:cadetblue;
+<style lang="scss" scoped>
+
+#past-match-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
-.past-match-preview .past-match-title {
-  text-align: center;
-  text-transform: uppercase;
-  color:  rgb(111, 197, 157);
+.card {
+    min-height: 120px !important;
+    min-width: 340px !important;
+    background-image:url('../../assets/AdobeStock_203017792.jpeg');
+    font-size: 17px;
 }
 
-.past-match-preview .past-match-content {
-  width: 100%;
-  overflow: hidden;
+.my-row {
+    background-color: #293241e0;
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+
+.match-title {
+    font-size: 25px!important;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+    position: absolute;
+    top:10px;
+    left: 100px;
+    margin: auto;
+    color: rgb(32, 32, 32);
+}
+
+.teamsName {
+    position: relative;
+    top: 0px;
+    // width: 200px;
+    // word-wrap: break-word;
+    font-size: 15px!important;
+}
+
+.match-info {
+    position: relative;
+    top: -10px;
+    font-size: 12px!important;
+    text-align: left;
+    padding: 3px;
+}
+small {
+    position: absolute;
+    top: 210px;
+}
+
+h1 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 40px!important;
+}
+
+.Stage-title {
+    min-width: 1140px;
+    padding-top: 10px;
+}
+
+.page {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 10px;
+    min-height: 93.4vh;
+
+}
+
+.model-div {
+    position:relative;
+    top: 10px;
+    left: 170px;
+}
+
+.like-div {
+    position:relative;
+    top: 10px;
+    left: 13px;
+}
+
+    
+
 </style>

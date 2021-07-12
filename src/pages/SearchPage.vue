@@ -346,6 +346,9 @@ export default {
         sessionStorage.setItem("lastSearchType", JSON.stringify(this.form.searchType));
         this.onSort();
         this.onFilter();
+        if(this.results.length==0){
+          this.noResult=true;
+        }
 
       } catch (err) {
         console.log(err);

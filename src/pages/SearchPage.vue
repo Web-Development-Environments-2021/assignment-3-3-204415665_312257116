@@ -320,13 +320,13 @@ export default {
         }
         currentSearchInfo.forEach(element => {
           if(this.form.searchType=="Players"){
-            if(element.playerShortInfo.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.playerShortInfo.name?.toLowerCase().includes(this.form.searchQuery?.toLowerCase()))
             {
                 response.push(element.playerShortInfo);
             }
           }
           else{
-            if(element.teamName.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.teamName?.toLowerCase().includes(this.form.searchQuery?.toLowerCase()))
             {
                 response.push(element);
             }

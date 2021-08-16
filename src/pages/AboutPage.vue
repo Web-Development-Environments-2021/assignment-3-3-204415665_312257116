@@ -1,8 +1,40 @@
 
 <template>
       <div class="container About">
-      <h1>About page</h1>
-      <div>
+      <h1 style="color:black;">About page</h1>
+       <h4 class="titles">About us </h4>
+          <div class="row my-row">
+
+            <div class="match-card favoriteMatches dini card  text-white card-has-bg click-col" style="width: 20rem;">
+              <div class="card-img-overlay d-flex flex-column">
+                <div class="card-body">
+                  
+                  <p class="card-text">  
+                   Daniel Dinshtein<br>                   
+                  id:312257116
+                  <br>Email:dinshdan@post.bgu.ac.il
+                  linkdin:<a href="https://www.linkedin.com/in/daniel-dinshtein/">daniel-dinshtein</a><br>
+
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="match-card favoriteMatches card mos text-white card-has-bg click-col" style="width: 20rem;">
+                <div class="card-img-overlay d-flex flex-column">
+                  <div class="card-body">
+                    <p class="card-text">   
+                      Moshe Biran<br>                     
+                      id:204415665
+                      <br>Email:biranmos@post.bgu.ac.il
+                      linkdin:<a href="https://www.linkedin.com/in/moshe-biran">moshe-biran</a><br>
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+      </div>
+      <div class="website">
         <h4 class="titles">About Our Website</h4>
         <p>
           <ul>
@@ -22,37 +54,8 @@
           </ul>
         </p>
       </div>
-        <h4 class="titles">About us </h4>
-          <div class="row my-row">
-
-          <div class="match-card favoriteMatches dini card  text-white card-has-bg click-col" style="width: 20rem;">
-           <div class="card-img-overlay d-flex flex-column">
-            <div class="card-body">
-              <h5 class="card-title">Daniel Dinshtein:</h5>
-              <p class="card-text">                        
-              id:312257116
-              <br>Email:dinshdan@post.bgu.ac.il
-              <br>linkdin:https://www.linkedin.com/in/daniel-dinshtein/
-              </p>
-            </div>
-           </div>
-          </div>
-          <div class="match-card favoriteMatches card mos text-white card-has-bg click-col" style="width: 20rem;">
-            <div class="card-img-overlay d-flex flex-column">
-
-              <div class="card-body">
-                <h5 class="card-title">Moshe Biran:</h5>
-                             <p class="card-text">                        
-              id:204415665
-              <br>Email:biranmos@post.bgu.ac.il
-              <br>https://www.linkedin.com/in/moshe-biran/
-              </p>
-
-              </div>
-            </div>
-            </div>
-      </div>
-      <div>
+       
+      <div class="previous">
         <br>
         <h4 class="titles">Previous works</h4>
 
@@ -78,14 +81,20 @@ export default {
 <style lang="scss" scoped>
 
 .About {
-    min-width:215vh;
-    min-height: 96vh;
-    background: #a1a2a5e0;
+    min-width:214vh;
+    min-height: 95vh;
+    background: #a1a2a57a;
     margin: auto;
     text-align: center;
     
 }
-
+.match-card.abo.card{
+    min-height: 210px !important;
+    min-width: 330px !important;
+    background-image:url('../assets/AdobeStock_203017792.jpeg');
+    // background-size: cover;
+    font-size: 17px;
+}
 h1{
   padding-top: 10px;
   color: aliceblue;
@@ -103,13 +112,16 @@ p{
 .my-row{
   position: relative;
   top: 00px;
-  left: 400px;
+  left: 300px;
+  padding: 10px;
+  margin-left: 13%;
 }
 
 .match-card.favoriteMatches.card{
-    min-height: 500px !important;
-    min-width: 330px !important;
+    min-height: 360px !important;
+    min-width: 100px !important;
     font-size: 17px;
+    margin-inline: 50px;
 }
 .mos{
       background-image:url('../assets/mos.jpg');
@@ -126,5 +138,33 @@ p{
   left: 75px;
   margin: auto;
   color: rgb(32, 32, 32);
+}
+.card-text{
+  text-align: center;
+  position: relative;
+  top:-80px;
+}
+.website{
+  position: absolute;
+  border-radius: 10px;
+  padding: 10px;
+  left: 8%;
+  top: 60%;
+  background-color: #293241f3;
+  max-width: 1000px;
+  max-height: 370px;
+
+  color: aliceblue;
+}
+.previous {
+  position: absolute;
+  border-radius: 10px;
+  padding: 10px;
+  left: 62%;
+  top: 60%;
+  background-color: #293241f3;
+  min-width: 500px;
+  min-height: 370px;
+  color: aliceblue;
 }
 </style>

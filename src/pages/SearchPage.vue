@@ -320,13 +320,13 @@ export default {
         }
         currentSearchInfo.forEach(element => {
           if(this.form.searchType=="Players"){
-            if(element.playerShortInfo.name.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.playerShortInfo?.name?.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
             {
                 response.push(element.playerShortInfo);
             }
           }
           else{
-            if(element.teamName.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
+            if(element.teamName?.toLowerCase().includes(this.form.searchQuery.toLowerCase()))
             {
                 response.push(element);
             }
@@ -345,7 +345,9 @@ export default {
         sessionStorage.setItem("lastSearchResults", JSON.stringify(this.results));
         sessionStorage.setItem("lastSearchType", JSON.stringify(this.form.searchType));
         this.onSort();
-        this.onFilter();
+        if(this.form.searchType=="Players"){
+          this.onFilter();
+        }
         if(this.results.length==0){
           this.noResult=true;
         }
@@ -374,6 +376,8 @@ export default {
       this.form.sortPlayers= "";
       this.form.sortPlayersBy= "";
       this.form.filter_Players= "";
+      this.form.filterPlayersByPosition=0;
+      this.form.filterPlayersByTeam="";
       this.flag=Boolean;
       this.noResult=false;
       this.results=[];

@@ -3,8 +3,8 @@
 
         <!----------  Header  ---------->
 
-        <b-img id="team-logo" :src="teamLogo" ></b-img> 
-        <h1 class="team-page-title"> {{teamName}} </h1>
+        <b-img style="position:absolute; left: 80%;top:8%;" id="team-logo" :src="teamLogo" ></b-img> 
+        <h1 class="team-page-hade"> {{teamName}} </h1>
 
 
         <!----------  Team's Squad  ---------->
@@ -263,20 +263,27 @@ export default {
 
 #team-page-div {
     padding-bottom: 50px;
+    background: rgba(253, 245, 209, 0.322);
 }
 
 /* --------  Page Header  -------- */
-
-.team-page-title {
-    margin-top: revert;
+.team-page-hade {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    color: rgb(255, 238, 208);
+    color: rgb(0, 0, 0);
     font-weight: bold;
-    font-style: oblique;
-    text-decoration: underline;
+    font-size: 100px;
+    padding-top: 20px;
+}
+.team-page-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
 }
 
 #team-logo {
@@ -289,7 +296,7 @@ export default {
 /* --------  Squad Div  -------- */
 
 #squad-div {
-    margin-top: 105px ;
+    margin-top: 60px ;
 }
 
 #squad-head {
@@ -308,7 +315,7 @@ export default {
     overflow-x: hidden;
     background-color: #293241e0;
     max-height:56.4vmin;
-    border-radius: 4%;
+    border-radius: 15px;
 }
 
 .my-row-css {

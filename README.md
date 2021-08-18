@@ -16,3 +16,6 @@ All the logic of validation and communication of the server side takes place on 
 ·Front-end:
 Building the client side in the VUE platform, in this part we worked a lot on the user experience in terms of visibility, correct retrieval of the
 information in the user login, in the logic of the application structure and appearance by used in packages from the bootsrap site.
+
+see System demonstration - https://www.linkedin.com/feed/update/urn:li:activity:6832565429408432128/
+
